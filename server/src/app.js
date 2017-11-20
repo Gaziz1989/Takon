@@ -1,19 +1,27 @@
-console.log('Hello!!!')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
-
+const { sequelize } = require('./models')
 const app = express()
+const config = require('./config/config')
+const path = require('path')
 
-app.use(morgan('combined'))
-app.use(bodyParser.json())
+app.use(express.static(path.resolve(__dirname, '../static/')))
+
+app.use(morgan('dev'))
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 app.use(cors())
 
-app.get('/status', (req, res) => {
-  res.send({
-    message: 'Hello World!!!'
-  })
-})
+require('./routes/authroutes')(app)
+require('./routes/userroutes')(app)
 
-app.listen(process.env.PORT || 8081)
+sequelize.sync()
+  .then(() => {
+    app.listen(config.port, function () {
+      console.log('Application worker ' + process.pid + ' started')
+    })
+    console.log(`Server started at port ${config.port}`)
+  })

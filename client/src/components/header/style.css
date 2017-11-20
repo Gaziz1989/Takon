@@ -1,0 +1,11 @@
+button {
+  height: 100%;
+}
+.header {
+  background-color: white;
+  border-bottom: 1px solid beige;
+}
+.btn {
+  margin: 0;
+  padding: 0;
+}

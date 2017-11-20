@@ -3,13 +3,25 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuetify from 'vuetify'
+import { sync } from 'vuex-router-sync'
+import VModal from 'vue-js-modal'
+import 'vuetify/dist/vuetify.min.css'
+import store from '@/store/store'
+import Auth from '@/utils/Auth'
 
 Vue.config.productionTip = false
+
+Vue.use(Vuetify)
+Vue.use(VModal)
+Vue.prototype.$auth = new Auth()
+sync(store, router)
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
