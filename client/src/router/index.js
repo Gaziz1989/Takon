@@ -37,17 +37,17 @@ export default new Router({
     },
     {
       path: '/projects',
-      name: 'Main',
+      name: 'ProjectsPage',
       component: Auth().isLoggedIn ? ProjectsPage : HelloWorld
     },
     {
       path: '/modules',
-      name: 'Main',
+      name: 'ModulesPage',
       component: Auth().isLoggedIn ? ModulesPage : HelloWorld
     },
     {
       path: '/employees',
-      name: 'Main',
+      name: 'EmployeesPage',
       component: Auth().isLoggedIn ? EmployeesPage : HelloWorld
     },
     {

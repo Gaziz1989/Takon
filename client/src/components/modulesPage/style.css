@@ -1,0 +1,16 @@
+.modules-wraper {
+  min-width: 100%;
+  display: inline-flex;
+}
+.modules {
+  display: inline-flex;
+  min-width: 45%;
+  margin: 15px;
+  border: 1px solid black;
+}
+.toolbar__title {
+  font-size: 1em;
+}
+.toolbar__content {
+  background-color: #fafafa
+}

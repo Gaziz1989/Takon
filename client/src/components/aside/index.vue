@@ -9,24 +9,24 @@
 
         <li v-if="isUserLoggedIn">
           <router-link to="projects">
-            <span><i class="fa fa-tasks" aria-hidden="true"></i></span>
+            <span><i class="fa fa-calendar" aria-hidden="true"></i></span>
           </router-link>
           <ul> 
             <li v-if="isUserLoggedIn">
               <router-link to="projects">
-                <span><i class="fa fa-user" aria-hidden="true">Проекты</i></span>
+                <span><i class="fa fa-tasks" aria-hidden="true"> Проекты</i></span>
               </router-link>
             </li>
 
             <li v-if="isUserLoggedIn">
               <router-link to="modules">
-                <span><i class="fa fa-user" aria-hidden="true">Модули</i></span>
+                <span><i class="fa fa-modx" aria-hidden="true"> Модули</i></span>
               </router-link>
             </li>
             
             <li v-if="isUserLoggedIn">
               <router-link to="employees">
-                <span><i class="fa fa-user" aria-hidden="true">Сотрудники</i></span>
+                <span><i class="fa fa-users" aria-hidden="true"> Сотрудники</i></span>
               </router-link>
             </li>
           </ul>
@@ -43,13 +43,12 @@
             <span><i class="fa fa-sign-in" aria-hidden="true"></i></span>
           </router-link>
         </li>
-        
-          <button class="buttons"
-            v-if="isUserLoggedIn"
-            @click="logout"
-          >
+
+        <li v-if="isUserLoggedIn" class="buttons">
+          <button @click="logout">
             <i class="fa fa-power-off" aria-hidden="true"></i>
           </button>
+        </li>
   </ul>
 </template>
 
@@ -57,8 +56,7 @@
 export default {
   data () {
     return {
-      isUserLoggedIn: false,
-      open: false
+      isUserLoggedIn: false
     }
   },
   methods: {

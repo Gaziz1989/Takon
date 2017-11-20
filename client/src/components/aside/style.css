@@ -16,11 +16,12 @@
 .drop_vert_menu > li{
   position: relative;
   background-color: #ffffff;
-  padding: 15%;
+  padding: 10%;
   border-right: 1px solid beige;
 }
 .drop_vert_menu > li:hover {
-  background-color: #aaaaaa;
+  background-color: #fafafa;
+  border-right: 1px solid beige;
   cursor: pointer;
 }
 .drop_vert_menu > li > a{
@@ -31,18 +32,19 @@
   position: absolute; 
   display: none; 
   top: 0px; 
-  left: 100%; 
+  left: 102%; 
+  width: 200%;
  }
 .drop_vert_menu li:hover ul {
   display: block; 
 }
 .drop_vert_menu li ul li{
   text-align:left;
-  background: #fafafa;
+  background: #ffffff;
   padding: 8px 0px 8px 10px;
 }
 .drop_vert_menu li ul li:hover {
-  background: #aaaaaa;
+  background: #fafafa;
 }
 .drop_vert_menu li ul li a{
   font-size:1em;
@@ -57,8 +59,6 @@
 .buttons {
   cursor: pointer;
   width: 100%;
-  height: 50px;
-  bottom: 0px;
 }
 .buttons:hover {
   background-color: #aaaaaa;
