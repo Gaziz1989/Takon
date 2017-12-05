@@ -3,7 +3,7 @@
   <ul class="drop_vert_menu"> 
         <li v-if="isUserLoggedIn">
           <router-link to="user">
-            <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
+            <span><i class="fa fa-user" aria-hidden="true"></i> </span>
           </router-link>
         </li>
 
@@ -12,19 +12,19 @@
             <span><i class="fa fa-calendar" aria-hidden="true"></i></span>
           </router-link>
           <ul> 
-            <li v-if="isUserLoggedIn">
+            <li v-if="isUserLoggedIn && isUserAdmin">
               <router-link to="projects">
                 <span><i class="fa fa-tasks" aria-hidden="true"> Проекты</i></span>
               </router-link>
             </li>
 
-            <li v-if="isUserLoggedIn">
+            <li v-if="isUserLoggedIn && isUserAdmin">
               <router-link to="modules">
                 <span><i class="fa fa-modx" aria-hidden="true"> Модули</i></span>
               </router-link>
             </li>
             
-            <li v-if="isUserLoggedIn">
+            <li v-if="isUserLoggedIn && isUserAdmin">
               <router-link to="employees">
                 <span><i class="fa fa-users" aria-hidden="true"> Сотрудники</i></span>
               </router-link>
@@ -56,7 +56,8 @@
 export default {
   data () {
     return {
-      isUserLoggedIn: false
+      isUserLoggedIn: false,
+      isUserAdmin: false
     }
   },
   methods: {
@@ -71,6 +72,9 @@ export default {
   beforeMount () {
     var token = this.$auth.getToken()
     if (token) {
+      if (this.$auth.currentUser().type === 'admin') {
+        this.isUserAdmin = true
+      }
       this.isUserLoggedIn = true
     } else {
       this.isUserLoggedIn = false

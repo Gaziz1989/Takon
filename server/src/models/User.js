@@ -32,8 +32,28 @@ module.exports = (sequelize, DataTypes) => {
     exit: DataTypes.INTEGER,
     projects: DataTypes.TEXT,
     role: DataTypes.STRING,
-    trello: DataTypes.STRING,
-    password: DataTypes.STRING
+    front: DataTypes.STRING,
+    back: DataTypes.STRING,
+    ios: DataTypes.STRING,
+    android: DataTypes.STRING,
+    trellotoken: DataTypes.STRING,
+    trelloname: DataTypes.STRING,
+    salary: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: bcrypt.hashSync('123456789')
+    },
+    archived: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'employee'
+    }
   }, {
     hooks: {
       beforeCreate: hashPassword,

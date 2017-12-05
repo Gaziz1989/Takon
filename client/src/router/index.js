@@ -7,6 +7,7 @@ import Main from '@/components/Main'
 import Profile from '@/components/profilePage'
 import ProfileEdit from '@/components/profileEditPage'
 import ProjectsPage from '@/components/projectsPage'
+import AddingProjectPage from '@/components/addingProjectPage'
 import ModulesPage from '@/components/modulesPage'
 import EmployeesPage from '@/components/employeesPage'
 import Auth from '../utils/Auth'
@@ -38,17 +39,22 @@ export default new Router({
     {
       path: '/projects',
       name: 'ProjectsPage',
-      component: Auth().isLoggedIn ? ProjectsPage : HelloWorld
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? ProjectsPage : Profile
+    },
+    {
+      path: '/addproject',
+      name: 'AddingProjectPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? AddingProjectPage : Profile
     },
     {
       path: '/modules',
       name: 'ModulesPage',
-      component: Auth().isLoggedIn ? ModulesPage : HelloWorld
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? ModulesPage : Profile
     },
     {
       path: '/employees',
       name: 'EmployeesPage',
-      component: Auth().isLoggedIn ? EmployeesPage : HelloWorld
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? EmployeesPage : Profile
     },
     {
       path: '/register',

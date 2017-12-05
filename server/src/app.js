@@ -17,6 +17,9 @@ app.use(cors())
 
 require('./routes/authroutes')(app)
 require('./routes/userroutes')(app)
+require('./routes/moduleroutes')(app)
+require('./routes/expenceroutes')(app)
+require('./routes/projectroutes')(app)
 
 sequelize.sync()
   .then(() => {

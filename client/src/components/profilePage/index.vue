@@ -23,16 +23,20 @@
       </div>
     </div>
     <div class="mainInfo">
-      <div style="width: 50%;"><v-btn @click="editProfile" small class="mainbtn">Редактировать профиль</v-btn></div>
+      <div style="width: 50%;"><v-btn @click="editProfile" flat small class="mainbtn">Редактировать</v-btn></div>
       <info-div title="Имя" :text="user.name"/>
       <info-div title="Фамилия" :text="user.lastname"/>
-      <info-div title="Номер телефона" :text="user.phone" full/>
-      <info-div title="E-mail" :text="user.email" full/>
-      <info-div title="Пол" :text="user.gender" full/>
-      <info-div title="Роль" :text="user.role" full/>
-      <info-div title="Дата рождения" :text="user.birthday" full/>
-      <info-div title="Дата начала работы" :text="user.entry" full/>
-      <info-div title="Дата увольнения" :text="user.exit" full/>
+      <info-div title="Номер телефона" :text="user.phone"/>
+      <info-div title="E-mail" :text="user.email"/>
+      <info-div title="Пол" :text="user.gender"/>
+      <info-div title="Роль" :text="user.role"/>
+      <info-div title="Пользователь Trello(username)" :text="user.trelloname"/>
+      <info-div title="Token Trello" :text="user.trellotoken" v-if="getType"/>
+      <info-div title="Заработная плата" :text="user.salary"/>
+      <info-div title="Дата рождения" :text="user.birthday" v-if="getType"/>
+      <info-div title="Дата рождения" :text="user.birthday" v-else full/>
+      <info-div title="Дата начала работы" :text="user.entry"/>
+      <info-div title="Дата увольнения" :text="user.exit"/>
     </div>
   </panel>
 </template>
@@ -60,7 +64,9 @@ export default {
           exit: '',
           projects: '',
           role: '',
-          trello: '',
+          salary: '',
+          trelloname: '',
+          trellotoken: '',
           email: '',
           id: ''
         },
@@ -75,6 +81,13 @@ export default {
           return `http://localhost:8081/${this.user.image}`
         } else {
           return this.user.image
+        }
+      },
+      getType () {
+        if (this.$auth.currentUser().type === 'admin') {
+          return true
+        } else {
+          return false
         }
       }
     },

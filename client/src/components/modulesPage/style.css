@@ -1,12 +1,61 @@
 .modules-wraper {
   min-width: 100%;
   display: inline-flex;
+  margin-top: 50px;
+  font-size: 1em;
 }
 .modules {
-  display: inline-flex;
   min-width: 45%;
   margin: 15px;
-  border: 1px solid black;
+}
+.content {
+  display: flex;
+  font-size: 0.8em;
+  border: 1px solid beige;
+}
+.content:hover {
+  background: beige;
+}
+.content > .moduleTitle,
+.content > .flatbtn {
+  line-height: 75px;
+}
+.content > .information {
+  padding: 5px 0 5px 0;
+}
+.contentTitle {
+  display: flex;
+  height: 25px;
+  line-height: 25px;
+  font-size: 0.9em;
+  border: 1px solid beige;
+}
+.moduleTitle {
+  width: 30%;
+  height: 100%;
+  padding-left: 15px;
+  text-align: left;
+}
+.information {
+  width: 50%;
+  height: 100%;
+  text-align: left;
+  word-wrap: normal;
+}
+.amount {
+  width: 50%;
+  height: 100%;
+  text-align: left;
+  word-wrap: normal;
+  line-height: 75px;
+}
+.flatbtn {
+  width: 20%;
+  height: 100%;
+  position: sticky;
+}
+.toolbar__items {
+  position: sticky;
 }
 .toolbar__title {
   font-size: 1em;

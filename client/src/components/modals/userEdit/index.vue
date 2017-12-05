@@ -1,8 +1,8 @@
 <style src="./style.css" scoped></style>
 <template>
-  <panel>
+  <modal name="UserEdit" width="50%" height="87%" @before-open="beforeOpen">
+    <div class="moduleWraper">
       <h6>Профиль: {{user.id}}</h6>
-      <div class='error' v-html="error"/>
       <input-a type="text" :placeholder="user.name" title="Имя" v-model="user.name"/>
       <input-a type="text" :placeholder="user.lastname" title="Фамилия" v-model="user.lastname"/>
       <input-a type="text" :placeholder="user.email" title="Email" v-model="user.email"/>
@@ -19,7 +19,7 @@
       <input-a type="date" :placeholder="user.birthday" title="День рождения" v-model="user.birthday"/>
       <input-a type="date" :placeholder="user.entry" title="Дата начала работы" v-model="user.entry"/>
       <input-a type="date" :placeholder="user.exit" title="Дата увольнения" v-model="user.exit"/>
-      <div class="fullOf">
+      <div class="halfOf">
         <p class="greyFont">Роль</p>
         <select v-model="user.role">
           <option value=""></option>
@@ -30,56 +30,26 @@
           <option value="Фатима">Фатима</option>
         </select>
       </div>
-      <grad title="Front-end" v-if="getRole"/>
-      <grad title="Back-end" v-if="getRole"/>
-      <grad title="IOS" v-if="getRole"/>
-      <grad title="Android" v-if="getRole"/>
       <input-a type="text" :placeholder="user.salary" title="Заработная плата" v-model="user.salary"/>
-      <input-a type="text" :placeholder="user.trelloname" title="Пользователь Trello(username)" v-model="user.trelloname" v-if="getType"/>
-      <input-a type="text" :placeholder="user.trelloname" title="Пользователь Trello(username)" v-model="user.trelloname" v-else full/>
-      <input-a type="text" :placeholder="user.trellotoken" title="Token Trello" v-model="user.trellotoken" v-if="getType"/>
+      <input-a type="text" :placeholder="user.trellotoken" title="Token Trello" v-model="user.trellotoken" v-if="getType(user)"/>
+      <input-a type="text" :placeholder="user.trelloname" title="Имя пользователя Trello (username)" v-model="user.trelloname" v-if="getType(user)"/>
+      <input-a type="text" :placeholder="user.trelloname" title="Имя пользователя Trello (username)" v-model="user.trelloname" v-else full/>
       <div class='error' v-if="checkPass">Пароли не совпадают</div>
       <input-a type="password" placeholder="Пароль" title="Пароль" v-model="checkPassword"/>
       <input-a type="password" placeholder="Пароль" title="Подтвердите пароль" v-model="checkPassword2"/>
       <v-btn @click="editUser" small flat>Сохранить</v-btn>
-      <v-btn @click="back" small flat>Назад</v-btn>
-  </panel>
+      <v-btn @click="archiveUser" small flat>Удалить</v-btn>
+    </div>
+
+  </modal>
 </template>
 
 <script>
-  import Panel from '@/components/panel'
-  import Grad from '@/components/roleBasedGrad'
-  import InputA from '@/components/input'
   import UsersService from '@/services/UsersService'
+  import InputA from '@/components/input'
 export default {
-    name: 'ProfileEditPage',
     components: {
-      Panel,
-      Grad,
       InputA
-    },
-    computed: {
-      checkPass () {
-        if (this.checkPassword2 === this.checkPassword) {
-          return false
-        } else {
-          return true
-        }
-      },
-      getType () {
-        if (this.$auth.currentUser().type === 'admin') {
-          return true
-        } else {
-          return false
-        }
-      },
-      getRole () {
-        if (this.user.role === 'Программист') {
-          return true
-        } else {
-          return false
-        }
-      }
     },
     data () {
       return {
@@ -94,46 +64,75 @@ export default {
           exit: '',
           role: '',
           salary: '',
-          trelloname: '',
           trellotoken: '',
-          front: '',
-          back: '',
-          ios: '',
-          android: '',
+          trelloname: '',
           email: '',
           id: '',
           password: ''
         },
         checkPassword: '',
         checkPassword2: '',
-        error: ''
+        editedModule: {
+          name: '',
+          lastname: '',
+          gender: '',
+          phone: '',
+          image: '',
+          birthday: '',
+          entry: '',
+          exit: '',
+          role: '',
+          salary: '',
+          trellotoken: '',
+          trelloname: '',
+          email: '',
+          password: ''
+        }
       }
     },
-    beforeMount () {
-      this.getUser()
+    computed: {
+      checkPass () {
+        if (this.checkPassword2 === this.checkPassword) {
+          return false
+        } else {
+          return true
+        }
+      }
     },
     methods: {
+      async beforeOpen (event) {
+        const response = await UsersService.getUser(event.params.id)
+        this.user = response.data.user
+      },
       async editUser () {
         try {
           const response = await UsersService.editUser(this.user, this.checkPassword)
           this.user = response.data.user
           alert(response.data.user.name + ' ' + response.data.user.lastname + ' был успешно изменен!')
-          this.$router.go(-1)
+          this.$modal.hide('UserEdit')
+          window.location.reload()
         } catch (error) {
-          this.error = error.response.data.error
+          alert(error.response.data.error)
+          this.$modal.hide('UserEdit')
         }
       },
-      async getUser () {
+      async archiveUser () {
         try {
-          const { id } = this.$auth.currentUser()
-          const response = await UsersService.getUser(id)
-          this.user = response.data.user
+          const response = await UsersService.archiveUser(this.user.id)
+          alert('Пользователь ' + response.data.user.name + ' успешно удален!')
+          this.$modal.hide('UserEdit')
+          window.location.reload()
         } catch (error) {
-          this.error = error.response.data.error
+          alert(error.response.data.error)
+          this.$modal.hide('UserEdit')
         }
       },
-      back () {
-        this.$router.go(-1)
+      getType (user) {
+        if (user.type === 'admin') {
+          return true
+        } else {
+          return false
+        }
       }
     }
 }

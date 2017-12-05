@@ -12,8 +12,15 @@ export default {
     const formData = `id=${id}`
     return Api().post('getuser', formData)
   },
-  editUser (_user) {
-    const formData = `user=${JSON.stringify(_user)}`
+  editUser (_user, _password) {
+    const formData = `user=${JSON.stringify(_user)}&password=${JSON.stringify(_password)}`
     return Api().post('edituser', formData)
+  },
+  getUsers () {
+    return Api().get('getusers')
+  },
+  archiveUser (_id) {
+    const formData = `id=${_id}`
+    return Api().post('archiveuser', formData)
   }
 }

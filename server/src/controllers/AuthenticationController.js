@@ -17,7 +17,7 @@ module.exports = {
       })
     } catch (err) {
       res.status(400).send({
-        error: 'This email account is already in use.'
+        error: 'Этот е-мэйл уже используется'
       })
     }
   },
@@ -27,20 +27,21 @@ module.exports = {
 
       const user = await User.findOne({
         where: {
-          email: email
+          email: email,
+          archived: false
         }
       })
 
       if (!user) {
         return res.status(403).send({
-          error: 'The login information was incorrect!'
+          error: 'Предоставленная информация не корректна или пользователь не существует'
         })
       }
 
       const isPasswordValid = await user.comparePassword(password)
       if (!isPasswordValid) {
         return res.status(403).send({
-          error: 'The password is incorrect!'
+          error: 'Не правильный пароль'
         })
       }   
       res.send({
@@ -49,7 +50,7 @@ module.exports = {
       })
     } catch (err) {
       res.status(500).send({
-        error: 'An error has occured trying to login!'
+        error: 'Произошла какая то ошибка'
       })
     }
   }
