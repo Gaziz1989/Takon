@@ -12,18 +12,18 @@ In the following commands, keep in mind the < angular brackets > are to denote v
 
 ## Creating user
 
-sudo -u postgres createuser <username>
+sudo -u postgres createuser [username]
 
 ## Creating Database
 
-sudo -u postgres createdb <dbname>
+sudo -u postgres createdb [dbname]
 
 ## Giving the user a password
 
 sudo -u postgres psql
 
-alter user <username> with encrypted password '<password>';
+alter user [username] with encrypted password ['password'];
 
 ## Granting privileges on database
 
-grant all privileges on database <dbname> to <username> ;
+grant all privileges on database [dbname] to [username] ;
