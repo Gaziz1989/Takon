@@ -17,11 +17,12 @@ app.use(cors())
 
 require('./routes/authroutes')(app)
 require('./routes/userroutes')(app)
-require('./routes/moduleroutes')(app)
-require('./routes/expenceroutes')(app)
-require('./routes/projectroutes')(app)
+require('./routes/serviceroutes')(app)
+require('./routes/couponroutes')(app)
 
-sequelize.sync()
+sequelize.sync({
+  force: false
+})
   .then(() => {
     app.listen(config.port, function () {
       console.log('Application worker ' + process.pid + ' started')

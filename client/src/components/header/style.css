@@ -1,9 +1,25 @@
 button {
   height: 100%;
 }
+p {
+  color: red;
+  margin-left: 10px;
+}
+.meeting {
+  display: inherit;
+  color: #fff;
+  margin: 0 auto;
+  padding: 15px 0 0 0;
+}
+.meeting > span {
+  margin-left: 20px;
+  background-color: #65bb6a;
+  border-radius: 10%;
+  height: 25%;
+}
 .header {
-  background-color: white;
-  border-bottom: 1px solid beige;
+  background-color: #3F51B5;
+  border-bottom: 1px solid #3F51B5;
 }
 .btn {
   margin: 0;

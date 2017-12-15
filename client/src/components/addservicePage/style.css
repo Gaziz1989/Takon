@@ -1,0 +1,26 @@
+select {
+  width: 46%;
+  border: 1px solid beige;
+}
+.fullOf{
+  text-align: left;
+  display: inline-block;
+  margin: 0;
+  padding: 2% 0 0 1.5%;
+  width: 100%;
+}
+.halfOf {
+  text-align: left;
+  display: inline-block;
+  margin: 0;
+  padding: 2% 0 0 1%;
+  width: 49%;
+}
+.greyFont {
+  color: #808080;
+  padding: 0;
+  margin: 1% 0 2% 0;
+}
+.error {
+  background-color: white;
+}

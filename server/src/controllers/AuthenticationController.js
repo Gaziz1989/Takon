@@ -40,6 +40,7 @@ module.exports = {
 
       const isPasswordValid = await user.comparePassword(password)
       if (!isPasswordValid) {
+        console.log()
         return res.status(403).send({
           error: 'Не правильный пароль'
         })

@@ -1,55 +1,146 @@
 <style src="./style.css" scoped></style>
 <template>
-  <ul class="drop_vert_menu"> 
-        <li v-if="isUserLoggedIn">
-          <router-link to="user">
-            <span><i class="fa fa-user" aria-hidden="true"></i> </span>
-          </router-link>
-        </li>
+  <div>
+    <ul class="drop_vert_menu"> 
+      <li v-if="isUserLoggedIn">
+        <router-link to="user">
+          <span><i class="fa fa-user" aria-hidden="true"></i> </span>
+        </router-link>
+      </li>
 
-        <li v-if="isUserLoggedIn">
-          <router-link to="projects">
-            <span><i class="fa fa-calendar" aria-hidden="true"></i></span>
-          </router-link>
-          <ul> 
-            <li v-if="isUserLoggedIn && isUserAdmin">
-              <router-link to="projects">
-                <span><i class="fa fa-tasks" aria-hidden="true"> Проекты</i></span>
-              </router-link>
-            </li>
+      <li v-if="isUserLoggedIn && isUserAdmin">
+        <router-link to="partners">
+          <span><i class="fa fa-user-secret" aria-hidden="true"></i></span>
+        </router-link>
+        <ul>
+          <li v-if="isUserLoggedIn && isUserAdmin">
+            <router-link to="partners">
+              <span><i class="fa fa-user-secret" aria-hidden="true"> Список всех партнеров</i></span>
+            </router-link>
+          </li>
+          <li v-if="isUserLoggedIn && isUserAdmin">
+            <router-link to="addpartner">
+              <span><i class="fa fa-user-secret" aria-hidden="true"> Добавить нового партнера</i></span>
+            </router-link>
+          </li>
+        </ul>
+      </li>
 
-            <li v-if="isUserLoggedIn && isUserAdmin">
-              <router-link to="modules">
-                <span><i class="fa fa-modx" aria-hidden="true"> Модули</i></span>
-              </router-link>
-            </li>
-            
-            <li v-if="isUserLoggedIn && isUserAdmin">
-              <router-link to="employees">
-                <span><i class="fa fa-users" aria-hidden="true"> Сотрудники</i></span>
-              </router-link>
-            </li>
-          </ul>
-        </li>
+      <li v-if="isUserLoggedIn && isUserAdmin">
+        <router-link to="partners">
+          <span><i class="fa fa-id-card" aria-hidden="true"></i></span>
+        </router-link>
+        <ul>
+          <li v-if="isUserLoggedIn && isUserAdmin">
+            <router-link to="jusers">
+              <span><i class="fa fa-id-card" aria-hidden="true"> Список юридических пользователей</i></span>
+            </router-link>
+          </li>
+          <li v-if="isUserLoggedIn && isUserAdmin">
+            <router-link to="addjuser">
+              <span><i class="fa fa-id-card" aria-hidden="true"> Добавить нового юридического пользователя</i></span>
+            </router-link>
+          </li>
+        </ul>
+      </li>
 
-        <li v-if="!isUserLoggedIn">
-          <router-link to="register">
-            <span><i class="fa fa-user-plus" aria-hidden="true"></i></span>
-          </router-link>
-        </li>
+      <li v-if="isUserLoggedIn && isUserAdmin">
+        <router-link to="users">
+          <span><i class="fa fa-users" aria-hidden="true"></i></span>
+        </router-link>
+        <ul>
+          <li v-if="isUserLoggedIn && isUserAdmin">
+            <router-link to="users">
+              <span><i class="fa fa-users" aria-hidden="true"> Список всех пользователей</i></span>
+            </router-link>
+          </li>
+        </ul>
+      </li>
 
-        <li v-if="!isUserLoggedIn">
-          <router-link to="login">
-            <span><i class="fa fa-sign-in" aria-hidden="true"></i></span>
-          </router-link>
-        </li>
+      <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
+        <router-link to="employees">
+          <span><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+        </router-link>
+        <ul>
+          <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
+            <router-link to="employees">
+              <span><i class="fa fa-user-circle-o" aria-hidden="true"> Список всех сотрудников</i></span>
+            </router-link>
+          </li>
+          <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
+            <router-link to="addemployees">
+              <span><i class="fa fa-user-circle-o" aria-hidden="true"> Добавить нового сотрудника</i></span>
+            </router-link>
+          </li>
+        </ul>
+      </li>
 
-        <li v-if="isUserLoggedIn" class="buttons">
-          <button @click="logout">
-            <i class="fa fa-power-off" aria-hidden="true"></i>
-          </button>
-        </li>
-  </ul>
+      <li v-if="isUserLoggedIn && isUserPartner">
+        <router-link to="services">
+          <span><i class="fa fa-superpowers" aria-hidden="true"></i></span>
+        </router-link>
+        <ul>
+          <li v-if="isUserLoggedIn && isUserPartner">
+            <router-link to="services">
+              <span><i class="fa fa-superpowers" aria-hidden="true"> Список всех услуг</i></span>
+            </router-link>
+          </li>
+          <li v-if="isUserLoggedIn && isUserPartner">
+            <router-link to="addservices">
+              <span><i class="fa fa-superpowers" aria-hidden="true"> Добавить услугу</i></span>
+            </router-link>
+          </li>
+        </ul>
+      </li>
+
+      <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
+        <router-link to="coupons">
+          <span><i class="fa fa-tags" aria-hidden="true"></i></span>
+        </router-link>
+        <ul>
+          <li v-if="isUserLoggedIn && isUserPartner">
+            <router-link to="coupons">
+              <span><i class="fa fa-tags" aria-hidden="true"> Список всех купонов</i></span>
+            </router-link>
+          </li>
+
+          <li v-if="isUserLoggedIn && isUserPartner">
+            <router-link to="addcoupons">
+              <span><i class="fa fa-tag" aria-hidden="true"> Добавить новый купон</i></span>
+            </router-link>
+          </li>
+          <li v-if="isUserLoggedIn && isUserJUser">
+            <router-link to="coupons">
+              <span><i class="fa fa-tag" aria-hidden="true"> Список всех купонов</i></span>
+            </router-link>
+          </li>
+          <li v-if="isUserLoggedIn && isUserJUser">
+            <router-link to="partnerslist">
+              <span><i class="fa fa-tag" aria-hidden="true"> Купить купон</i></span>
+            </router-link>
+          </li>
+        </ul>
+      </li>
+
+      <li v-if="!isUserLoggedIn">
+        <router-link to="register">
+          <span><i class="fa fa-user-plus" aria-hidden="true"></i></span>
+        </router-link>
+      </li>
+
+      <li v-if="!isUserLoggedIn">
+        <router-link to="login">
+          <span><i class="fa fa-sign-in" aria-hidden="true"></i></span>
+        </router-link>
+      </li>
+
+      <li v-if="isUserLoggedIn" class="buttons">
+        <button @click="logout">
+          <i class="fa fa-power-off" aria-hidden="true"></i>
+        </button>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -57,7 +148,9 @@ export default {
   data () {
     return {
       isUserLoggedIn: false,
-      isUserAdmin: false
+      isUserAdmin: false,
+      isUserPartner: false,
+      isUserJUser: false
     }
   },
   methods: {
@@ -74,6 +167,10 @@ export default {
     if (token) {
       if (this.$auth.currentUser().type === 'admin') {
         this.isUserAdmin = true
+      } else if (this.$auth.currentUser().type === 'partner') {
+        this.isUserPartner = true
+      } else if (this.$auth.currentUser().type === 'juser') {
+        this.isUserJUser = true
       }
       this.isUserLoggedIn = true
     } else {

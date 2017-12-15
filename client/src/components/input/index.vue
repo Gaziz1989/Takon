@@ -2,7 +2,7 @@
 <template>
   <div :class="getStyle">
     <p class="greyFont">{{title}}</p>
-    <input :type="type" :placeholder="getText" :value="value" @input="$emit('input', $event.target.value)">
+    <input :type="type" :placeholder="getText" @input="$emit('input', $event.target.value)">
   </div>
 </template>
 
@@ -15,8 +15,7 @@ export default {
     },
     placeholder: String,
     type: String,
-    full: Boolean,
-    value: String
+    full: Boolean
   },
   computed: {
     getStyle () {

@@ -18,27 +18,11 @@
         v-bind:search="search"
       >
       <template slot="items" slot-scope="props">
-        <td>
-          <v-edit-dialog
-            lazy
-          > {{ props.item.name }}
-            <v-text-field
-              slot="input"
-              label="Edit"
-              v-model="props.item.name"
-              single-line
-              counter
-              :rules="[max25chars]"
-            ></v-text-field>
-          </v-edit-dialog>
-        </td>
-        <td class="text-xs-right">{{ props.item.lastname}}</td>
-        <td class="text-xs-right">{{ props.item.gender}}</td>
-        <td class="text-xs-right">{{ props.item.phone}}</td>
-        <td class="text-xs-right">{{ props.item.email}}</td>
-        <td class="text-xs-right">{{ props.item.birthday}}</td>
-        <td class="text-xs-right">{{ props.item.role}}</td>
-        <td class="text-xs-right">{{ props.item.salary}}</td>
+        <td class="text-xs-left">{{ props.item.name }}</td>
+        <td class="text-xs-right">{{ props.item.email }}</td>
+        <td class="text-xs-right">{{ props.item.adress }}</td>
+        <td class="text-xs-right">{{ props.item.phone }}</td>
+        <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
         <td class="text-xs-right">
           <v-btn flat fab dark small color="grey" @click="openEditModal(props.item.id)">
             <v-icon>edit</v-icon>
@@ -70,25 +54,22 @@ export default {
         pagination: {},
         headers: [
           {
-            text: 'Имя',
+            text: 'Логин',
             align: 'left',
             sortable: false,
             value: 'name'
           },
-          { text: 'Фамилия', value: 'lastname' },
-          { text: 'Пол', value: 'gender' },
+          { text: 'Email', value: 'email' },
+          { text: 'Адрес', value: 'adress' },
           { text: 'Телефон', value: 'phone' },
-          { text: 'E-mail', value: 'email' },
-          { text: 'День рождения', value: 'birthday' },
-          { text: 'Роль', value: 'role' },
-          { text: 'Заработная плата', value: 'salary' },
+          { text: 'Статус', value: 'status' },
           { text: 'Действия', value: 'event' }
         ],
         users: []
       }
     },
     async beforeMount () {
-      const response = await UsersService.getUsers()
+      const response = await UsersService.getEmployees(this.$auth.currentUser().id)
       this.users = response.data.users
     },
     methods: {

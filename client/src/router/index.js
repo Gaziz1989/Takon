@@ -6,10 +6,19 @@ import Login from '@/components/Login'
 import Main from '@/components/Main'
 import Profile from '@/components/profilePage'
 import ProfileEdit from '@/components/profileEditPage'
-import ProjectsPage from '@/components/projectsPage'
-import AddingProjectPage from '@/components/addingProjectPage'
-import ModulesPage from '@/components/modulesPage'
+import AddPartnerPage from '@/components/addpartnerPage'
+import PartnersPage from '@/components/partnersPage'
+import AddJUserPage from '@/components/addjuserPage'
+import JUsersPage from '@/components/jusersPage'
+import UsersPage from '@/components/usersPage'
+import AddEmployeePage from '@/components/addemployeePage'
 import EmployeesPage from '@/components/employeesPage'
+import AddServicePage from '@/components/addservicePage'
+import ServicesPage from '@/components/servicesPage'
+import AddCouponPage from '@/components/addcouponPage'
+import ListOfPartnersPage from '@/components/listOfPartnersPage'
+import ListOfCouponsPage from '@/components/listOfCouponsPage'
+import CouponsPage from '@/components/couponsPage'
 import Auth from '../utils/Auth'
 
 Vue.use(Router)
@@ -37,24 +46,69 @@ export default new Router({
       component: Auth().isLoggedIn ? ProfileEdit : HelloWorld
     },
     {
-      path: '/projects',
-      name: 'ProjectsPage',
-      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? ProjectsPage : Profile
+      path: '/addpartner',
+      name: 'AddPartnerPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? AddPartnerPage : Profile
     },
     {
-      path: '/addproject',
-      name: 'AddingProjectPage',
-      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? AddingProjectPage : Profile
+      path: '/partners',
+      name: 'PartnersPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? PartnersPage : Profile
     },
     {
-      path: '/modules',
-      name: 'ModulesPage',
-      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? ModulesPage : Profile
+      path: '/addjuser',
+      name: 'AddJUserPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? AddJUserPage : Profile
+    },
+    {
+      path: '/jusers',
+      name: 'JUsersPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? JUsersPage : Profile
+    },
+    {
+      path: '/users',
+      name: 'UsersPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? UsersPage : Profile
+    },
+    {
+      path: '/addemployees',
+      name: 'AddEmployeePage',
+      component: (Auth().isLoggedIn() && Auth().currentUser().type === 'partner') || (Auth().isLoggedIn() && Auth().currentUser().type === 'juser') ? AddEmployeePage : Profile
     },
     {
       path: '/employees',
       name: 'EmployeesPage',
-      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? EmployeesPage : Profile
+      component: (Auth().isLoggedIn() && Auth().currentUser().type === 'partner') || (Auth().isLoggedIn() && Auth().currentUser().type === 'juser') ? EmployeesPage : Profile
+    },
+    {
+      path: '/services',
+      name: 'ServicesPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'partner' ? ServicesPage : Profile
+    },
+    {
+      path: '/addservices',
+      name: 'AddServicePage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'partner' ? AddServicePage : Profile
+    },
+    {
+      path: '/addcoupons',
+      name: 'AddCouponPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'partner' ? AddCouponPage : Profile
+    },
+    {
+      path: '/coupons',
+      name: 'CouponsPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'partner' ? CouponsPage : Auth().isLoggedIn() && Auth().currentUser().type === 'juser' ? CouponsPage : Profile
+    },
+    {
+      path: '/partnerslist',
+      name: 'ListOfPartnersPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'juser' ? ListOfPartnersPage : Profile
+    },
+    {
+      path: '/couponslist',
+      name: 'ListOfCouponsPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'juser' ? ListOfCouponsPage : Profile
     },
     {
       path: '/register',

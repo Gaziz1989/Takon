@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <v-app>
-      <aside-nav/>
       <page-header/>
+      <aside-nav/>
       <main>
         <v-container fluid>
           <router-view/>
@@ -44,5 +44,8 @@ a {
  .fa {
   font-size: 1.5em;
   color: grey;
+}
+.toolbar__content {
+  height: 1%!important;
 }
 </style>

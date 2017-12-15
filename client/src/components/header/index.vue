@@ -2,13 +2,13 @@
 <template>
   <v-toolbar fixed flat class="header">
       <router-link to="/">
-        <v-toolbar-title ><em>Планер</em></v-toolbar-title>
+        <v-toolbar-title></v-toolbar-title>
       </router-link>
       <v-spacer></v-spacer>
-      
-      <v-toolbar-items>
-
-      </v-toolbar-items>
+      <div class="meeting">
+        Здравствуйте, <p>{{this.$auth.currentUser().name ? this.$auth.currentUser().name : this.$auth.currentUser().email.split('@')[0]}}</p>
+        <span>онлайн</span>
+      </div>
   </v-toolbar>
 </template>
 

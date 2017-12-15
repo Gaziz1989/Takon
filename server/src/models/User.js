@@ -23,22 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       unique: true
     },
     name: DataTypes.STRING,
-    lastname: DataTypes.STRING,
-    gender: DataTypes.STRING,
     phone: DataTypes.STRING,
-    image: DataTypes.STRING,
-    birthday: DataTypes.INTEGER,
-    entry: DataTypes.INTEGER,
-    exit: DataTypes.INTEGER,
-    projects: DataTypes.TEXT,
-    role: DataTypes.STRING,
-    front: DataTypes.STRING,
-    back: DataTypes.STRING,
-    ios: DataTypes.STRING,
-    android: DataTypes.STRING,
-    trellotoken: DataTypes.STRING,
-    trelloname: DataTypes.STRING,
-    salary: DataTypes.STRING,
+    adress: DataTypes.STRING,
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -49,10 +35,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false
     },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'active'
+    },
     type: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'employee'
+      defaultValue: 'user'
     }
   }, {
     hooks: {
@@ -65,6 +56,9 @@ module.exports = (sequelize, DataTypes) => {
     return bcrypt.compareAsync(password, this.password)
   }
 
+  User.associate = function (models) {
+    User.belongsTo(models.User)
+  }
   return User
 }
 
