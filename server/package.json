@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/app.js"
+    "start": "nodemon src/app.js",
+    "seed": "node ./src/seed"
   },
   "keywords": [],
   "author": "Gaziz",
@@ -28,8 +29,8 @@
     "sqlite3": "^3.1.8"
   },
   "devDependencies": {
-    "eslint": "^4.10.0",
-    "eslint-plugin-html": "^3.2.2",
+    "eslint": "^4.13.1",
+    "eslint-plugin-html": "^4.0.1",
     "eslint-plugin-vue": "^2.1.0"
   }
 }

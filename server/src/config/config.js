@@ -1,3 +1,4 @@
+const path = require('path')
 module.exports = {
   port: process.env.PORT || 8081,
   db: {
@@ -9,7 +10,7 @@ module.exports = {
       host: process.env.HOST || 'localhost',
       charset: 'utf8',
       collate: 'utf8_general_ci',
-      storage: './takon.sqlite',
+      storage: path.resolve(__dirname, '../../tk.sqlite'),
       freezeTableName: true
     }
   },
