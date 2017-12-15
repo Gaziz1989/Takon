@@ -3,7 +3,8 @@ const { User } = require('../models')
 module.exports = {
   async getUser (req, res) {
     try {
-      await User.findById(req.body.id).then(user => {
+      await User.findById(JSON.parse(req.body.id)).then(user => {
+        user.password = ''
         res.send({
           user: user.toJSON()
         })
@@ -18,7 +19,6 @@ module.exports = {
     try {
       const _user = JSON.parse(req.body.user)
       const _password = JSON.parse(req.body.password)
-      console.log(_user)
       await User.findById(_user.id).then(user => {
         user.update({
           name: _user.name ? _user.name : user.name,
@@ -37,9 +37,15 @@ module.exports = {
             user: user.toJSON()
           })
         }).catch(error => {
-          res.status(400).send({
-            error: error
-          })
+          if (error.errors[0].validatorName === 'isEmail') {
+            res.status(400).send({
+              error: 'Введите корректный email адрес.'
+            })
+          } else {
+            res.status(400).send({
+              error: error
+            })
+          }
         })
       })
     } catch (error) {

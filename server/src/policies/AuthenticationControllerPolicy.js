@@ -8,27 +8,31 @@ module.exports = {
         new RegExp('^[a-zA-Z0-9]{8,32}$')
       )
     }
-    const { error, value } = Joi.validate(JSON.parse(req.body.user), schema)
+    const user = {
+      email: JSON.parse(req.body.user).email,
+      password: JSON.parse(req.body.user).password
+    }
+    const { error, value } = Joi.validate(user, schema)
     if (error) {
       switch (error.details[0].context.key) {
         case 'email':
           res.status(400).send({
-            error: 'You must provide a valid email address.'
+            error: 'Введите корректный email адрес.'
           })
           break
         case 'password':
           res.status(400).send({
-            error: `The password provided failed to match the following rules:
+            error: `Введенный пароль должен соответствовать следующим требованиям:
               <br/>
-              1. It must contain ONLY the following characters: lower case, upper case, numerics
+              1. Содержать символы: буквенные(в нижнем или верхнем регистре), цифры
               <br/>
-              2. It must be at least 8 characters in length and not greater than 32 characters              
+              2. Длина должна быть не менее 8 и не превышать 32 символов              
             `
           })
           break
         default:
           res.status(400).send({
-            error: 'Invalid registration information'
+            error: 'Не корректная информация'
           })
       }
     } else {

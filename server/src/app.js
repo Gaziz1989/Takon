@@ -21,7 +21,7 @@ require('./routes/serviceroutes')(app)
 require('./routes/couponroutes')(app)
 
 sequelize.sync({
-  force: false
+  alter: false
 })
   .then(() => {
     app.listen(config.port, function () {

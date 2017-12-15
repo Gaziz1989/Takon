@@ -5,11 +5,11 @@ module.exports = {
     user: process.env.DB_USER || 'takon',
     password: process.env.DB_PASS || 'takon',
     options: {
-      dialect: process.env.DIALECT || 'sqlite',
+      dialect: process.env.DIALECT || 'postgres',
       host: process.env.HOST || 'localhost',
       charset: 'utf8',
       collate: 'utf8_general_ci',
-      storage: './takon.sqlite',
+      // storage: './takon.sqlite',
       freezeTableName: true
     }
   },

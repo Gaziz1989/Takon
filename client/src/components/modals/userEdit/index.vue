@@ -2,7 +2,7 @@
 <template>
   <modal name="UserEdit" width="50%" height="60%" @before-open="beforeOpen">
     <div class="moduleWraper">
-      <h6>Профиль: {{ user.id }}</h6>
+      <h6>Профиль: {{ user.name }}</h6>
       <input-a type="text" :placeholder="user.name" title="Имя" v-model="user.name"/>
       <input-a type="text" :placeholder="user.phone" title="Телефон" v-model="user.phone"/>
       <input-a type="text" :placeholder="user.adress" title="Адрес" v-model="user.adress"/>
@@ -61,6 +61,7 @@ export default {
       async beforeOpen (event) {
         const response = await UsersService.getUser(event.params.id)
         this.user = response.data.user
+        console.log(this.user)
       },
       async editUser () {
         try {
@@ -70,8 +71,12 @@ export default {
           this.$modal.hide('UserEdit')
           window.location.reload()
         } catch (error) {
-          alert(error.response.data.error)
-          this.$modal.hide('UserEdit')
+          if (error.response.data.error === 'Введите корректный email адрес') {
+            alert(error.response.data.error)
+          } else {
+            alert(error.response.data.error)
+            this.$modal.hide('UserEdit')
+          }
         }
       },
       async archiveUser () {
