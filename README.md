@@ -1,5 +1,7 @@
 # Takon
 
+For first of all you have to install postgresql version 9.6.6
+
 Commands for starting the project: 
 
 sudo -u postgres psql
