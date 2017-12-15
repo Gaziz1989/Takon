@@ -18,12 +18,14 @@ module.exports = {
     try {
       const _user = JSON.parse(req.body.user)
       const _password = JSON.parse(req.body.password)
+      console.log(_user)
       await User.findById(_user.id).then(user => {
         user.update({
           name: _user.name ? _user.name : user.name,
           phone: _user.phone ? _user.phone : user.phone,
           email: _user.email ? _user.email : user.email,
           adress: _user.adress ? _user.adress : user.adress,
+          status: _user.status ? _user.status : user.status,
           password: _password ? _password : user.password
         }, {
           where: {
