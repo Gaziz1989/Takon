@@ -8,7 +8,7 @@ sudo -u postgres psql
 
 The above command gets you the psql command line interface in full admin mode.
 
-In the following commands, keep in mind the < angular brackets > are to denote variables you have to set yourself. In the actual command, omit the <>
+In the following commands, keep in mind the [] are to denote variables you have to set yourself. In the actual command, omit the []
 
 ## Creating user
 
