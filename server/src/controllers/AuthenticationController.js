@@ -50,6 +50,7 @@ module.exports = {
         token: jwtSignUser(user.toJSON())
       })
     } catch (err) {
+      console.log(err)
       res.status(500).send({
         error: 'Произошла какая то ошибка'
       })
