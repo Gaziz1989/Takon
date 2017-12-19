@@ -4,7 +4,7 @@ module.exports = {
   async addCoupon (req, res) {
     try {
       const data = JSON.parse(req.body.coupon)
-      data.UserId = req.body.organization_id
+      data.ownerId = req.body.organization_id
       data.endDate = new Date(data.endDate).getTime()
       const coupon = await Coupon.create(data)
       res.send({
@@ -21,18 +21,23 @@ module.exports = {
       await Coupon.findAll({
         where: {
           archived: false,
-          UserId: req.body.organization_id
+          ownerId: req.body.organization_id
         }, 
         include: [
           {
-            model: User
+            model: User,
+            as: 'owner'
           },
           {
-            model: Service
+            model: Service,
+            as: 'service'
           }
         ]
       }).then(coupons => {
+        console.log()
         const _coupons = coupons.map(function(coupon) {
+                  console.log(coupon.toJSON())
+
           return coupon.toJSON()
         })
         res.send({

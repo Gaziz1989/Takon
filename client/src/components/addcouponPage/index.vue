@@ -7,13 +7,14 @@
       <input-a type="text" title="Название" v-model="coupon.name" full/>
       <div class="fullOf">
         <p class="greyFont">Услуга/Товар</p>
-        <select v-model="coupon.ServiceId">
+        <select v-model="coupon.serviceId">
           <option value=""></option>
           <option :value="service.id" v-for="service in services">{{service.name}}</option>
         </select>
       </div>
       <input-a type="text" title="Цена" v-model="coupon.price" full/>
       <input-a type="number" title="Количество" v-model="coupon.amount" full/>
+      <input-a type="number" title="Количество услуг на купоне" v-model="coupon.amountofservices" full/>
       <div class="fullOf">
         <p class="greyFont">Действителен до</p>
         <input type="text" name="" id="" @click="openDatepicker" v-model="coupon.endDate">
@@ -51,9 +52,10 @@ export default {
       return {
         coupon: {
           name: '',
-          ServiceId: '',
+          serviceId: '',
           description: '',
           price: '',
+          amountofservices: '',
           amount: '',
           endDate: ''
         },

@@ -1,5 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
-  const Coupon = sequelize.define('Coupon', {
+  const Service = sequelize.define('Service', {
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4
+    },
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
     price: DataTypes.INTEGER,
@@ -12,14 +18,11 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'active'
-    },
-    endDate: DataTypes.INTEGER
+      defaultValue: 'inactive'
+    }
   })
-  Coupon.associate = function (models) {
-    models.Coupon.belongsTo(models.Service)
-    models.Coupon.belongsTo(models.User)
+  Service.associate = function (models) {
+    models.Service.belongsTo(models.User, { as: 'owner' })
   }
-
-  return Coupon
+  return Service
 }

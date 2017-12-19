@@ -4,7 +4,7 @@ module.exports = {
   async addService (req, res) {
     try {
       var data = JSON.parse(req.body.service)
-      data.UserId = req.body.organization_id
+      data.ownerId = req.body.organization_id
       const service = await Service.create(data)
       res.send({
         service: service.toJSON()
@@ -20,11 +20,12 @@ module.exports = {
       await Service.findAll({
         where: {
           archived: false,
-          UserId: req.body.organization_id
+          ownerId: req.body.organization_id
         },
         include: [
           {
-            model: User
+            model: User,
+            as: 'owner'
           }
         ]
       }).then(services => {

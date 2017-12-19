@@ -15,9 +15,8 @@ function hashPassword (user, options) {
       user.setDataValue('password', hash)
     })
 }
-
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  var User = sequelize.define('User', {
     id: {
       allowNull: false,
       primaryKey: true,
@@ -32,7 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     name: DataTypes.STRING,
-    phone: DataTypes.STRING,
+    phone: {
+      type: DataTypes.STRING,
+      unique: true
+    },
     adress: DataTypes.STRING,
     password: {
       type: DataTypes.STRING,
@@ -53,22 +55,20 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 'user'
-    },
-    ru: DataTypes.STRING
-  }, {
+    }
+  },
+  {
     hooks: {
       beforeCreate: hashPassword,
       beforeUpdate: hashPassword,
       beforeSave: hashPassword
     }
   })
-  User.prototype.comparePassword = function (password) {
-    return bcrypt.compareAsync(password, this.password)
-  }
-
   User.associate = function (models) {
-    User.belongsTo(models.User)
+    User.belongsTo(models.User, { as: 'employer' })
+  }
+  User.Instance.prototype.comparePassword = function (password) {
+    return bcrypt.compareAsync(password, this.password)
   }
   return User
 }
-

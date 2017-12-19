@@ -15,13 +15,15 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(cors())
 
+require('./passport')
+
 require('./routes/authroutes')(app)
 require('./routes/userroutes')(app)
 require('./routes/serviceroutes')(app)
 require('./routes/couponroutes')(app)
 
 sequelize.sync({
-  alter: false
+  force: false
 })
   .then(() => {
     app.listen(config.port, function () {

@@ -1,7 +1,7 @@
 <style src="./style.css" scoped></style>
 <template>
   <panel>
-      <h6>Профиль: {{user.id}}</h6>
+      <h6>Профиль: {{user.name ? user.name : this.$auth.currentUser().email.split('@')[0]}}</h6>
       <div class='error' v-html="error"/>
       <input-a type="text" :placeholder="user.name" title="Имя" v-model="user.name" full/>
       <input-a type="text" :placeholder="user.email" title="Email" v-model="user.email" full/>

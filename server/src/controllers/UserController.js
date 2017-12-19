@@ -4,7 +4,6 @@ module.exports = {
   async getUser (req, res) {
     try {
       await User.findById(JSON.parse(req.body.id)).then(user => {
-        user.password = ''
         res.send({
           user: user.toJSON()
         })
@@ -37,7 +36,7 @@ module.exports = {
             user: user.toJSON()
           })
         }).catch(error => {
-          if (error.errors[0].validatorName === 'isEmail') {
+          if (error.message === 'Validation error: Validation isEmail failed') {
             res.status(400).send({
               error: 'Введите корректный email адрес.'
             })
@@ -50,7 +49,7 @@ module.exports = {
       })
     } catch (error) {
       res.status(500).send({
-        error: 'Error ocured when trying to post the changes on user\'s profile'
+        error: 'Ошибка произошла при изменении профиля пользователя'
       })
     }
   },
@@ -100,30 +99,42 @@ module.exports = {
         user: user.toJSON()
       })
     } catch (error) {
-      res.status(500).send({
-        error: 'Такой email уже зарегистрирован!'
-      })
+      if (error.message === 'Validation error: Validation isEmail failed') {
+        res.status(500).send({
+          error: 'Введите корректный email адрес.'
+        })
+      } else {
+        res.status(500).send({
+          error: 'Такой email уже зарегистрирован!'
+        })
+      }
     }
   },
   async addEmployee (req, res) {
     try {
       var data = JSON.parse(req.body.user)
-      data.UserId = req.body.organization_id
+      data.employerId = req.body.organization_id
       const user = await User.create(data)
       res.send({
         user: user.toJSON()
       })
     } catch (error) {
-      res.status(500).send({
-        error: 'Такой email уже зарегистрирован!'
-      })
+      if (error.message === 'Validation error: Validation isEmail failed') {
+        res.status(500).send({
+          error: 'Введите корректный email адрес.'
+        })
+      } else {
+        res.status(500).send({
+          error: 'Такой email уже зарегистрирован!'
+        })
+      }
     }
   },
   async getEmployees (req, res) {
     try {
       const users = await User.findAll({
         where: {
-          UserId: req.body.id,
+          employerId: req.body.id,
           archived: false
         }
       }).then(users => {

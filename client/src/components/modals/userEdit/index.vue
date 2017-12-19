@@ -71,7 +71,7 @@ export default {
           this.$modal.hide('UserEdit')
           window.location.reload()
         } catch (error) {
-          if (error.response.data.error === 'Введите корректный email адрес') {
+          if (error.response.data.error === 'Введите корректный email адрес.') {
             alert(error.response.data.error)
           } else {
             alert(error.response.data.error)

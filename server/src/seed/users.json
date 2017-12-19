@@ -3,5 +3,10 @@
     "email": "test2@gmail.com",
     "password": "admin123456789",
     "type": "admin"
+  },
+  {
+    "email": "jgj_rg@mail.ru",
+    "password": "123456789",
+    "type": "partner"
   }
 ]

@@ -56,6 +56,7 @@ export default {
         })
         window.location.reload()
       } catch (error) {
+        console.log(error)
         this.error = error.response.data.error
       }
     }
