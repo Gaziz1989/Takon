@@ -25,7 +25,7 @@
         <td class="text-xs-right">{{ props.item.amountofservices }}</td>
         <td class="text-xs-right">{{ new Date(props.item.endDate).getFullYear() +'-'+ (new Date(props.item.endDate).getMonth()+1) +'-'+ new Date(props.item.endDate).getDate() }}</td>
         <td class="text-xs-right">{{ props.item.service.name }}</td>
-        <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
+        <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : props.item.status === 'inactive' ? 'Не активный' : 'Заблокирован' }}</td>
         <td class="text-xs-right">
           <v-btn flat fab dark small color="grey" @click="openEditModal(props.item.id)">
             <v-icon>edit</v-icon>
@@ -77,7 +77,6 @@ export default {
     async beforeMount () {
       const response = await CouponsService.getCoupons(this.$auth.currentUser().id)
       this.coupons = response.data.coupons
-      console.log(this.coupons)
     },
     methods: {
       openEditModal (_id) {

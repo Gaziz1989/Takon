@@ -30,7 +30,7 @@
         <p class="greyFont">Иная информация</p>
         <textarea class="fullOf" placeholder="..." v-model="coupon.description"></textarea>
       </div>
-      <v-btn @click="createCoupon" small flat>Сохранить</v-btn>
+      <v-btn @click="createCoupon" small flat :disabled="disabled">Сохранить</v-btn>
   </panel>
 </template>
 
@@ -47,7 +47,15 @@ export default {
       InputA,
       DatePicker
     },
-    computed: {},
+    computed: {
+      disabled () {
+        if (this.coupon.name.length > 0 && this.coupon.serviceId.length > 0 && this.coupon.description.length > 0 && this.coupon.price.length > 0 && this.coupon.amountofservices.length > 0 && this.coupon.amount.length > 0 && this.coupon.endDate.length > 0) {
+          return false
+        } else {
+          return true
+        }
+      }
+    },
     data () {
       return {
         coupon: {

@@ -1,17 +1,17 @@
 <style src="./style.css" scoped></style>
 <template>
-  <modal name="CouponEdit" width="50%" height="60%" @before-open="beforeOpen">
+  <modal name="CouponEdit" width="50%" height="75%" @before-open="beforeOpen">
     <div class="moduleWraper">
       <h6>Купон: {{ coupon.id }}</h6>
       <input-a type="text" title="Название" v-model="coupon.name"/>
       <div class="halfOf">
         <p class="greyFont">Услуга/Товар</p>
-        <select v-model="coupon.ServiceId">
+        <select v-model="coupon.serviceId">
           <option value=""></option>
           <option :value="service.id" v-for="service in services">{{service.name}}</option>
         </select>
       </div>
-      <input-a type="number" title="Цена" v-model="coupon.price+''"/>
+      <input-a type="number" title="Цена" v-model="coupon.price"/>
       <div class="halfOf">
         <p class="greyFont">Действителен до</p>
         <input type="text" name="" id="" @click="openDatepicker" v-model="new Date(coupon.endDate).getFullYear() +'-'+ (new Date(coupon.endDate).getMonth()+1) +'-'+ new Date(coupon.endDate).getDate()">
@@ -29,14 +29,16 @@
           <option value=""></option>
           <option value="active">Активный</option>
           <option value="inactive">Не активный</option>
+          <option value="blocked">Заблокирован</option>
         </select>
       </div>
-      <input-a type="number" title="Количество" v-model="coupon.amount+''"/>
+      <input-a type="number" title="Количество" v-model="coupon.amount"/>
+      <input-a type="number" title="Количество услуг на купоне" v-model="coupon.amountofservices" full/>
       <div class="fullOf">
         <p class="greyFont">Иная информация</p>
         <textarea class="fullOf" placeholder="..." v-model="coupon.description"></textarea>
       </div>
-      <v-btn @click="editCoupon" small flat>Сохранить</v-btn>
+      <v-btn @click="editCoupon" small flat >Сохранить</v-btn>
       <v-btn @click="archiveCoupon" small flat>Удалить</v-btn>
     </div>
   </modal>
@@ -56,9 +58,12 @@ export default {
       return {
         coupon: {
           name: '',
+          serviceId: '',
           description: '',
           price: '',
+          amountofservices: '',
           amount: '',
+          endDate: '',
           status: '',
           id: ''
         },
