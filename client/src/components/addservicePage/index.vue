@@ -11,7 +11,7 @@
         <p class="greyFont">Иная информация</p>
         <textarea class="fullOf" placeholder="..." v-model="service.description"></textarea>
       </div>
-      <v-btn @click="createService" small flat>Сохранить</v-btn>
+      <v-btn @click="createService" small flat :disabled="disabled">Сохранить</v-btn>
   </panel>
 </template>
 
@@ -25,7 +25,15 @@ export default {
       Panel,
       InputA
     },
-    computed: {},
+    computed: {
+      disabled () {
+        if (this.service.name.length > 0 && this.service.amount.length > 0 && this.service.description.length > 0 && this.service.price.length > 0) {
+          return false
+        } else {
+          return true
+        }
+      }
+    },
     data () {
       return {
         service: {

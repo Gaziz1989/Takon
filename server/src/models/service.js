@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   })
   Service.associate = function (models) {
-    models.Service.belongsTo(models.User, { as: 'owner' })
+    models.Service.belongsTo(models.User, { as: 'owner', onDelete: 'CASCADE' })
   }
   return Service
 }
