@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
     price: DataTypes.INTEGER,
+    unit: DataTypes.INTEGER,
     amount: DataTypes.INTEGER,
     archived: {
       type: DataTypes.BOOLEAN,
@@ -22,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   })
   Service.associate = function (models) {
-    models.Service.belongsTo(models.User, { as: 'owner', onDelete: 'CASCADE' })
+    models.Service.belongsTo(models.User, { as: 'owner' })
   }
   return Service
 }

@@ -5,8 +5,9 @@
       <p>Добавьте товар/услугу заполнив следующие поля.</p>
       <div class='error' v-html="error"/>
       <input-a type="text" title="Название" v-model="service.name" full/>
-      <input-a type="text" title="Единица измерения" v-model="service.amount" full/>
+      <input-a type="text" title="Единица измерения" v-model="service.unit" full/>
       <input-a type="text" title="Цена за единицу" v-model="service.price" full/>
+      <input-a type="text" title="Количество" v-model="service.amount" full/>
       <div class="fullOf">
         <p class="greyFont">Иная информация</p>
         <textarea class="fullOf" placeholder="..." v-model="service.description"></textarea>
@@ -27,7 +28,7 @@ export default {
     },
     computed: {
       disabled () {
-        if (this.service.name.length > 0 && this.service.amount.length > 0 && this.service.description.length > 0 && this.service.price.length > 0) {
+        if (this.service.name.length > 0 && this.service.description.length > 0 && this.service.price.length > 0) {
           return false
         } else {
           return true
@@ -39,6 +40,7 @@ export default {
         service: {
           name: '',
           amount: '',
+          unit: '',
           description: '',
           price: ''
         },

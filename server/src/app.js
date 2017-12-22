@@ -21,6 +21,7 @@ require('./routes/authroutes')(app)
 require('./routes/userroutes')(app)
 require('./routes/serviceroutes')(app)
 require('./routes/couponroutes')(app)
+require('./routes/transactionroutes')(app)
 
 sequelize.sync({
   force: false

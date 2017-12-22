@@ -1,4 +1,4 @@
-const { Service, User } = require('../models')
+const { Service, User, ServiceCreation } = require('../models')
 
 module.exports = {
   async addService (req, res) {
@@ -6,6 +6,14 @@ module.exports = {
       var data = JSON.parse(req.body.service)
       data.ownerId = req.body.organization_id
       const service = await Service.create(data)
+      const creationHistory = await ServiceCreation.create({
+        amount: service.amount,
+        summ: service.price * service.amount,
+        price: service.price,
+        date: new Date().getTime(),
+        whoId: req.body.organization_id,
+        serviceId: service.id
+      })
       res.send({
         service: service.toJSON()
       })      

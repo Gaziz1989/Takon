@@ -49,7 +49,6 @@ module.exports = {
         })
       }   
       res.send({
-        user: user.toJSON(),
         token: jwtSignUser(user.toJSON())
       })
     } catch (error) {
@@ -61,56 +60,104 @@ module.exports = {
   async mregister (req, res) {
     try {
       const password = await randomNumber(1000, 10000)
+      const _phone = req.body.phone.split('')
+      _phone[0] = 7
       const user = {
-        phone: req.body.phone,
+        phone: _phone.join(''),
         password: password
       }
-      await User.create(user).then(_user => {
+      await User.findOne({
+        where: {
+          phone: user.phone
+        }
+      }).then(_user => {
         if (_user) {
-          request({
-            method: 'GET',
-            uri: path + 'User/GetOwnBalance/?apiKey=' + appKey,
-            json: true
-          }, async function (_error, response, body) {
-            if (_error) {
-              res.status(400).send({
-                error: 'Произошла ошибка аутентификации'
-              })
-            } else {
-              if (body.data.balance > 50) {
-                await request({
-                  method: 'GET',
-                  uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + req.body.phone + '&text=' + password,
-                  json: true
-                }, function (_error2, response2, body2) {
-                  if (_error2) {
-                    res.status(400).send({
-                      error: 'Произошла какая то неведомая хуита'
-                    })
-                  } else {
-                    res.send({
-                      message: 'Пользователь зарегистрирован!'
-                    })
-                  }
+          _user.update({
+            password: password
+          }).then(updated => {
+            request({
+              method: 'GET',
+              uri: path + 'User/GetOwnBalance/?apiKey=' + appKey,
+              json: true
+            }, async function (_error, response, body) {
+              if (_error) {
+                res.status(400).send({
+                  error: 'Произошла ошибка аутентификации'
                 })
               } else {
-                request({
-                  method: 'GET',
-                  uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=77079048961' + '&text=' + encodeURI('Ваш баланс меньше 50тг, срочно пополните баланс Mobizon.kz'),
-                  json: true
-                }, async function (_error2, response2, body2) {
-                  if (_error2) {
-                    res.status(400).send({
-                      error: 'Произошла какая то неведомая хуита'
-                    })
-                  } else {
+                if (body.data.balance > 50) {
+                  await request({
+                    method: 'GET',
+                    uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + password,
+                    json: true
+                  }, function (_error2, response2, body2) {
+                    if (_error2) {
+                      res.status(400).send({
+                        error: 'Произошла какая то неведомая хуита'
+                      })
+                    } else {
+                      res.send({
+                        message: 'Пользователь изменен!'
+                      })
+                    }
+                  })
+                } else if (body.data.balance <= 5) {
+                  res.status(400).send({
+                    error: 'Произошла какая то неведомая хуита. Пожалуйста свяжитесь с администратором!'
+                  })
+                } else {
+                  request({
+                    method: 'GET',
+                    uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=77079048961' + '&text=' + encodeURI('Ваш баланс: ' + body.data.balance + ', срочно пополните баланс Mobizon.kz'),
+                    json: true
+                  }, async function (_error2, response2, body2) {
+                    if (_error2) {
+                      res.status(400).send({
+                        error: 'Произошла какая то неведомая хуита'
+                      })
+                    } else {
+                      await request({
+                        method: 'GET',
+                        uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + password,
+                        json: true
+                      }, function (_error3, response3, body3) {
+                        if (_error3) {
+                          res.status(400).send({
+                            error: 'Произошла какая то неведомая хуита'
+                          })
+                        } else {
+                          res.send({
+                            message: 'Пользователь изменен!'
+                          })
+                        }
+                      })
+                    }
+                  })
+                }
+              }
+            })
+          })
+        } else {
+          User.create(user).then(_user1 => {
+            if (_user1) {
+              request({
+                method: 'GET',
+                uri: path + 'User/GetOwnBalance/?apiKey=' + appKey,
+                json: true
+              }, async function (_error, response, body) {
+                if (_error) {
+                  res.status(400).send({
+                    error: 'Произошла ошибка аутентификации'
+                  })
+                } else {
+                  if (body.data.balance > 50) {
                     await request({
                       method: 'GET',
-                      uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + req.body.phone + '&text=' + password,
+                      uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + password,
                       json: true
                     }, function (_error2, response2, body2) {
                       if (_error2) {
-                            res.status(400).send({
+                        res.status(400).send({
                           error: 'Произошла какая то неведомая хуита'
                         })
                       } else {
@@ -119,20 +166,53 @@ module.exports = {
                         })
                       }
                     })
+                  } else if (body.data.balance <= 5) {
+                    res.status(400).send({
+                      error: 'Произошла какая то неведомая хуита. Пожалуйста свяжитесь с администратором!'
+                    })
+                  } else {
+                    request({
+                      method: 'GET',
+                      uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=77079048961' + '&text=' + encodeURI('Ваш баланс меньше 50тг, срочно пополните баланс Mobizon.kz'),
+                      json: true
+                    }, async function (_error2, response2, body2) {
+                      if (_error2) {
+                        res.status(400).send({
+                          error: 'Произошла какая то неведомая хуита'
+                        })
+                      } else {
+                        await request({
+                          method: 'GET',
+                          uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + password,
+                          json: true
+                        }, function (_error2, response2, body2) {
+                          if (_error2) {
+                                res.status(400).send({
+                              error: 'Произошла какая то неведомая хуита'
+                            })
+                          } else {
+                            res.send({
+                              message: 'Пользователь зарегистрирован!'
+                            })
+                          }
+                        })
+                      }
+                    })
                   }
-                })
-              }
+                }
+              })
+            } else {
+              res.status(400).send({
+                error: 'Не удалось создать пользователя'
+              })
             }
-          })
-        } else {
-          res.status(400).send({
-            error: 'Не удалось создать пользователя'
           })
         }
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
-        error: 'Этот номер уже зарегистрирован'
+        error: 'Произошла какая то неведомая хуита'
       })
     }
   },
@@ -157,7 +237,6 @@ module.exports = {
         })
       }   
       res.send({
-        user: user.toJSON(),
         token: jwtSignUser(user.toJSON())
       })      
     } catch (error) {

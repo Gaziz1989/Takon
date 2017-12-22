@@ -16,4 +16,5 @@ module.exports = (sequelize, DataTypes) => {
     models.ServiceSellHistory.belongsTo(models.User, { as: 'organization' })
     models.ServiceSellHistory.belongsTo(models.Service, { as: 'service' })
   }
+  return ServiceSellHistory
 }

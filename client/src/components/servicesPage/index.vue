@@ -61,7 +61,7 @@ export default {
           },
           { text: 'Описание', value: 'description' },
           { text: 'Цена за единицу', value: 'price' },
-          { text: 'Единица измерения', value: 'amount' },
+          { text: 'Количество', value: 'amount' },
           { text: 'Статус', value: 'status' },
           { text: 'Действия', value: 'event' }
         ],

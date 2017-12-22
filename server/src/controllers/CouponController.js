@@ -1,4 +1,4 @@
-const { Coupon, Service, User, ReleasedCoupon  } = require('../models')
+const { Coupon, Service, User, ReleasedCoupon, CouponCreation  } = require('../models')
 
 module.exports = {
   async addCoupon (req, res) {
@@ -7,6 +7,14 @@ module.exports = {
       data.ownerId = req.body.organization_id
       data.endDate = new Date(data.endDate).getTime()
       const coupon = await Coupon.create(data)
+      const creationHistory = await CouponCreation.create({
+        amount: coupon.amount,
+        summ: coupon.price * coupon.amount,
+        price: coupon.price,
+        date: new Date().getTime(),
+        whoId: req.body.organization_id,
+        couponId: coupon.id
+      })
       res.send({
         coupon: coupon.toJSON()
       })      
@@ -25,19 +33,18 @@ module.exports = {
         }, 
         include: [
           {
-            model: User,
-            as: 'owner'
-          },
-          {
             model: Service,
-            as: 'service'
+            as: 'service',
+            include: [
+              {
+                model: User,
+                as: 'owner'
+              }
+            ]
           }
         ]
       }).then(coupons => {
-        console.log()
         const _coupons = coupons.map(function(coupon) {
-                  console.log(coupon.toJSON())
-
           return coupon.toJSON()
         })
         res.send({

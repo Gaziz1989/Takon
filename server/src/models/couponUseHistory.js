@@ -17,4 +17,5 @@ module.exports = (sequelize, DataTypes) => {
     models.CouponUseHistory.belongsTo(models.User, { as: 'employee' })
     models.CouponUseHistory.belongsTo(models.Coupon, { as: 'coupon' })
   }
+  return CouponUseHistory
 }
