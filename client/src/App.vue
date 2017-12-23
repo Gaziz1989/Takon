@@ -50,10 +50,10 @@ a {
   background-color: #fff;
 }
 .application--light a {
-  color: #64ca67;
+  color: #3f51b5;
 }
 .container {
-  margin-left: 5%;
+  margin-left: 5%!important;
 }
  .fa {
   font-size: 1.5em;

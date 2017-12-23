@@ -9,7 +9,7 @@ const path = require('path')
 
 app.use(express.static(path.resolve(__dirname, '../static/')))
 
-app.use(morgan('dev'))
+app.use(morgan('prod'))
 app.use(bodyParser.urlencoded({
   extended: true
 }))

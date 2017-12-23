@@ -18,7 +18,7 @@ p {
   height: 25%;
 }
 .header {
-  background-color: #3F51B5;
+  background-color: #3F51B5!important;
   border-bottom: 1px solid #3F51B5;
 }
 .btn {
