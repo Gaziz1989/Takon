@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app>
-      <page-header/>
+      <page-header v-if="isUserLoggedIn"/>
       <aside-nav/>
       <main>
         <v-container fluid>
@@ -20,7 +20,21 @@ export default {
   components: {
     PageHeader,
     AsideNav
-  }
+  },
+  data () {
+    return {
+      isUserLoggedIn: false
+    }
+  },
+  beforeMount () {
+    var token = this.$auth.getToken()
+    if (token) {
+      this.isUserLoggedIn = true
+    } else {
+      this.isUserLoggedIn = false
+    }
+  },
+  methods: {}
 }
 </script>
 

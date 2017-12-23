@@ -15,9 +15,7 @@
 <script>
 export default {
   data () {
-    return {
-      isUserLoggedIn: false
-    }
+    return {}
   },
   methods: {
     logout () {
@@ -26,14 +24,6 @@ export default {
         name: 'Hello'
       })
       window.location.reload()
-    }
-  },
-  beforeMount () {
-    var token = this.$auth.getToken()
-    if (token) {
-      this.isUserLoggedIn = true
-    } else {
-      this.isUserLoggedIn = false
     }
   }
 }
