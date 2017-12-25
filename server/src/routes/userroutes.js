@@ -6,7 +6,7 @@ const isAuthenticated = require('../policies/isAuthenticated')
 module.exports = (app) => {
   // app.post('/getuser', UserController.getUser)
   app.post('/getuser', isAuthenticated, UserController.getUser)
-  app.post('/edituser', /*EditingControlerPolicy.editUser,*/ UserController.editUser)
+  app.post('/edituser', /* EditingControlerPolicy.editUser,*/ isAuthenticated, UserController.editUser)
   app.post('/archiveuser', isAuthenticated, UserController.archiveUser)
   app.post('/getusers', isAuthenticated, UserController.getUsers)
   app.post('/adduser', isAuthenticated, AuthenticationControllerPolicy.register, UserController.addUser)

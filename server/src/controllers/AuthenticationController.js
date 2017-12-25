@@ -7,13 +7,13 @@ const path = 'https://api.mobizon.com/service/'
 var randomNumber = require("random-number-csprng")
 
 function jwtSignUser (user) {
-  const ONE_WEEK = 60 * 60 * 24 * 7
+  const ONE_WEEK = 60 * 60 * 24 * 1000
   return jwt.sign(user, config.authentication.jwtSecret, {
     expiresIn: ONE_WEEK
   })
 }
 module.exports = {
- async register (req, res) {
+  async register (req, res) {
     try {
       const user = await User.create(JSON.parse(req.body.user))
       res.send({
@@ -187,7 +187,7 @@ module.exports = {
                           json: true
                         }, function (_error2, response2, body2) {
                           if (_error2) {
-                                res.status(400).send({
+                            res.status(400).send({
                               error: 'Произошла какая то неведомая хуита'
                             })
                           } else {
@@ -218,10 +218,12 @@ module.exports = {
   },
   async mlogin (req, res) {
     try {
-      const { phone, password } = req.body
+      const password = req.body.password
+      const _phone = req.body.phone.split('')
+      _phone[0] = 7
       const user = await User.findOne({
         where: {
-          phone: phone,
+          phone: _phone.join(''),
           archived: false
         }
       })
