@@ -1,4 +1,3 @@
-
 module.exports = {
   async getBalance (req, res) {
     try {

@@ -20,7 +20,7 @@ passport.use(
       if (!user) {
         return done(new Error(), false)
       }
-      return done(null, user)
+      return done(null, user.toJSON())
     } catch (err) {
       return done(new Error(), false)
     }

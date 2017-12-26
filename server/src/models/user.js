@@ -65,7 +65,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   })
   User.associate = function (models) {
-    User.belongsTo(models.User, { as: 'employer' })
+    models.User.belongsTo(models.User, { as: 'employer' })
   }
   User.Instance.prototype.comparePassword = function (password) {
     return bcrypt.compareAsync(password, this.password)

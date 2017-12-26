@@ -6,6 +6,7 @@ const { sequelize } = require('./models')
 const app = express()
 const config = require('./config/config')
 const path = require('path')
+require('events').EventEmitter.prototype._maxListeners = 100
 
 app.use(express.static(path.resolve(__dirname, '../static/')))
 
@@ -22,6 +23,8 @@ require('./routes/userroutes')(app)
 require('./routes/serviceroutes')(app)
 require('./routes/couponroutes')(app)
 require('./routes/transactionroutes')(app)
+require('./routes/qrroutes')(app)
+require('./routes/subscriptionroutes')(app)
 
 sequelize.sync({
   force: false

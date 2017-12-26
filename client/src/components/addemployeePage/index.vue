@@ -11,7 +11,7 @@
       <input-a type="password" title="Подтверждение пароля" v-model="checkPassword" full/>
       <input-a type="text" title="Телефон" v-model="user.phone" full/>
       <input-a type="text" title="Адрес" v-model="user.adress" full/>
-      <v-btn @click="createPartner" small flat>Сохранить</v-btn>
+      <v-btn @click="createPartner" small flat :disabled="disabled">Сохранить</v-btn>
   </panel>
 </template>
 
@@ -28,6 +28,13 @@ export default {
     computed: {
       checkPass () {
         if (this.user.password === this.checkPassword) {
+          return false
+        } else {
+          return true
+        }
+      },
+      disabled () {
+        if (this.user.name.length > 0 && this.user.phone.length > 0 && this.user.adress.length > 0 && this.user.email.length > 0 && this.user.password.length > 0) {
           return false
         } else {
           return true

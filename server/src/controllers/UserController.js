@@ -99,13 +99,18 @@ module.exports = {
         user: user.toJSON()
       })
     } catch (error) {
-      if (error.message === 'Validation error: Validation isEmail failed') {
+      console.log(error)
+      if (error.errors[0].message === 'email must be unique') {
         res.status(500).send({
-          error: 'Введите корректный email адрес.'
+          error: 'Такой email уже используется'
+        })
+      } else if (error.errors[0].message === 'phone must be unique'){
+        res.status(500).send({
+          error: 'Такой телефон уже используется'
         })
       } else {
         res.status(500).send({
-          error: 'Такой email уже зарегистрирован!'
+          error: error
         })
       }
     }
@@ -119,13 +124,18 @@ module.exports = {
         user: user.toJSON()
       })
     } catch (error) {
-      if (error.message === 'Validation error: Validation isEmail failed') {
+      console.log(error)
+      if (error.errors[0].message === 'email must be unique') {
         res.status(500).send({
-          error: 'Введите корректный email адрес.'
+          error: 'Такой email уже используется'
+        })
+      } else if (error.errors[0].message === 'phone must be unique'){
+        res.status(500).send({
+          error: 'Такой телефон уже используется'
         })
       } else {
         res.status(500).send({
-          error: 'Такой email уже зарегистрирован!'
+          error: error
         })
       }
     }

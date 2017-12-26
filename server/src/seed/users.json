@@ -8,5 +8,20 @@
     "email": "jgj_rg@mail.ru",
     "password": "123456789",
     "type": "partner"
+  },
+  {
+    "email": "takon@takon.ru",
+    "password": "123456789",
+    "type": "partner"
+  },
+  {
+    "email": "zizu@zizu.ru",
+    "password": "123456789",
+    "type": "partner"
+  },
+  {
+    "email": "pipu@pipu.ru",
+    "password": "123456789",
+    "type": "user"
   }
 ]
