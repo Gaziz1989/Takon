@@ -17,14 +17,7 @@ app.use(bodyParser.urlencoded({
 app.use(cors())
 
 require('./passport')
-
-require('./routes/authroutes')(app)
-require('./routes/userroutes')(app)
-require('./routes/serviceroutes')(app)
-require('./routes/couponroutes')(app)
-require('./routes/transactionroutes')(app)
-require('./routes/qrroutes')(app)
-require('./routes/subscriptionroutes')(app)
+require('./routes')(app)
 
 sequelize.sync({
   force: false

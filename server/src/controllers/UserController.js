@@ -99,7 +99,6 @@ module.exports = {
         user: user.toJSON()
       })
     } catch (error) {
-      console.log(error)
       if (error.errors[0].message === 'email must be unique') {
         res.status(500).send({
           error: 'Такой email уже используется'
@@ -124,7 +123,6 @@ module.exports = {
         user: user.toJSON()
       })
     } catch (error) {
-      console.log(error)
       if (error.errors[0].message === 'email must be unique') {
         res.status(500).send({
           error: 'Такой email уже используется'
@@ -153,6 +151,28 @@ module.exports = {
         })
         res.send({
           users: _users
+        })
+      })
+    } catch (error) {
+      res.status(500).send({
+        error: 'Произошла ошибка при считывании сотрудников из БД'
+      })
+    }
+  },
+  async getOrganizations (req, res) {
+    try {
+      await User.findAll({
+        where: {
+          archived: false,
+          type: 'partner'
+        }
+      }).then(_organizations => {
+        const organizations = []
+        _organizations.map(organization => {
+          organizations.push(organization.toJSON())
+        })
+        res.send({
+          organizations: organizations
         })
       })
     } catch (error) {

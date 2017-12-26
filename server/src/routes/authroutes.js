@@ -9,13 +9,10 @@ const createAccountLimiter = new RateLimit({
   skipFailedRequests: true,
   message: 'Отправлено слишком много запросов!'
 })
+
 module.exports = (app) => {
-  app.post('/register',
-    AuthenticationControllerPolicy.register,
-    AuthenticationController.register)
+  app.post('/register', AuthenticationControllerPolicy.register, AuthenticationController.register)
   app.post('/login', AuthenticationController.login)
-  app.post('/m_register', createAccountLimiter,
-    AuthenticationControllerPolicy.mregister,
-    AuthenticationController.mregister)
+  app.post('/m_register', createAccountLimiter, AuthenticationControllerPolicy.mregister, AuthenticationController.mregister)
   app.post('/m_login', AuthenticationController.mlogin)
 }

@@ -7,13 +7,11 @@ module.exports = {
         ownerId: req.user.id,
         organizationId: req.body.id
       }
-      console.log(data)
       const _subscription = await Subscribtion.create(data)
       res.send({
         message: 'Вы успешно подписаны'
       })
     } catch (error) {
-      console.log(error)
       res.status(500).send({
         error: 'Произошла ошибка'
       })
@@ -41,7 +39,6 @@ module.exports = {
         })
       })
     } catch (error) {
-      console.log(error)
       res.status(500).send({
         error: error
       })
@@ -54,13 +51,11 @@ module.exports = {
           id: req.body.id
         }
       }).then(deleted => {
-        console.log(deleted)
         res.send({
           message: 'Вы успешно отписаны'
         })
       })
     } catch (error) {
-      console.log(error)
       res.status(500).send({
         error: error
       })

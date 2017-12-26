@@ -2,26 +2,37 @@
   {
     "email": "test2@gmail.com",
     "password": "admin123456789",
-    "type": "admin"
+    "type": "admin",
+    "name": "test2"
   },
   {
     "email": "jgj_rg@mail.ru",
     "password": "123456789",
-    "type": "partner"
+    "type": "partner",
+    "name": "jgj_rg"
   },
   {
     "email": "takon@takon.ru",
     "password": "123456789",
-    "type": "partner"
+    "type": "partner",
+    "name": "takon"
   },
   {
     "email": "zizu@zizu.ru",
     "password": "123456789",
-    "type": "partner"
+    "type": "partner",
+    "name": "zizu"
   },
   {
     "email": "pipu@pipu.ru",
     "password": "123456789",
-    "type": "user"
+    "type": "user",
+    "name": "pipu"
+  },
+  {
+    "email": "jiju@jiju.ru",
+    "password": "123456789",
+    "type": "juser",
+    "name": "jiju"
   }
 ]
