@@ -13,4 +13,5 @@ module.exports = (app) => {
   app.post('/addemployee', isAuthenticated, AuthenticationControllerPolicy.register, UserController.addEmployee)
   app.post('/getemployees', isAuthenticated, UserController.getEmployees)
   app.post('/getorganizations', isAuthenticated, UserController.getOrganizations)
+  app.post('/changeimage', isAuthenticated, UserController.changeImage)
 }

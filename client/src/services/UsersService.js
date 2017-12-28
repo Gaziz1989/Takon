@@ -29,5 +29,10 @@ export default {
   getEmployees (_id) {
     const formData = `id=${_id}`
     return Api().post('getemployees', formData)
+  },
+  changeimage (image) {
+    let imageFormData = new FormData()
+    imageFormData.append('imageFile', image)
+    return Api().post('changeimage', imageFormData)
   }
 }

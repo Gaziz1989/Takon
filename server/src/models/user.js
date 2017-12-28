@@ -55,7 +55,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 'user'
-    }
+    },
+    image: DataTypes.STRING,
+    bio: DataTypes.TEXT
   },
   {
     hooks: {

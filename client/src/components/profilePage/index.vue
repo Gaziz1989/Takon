@@ -3,6 +3,24 @@
   <panel>
     <div class="mainInfo">
       <h6>Страница профиля</h6>
+        <div class='error' v-html="error"/>
+        <div v-if="!user.image" class="inputforimg">
+          <label>
+            <div>
+              <img src="../../../static/pics/defaultPic.png" alt="Profile Pic">
+              <input type="file" @change="onFileChange">
+            </div>
+          </label>
+        </div>
+        <div v-else class="inputforimg">
+          <label>
+            <div>
+              <img :src="getImage" alt="Profile Pic"/> <br/>
+              <input type="file" @change="onFileChange">
+            </div>
+          </label>
+            <v-btn v-if="filename" @click="saveImage" fab small><i class="fa fa-cloud-upload" aria-hidden="true"></i></v-btn>
+        </div>
       <info-div title="Имя" :text="user.name"/>
       <info-div title="Адрес" :text="user.adress"/>
       <info-div title="Номер телефона" :text="user.phone"/>
@@ -29,9 +47,13 @@ export default {
           phone: '',
           email: '',
           adress: '',
-          id: ''
+          id: '',
+          image: '',
+          bio: ''
         },
-        error: ''
+        error: '',
+        file: '',
+        filename: ''
       }
     },
     computed: {
@@ -40,6 +62,13 @@ export default {
           return true
         } else {
           return false
+        }
+      },
+      getImage () {
+        if (!this.filename) {
+          return `http://localhost:8081/${this.user.image}`
+        } else {
+          return this.user.image
         }
       }
     },
@@ -68,6 +97,16 @@ export default {
           this.filename = file.name
         }
         reader.readAsDataURL(file)
+      },
+      async saveImage () {
+        try {
+          const response = await UsersService.changeimage(this.file)
+          // console.log(response.data.user.image)
+          this.user.image = response.data.user.image
+          this.filename = ''
+        } catch (error) {
+          this.error = error.response.data.error
+        }
       },
       async getUser () {
         try {

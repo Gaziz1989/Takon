@@ -1,4 +1,6 @@
 const { User } = require('../models')
+const multiparty = require('multiparty')
+const fs = require('fs')
 
 module.exports = {
   async getUser (req, res) {
@@ -25,7 +27,8 @@ module.exports = {
           email: _user.email ? _user.email : user.email,
           adress: _user.adress ? _user.adress : user.adress,
           status: _user.status ? _user.status : user.status,
-          password: _password ? _password : user.password
+          password: _password ? _password : user.password,
+          bio: _user.bio ? _user.bio : user.bio
         }, {
           where: {
             id: _user.id
@@ -178,6 +181,52 @@ module.exports = {
     } catch (error) {
       res.status(500).send({
         error: 'Произошла ошибка при считывании сотрудников из БД'
+      })
+    }
+  },
+  async changeImage (req, res) {
+    try {
+      const form = new multiparty.Form()
+      await form.parse(req, function (err, fields, files) {
+        if (err) {
+          res.status(400).send({
+            error: 'Error ocured when PARSE the file'
+          })
+        } else {
+          var tempPath = files.imageFile[0].path
+          var fileName = 'user-img/' + files.imageFile[0].originalFilename
+          const copyToPath = 'static/user-img/' + files.imageFile[0].originalFilename
+          fs.readFile(tempPath, function (err, data) {
+            if (err) {
+              res.status(400).send({
+                error: 'Error ocured when READING the file'
+              })
+            } else {
+              fs.writeFile(copyToPath, data, function (err) {
+                if (err) {
+                  res.status(400).send({
+                    error: 'Error ocured when WRITING the file'
+                  })
+                } else {
+                  User.findById(req.user.id).then(user => {
+                    user.image = fileName
+                    user.save().then(() => {
+                      fs.unlink(tempPath, function () {
+                        res.send({
+                          user: user.toJSON()
+                        })
+                      })
+                    })
+                  })
+                }
+              })
+            }
+          })
+        }
+      })
+    } catch (error) {
+      res.status(500).send({
+        error: 'Произошла ошибка при записи в БД'
       })
     }
   }

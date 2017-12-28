@@ -7,6 +7,10 @@
       <input-a type="text" :placeholder="user.email" title="Email" v-model="user.email" full/>
       <input-a type="text" :placeholder="user.phone" title="Телефон" v-model="user.phone" full/>
       <input-a type="text" :placeholder="user.adress" title="Адрес" v-model="user.adress" full/>
+      <div class="fullOf">
+        <p class="greyFont">Иная информация</p>
+        <textarea class="fullOf" placeholder="..." v-model="user.bio"></textarea>
+      </div>
       <div class='error' v-if="checkPass">Пароли не совпадают</div>
       <input-a type="password" placeholder="Пароль" title="Пароль" v-model="checkPassword" full/>
       <input-a type="password" placeholder="Пароль" title="Подтвердите пароль" v-model="checkPassword2" full/>
@@ -51,7 +55,8 @@ export default {
           email: '',
           adress: '',
           id: '',
-          password: ''
+          password: '',
+          bio: ''
         },
         checkPassword: '',
         checkPassword2: '',
