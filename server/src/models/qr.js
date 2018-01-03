@@ -6,7 +6,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
-    qrstring: DataTypes.TEXT,
+    qrstring: {
+      type: DataTypes.TEXT,
+      unique: true,
+      allowNull: false
+    },
     summ: DataTypes.INTEGER,
     archived: {
       type: DataTypes.BOOLEAN,

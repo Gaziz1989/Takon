@@ -34,5 +34,9 @@ export default {
     let imageFormData = new FormData()
     imageFormData.append('imageFile', image)
     return Api().post('changeimage', imageFormData)
+  },
+  addBalance (_id, _balance) {
+    const formData = `id=${_id}&balance=${_balance}`
+    return Api().post('addbalance', formData)
   }
 }

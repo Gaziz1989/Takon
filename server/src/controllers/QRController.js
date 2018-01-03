@@ -50,7 +50,8 @@ module.exports = {
     try {
       await QR.findOne({
         where: {
-          qrstring: req.body.qrstring
+          qrstring: req.body.qrstring,
+          status: 'active'
         }
       }).then(qrcode => {
         if (!qrcode) {

@@ -14,12 +14,10 @@
       <v-btn @click="createPartner" small flat :disabled="disabled">Сохранить</v-btn>
   </panel>
 </template>
-
 <script>
   import Panel from '@/components/panel'
   import InputA from '@/components/input'
   import UsersService from '@/services/UsersService'
-  // import eventBus from '@/eventBus'
 export default {
     name: 'AddJUserPage',
     components: {

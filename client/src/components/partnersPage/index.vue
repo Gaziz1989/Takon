@@ -24,6 +24,11 @@
         <td class="text-xs-right">{{ props.item.phone }}</td>
         <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
         <td class="text-xs-right">
+          <v-btn flat fab dark small color="grey" @click="openAddBalanceModal(props.item.id)">
+            {{ props.item.balance }}
+          </v-btn>
+        </td>
+        <td class="text-xs-right">
           <v-btn flat fab dark small color="grey" @click="openEditModal(props.item.id)">
             <v-icon>edit</v-icon>
           </v-btn>
@@ -34,16 +39,19 @@
       </template>
     </v-data-table>
     <user-edit/>
+    <add-balance/>
   </v-card>
 </template>
 
 <script>
   import UsersService from '@/services/UsersService'
   import UserEdit from '@/components/modals/userEdit'
+  import AddBalance from '@/components/modals/addBalance'
 export default {
     name: 'PartnersPage',
     components: {
-      UserEdit
+      UserEdit,
+      AddBalance
     },
     computed: {},
     data () {
@@ -63,6 +71,7 @@ export default {
           { text: 'Адрес', value: 'adress' },
           { text: 'Телефон', value: 'phone' },
           { text: 'Статус', value: 'status' },
+          { text: 'Баланс', value: 'balance' },
           { text: 'Действия', value: 'event' }
         ],
         users: []
@@ -75,6 +84,9 @@ export default {
     methods: {
       openEditModal (_id) {
         this.$modal.show('UserEdit', {id: _id})
+      },
+      openAddBalanceModal (_id) {
+        this.$modal.show('AddBalance', {id: _id})
       }
     }
 }

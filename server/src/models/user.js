@@ -31,7 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     name: DataTypes.STRING,
-    balance: DataTypes.INTEGER,
+    balance: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
     phone: {
       type: DataTypes.STRING,
       unique: true

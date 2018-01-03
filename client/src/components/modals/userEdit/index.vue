@@ -61,7 +61,6 @@ export default {
       async beforeOpen (event) {
         const response = await UsersService.getUser(event.params.id)
         this.user = response.data.user
-        console.log(this.user)
       },
       async editUser () {
         try {

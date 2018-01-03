@@ -296,5 +296,26 @@ module.exports = {
         error: 'Произошла ошибка при записи в БД'
       })
     }
+  },
+  async addBalance (req, res) {
+    try {
+      await User.findOne({
+        where: {
+          id: req.body.id
+        }
+      }).then(_user => {
+        _user.update({
+          balance: req.body.balance ? _user.balance + Number(req.body.balance) : _user.balance
+        }).then(() => {
+          res.send({
+            message: 'Баланс успешно добавлен!'
+          })
+        })
+      })
+    } catch (error) {
+      res.status(500).send({
+        error: 'Произошла ошибка при добавлении баланса'
+      })
+    }
   }
 }
