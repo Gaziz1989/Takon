@@ -14,4 +14,5 @@ module.exports = (app) => {
   app.post('/getemployees', isAuthenticated, UserController.getEmployees)
   app.post('/getorganizations', isAuthenticated, UserController.getOrganizations)
   app.post('/changeimage', isAuthenticated, UserController.changeImage)
+  app.post('/sendemail', UserController.sendEmail)
 }

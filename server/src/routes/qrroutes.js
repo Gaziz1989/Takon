@@ -5,4 +5,5 @@ module.exports = (app) => {
   app.post('/qrgenerate', isAuthenticated, QRController.qrgenerate)
   app.post('/qrscan', isAuthenticated, QRController.qrScan)
   app.post('/get_qrs', isAuthenticated, QRController.getQRs)
+  app.post('/gr_archive', isAuthenticated, QRController.grArchive)
 }

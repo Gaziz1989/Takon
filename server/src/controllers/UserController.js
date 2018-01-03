@@ -1,6 +1,8 @@
-const { User } = require('../models')
+const { User, Subscribtion } = require('../models')
 const multiparty = require('multiparty')
 const fs = require('fs')
+const nodemailer = require('nodemailer');
+var randomNumber = require("random-number-csprng")
 
 module.exports = {
   async getUser (req, res) {
@@ -170,12 +172,23 @@ module.exports = {
           type: 'partner'
         }
       }).then(_organizations => {
-        const organizations = []
-        _organizations.map(organization => {
-          organizations.push(organization.toJSON())
-        })
-        res.send({
-          organizations: organizations
+        Subscribtion.findAll({
+          where: {
+            ownerId: req.user.id,
+            status: 'active'
+          }
+        }).then(_subscriptions => {
+          const organizations = []
+          _subscriptions.map((subs) => {
+            _organizations.map((org) => {
+              if (org.id == subs.organizationId) {
+                _organizations.splice(_organizations.indexOf(org), 1)
+              }
+            })
+          })
+          res.send({
+            organizations: _organizations
+          })
         })
       })
     } catch (error) {
@@ -221,6 +234,60 @@ module.exports = {
                 }
               })
             }
+          })
+        }
+      })
+    } catch (error) {
+      res.status(500).send({
+        error: 'Произошла ошибка при записи в БД'
+      })
+    }
+  },
+  async sendEmail (req, res) {
+    try {
+      const password = await randomNumber(1000, 10000)
+      await User.findOne({
+        where: {
+          email: req.body.email
+        }
+      }).then(_user => {
+        if (_user && _user.email) {
+          const transporter = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+                  user: 'gzhaiyk@gmail.com',
+                  pass: 'jgj7079048961'
+              }
+          })
+          const mailOptions = {
+            from: 'Gaziz Zhaiyk <gzhaiyk@gmail.com',
+            to:_user.email,
+            subject: 'Смена пароля Takon',
+            text: 'Ваш новый пароль: "' + password + '"'
+          }
+          transporter.sendMail(mailOptions, (_error, info) => {
+            if (_error) {
+              res.status(400).send({
+                error: _error
+              })
+            } else {
+              _user.update({
+                password: password ? password : _user.password,
+              }, {
+                where: {
+                  id: _user.id
+                },
+                individualHooks: true
+              }).then(() => {
+                res.send({
+                  message: 'Пароль отправлен на указанный email'
+                })
+              })
+            }
+          })
+        } else {
+          res.status(400).send({
+            error: 'Email не найден!'
           })
         }
       })

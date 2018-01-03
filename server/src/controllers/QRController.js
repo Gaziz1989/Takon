@@ -1,9 +1,8 @@
-const QRCode = require('qrcode')
 const randomNumber = require("random-number-csprng")
-const { QR } = require('../models')
+const { QR, User } = require('../models')
 const options = {
-  version: 3,
-  errorCorrectionLevel: 'L'
+  version: 1,
+  errorCorrectionLevel: 'H'
 }
 module.exports = {
   async getQRs (req, res) {
@@ -31,26 +30,15 @@ module.exports = {
   },
   async qrgenerate (req, res) {
     try {
-      var segs = [
-        { data: req.user.id, mode: 'byte' },
-        { data: randomNumber(10000, 100000) + '', mode: 'byte' }
-      ]
-      await QRCode.toDataURL( segs, options, (error, _qrstring) => {
-        if (error) {
-          res.status(400).send({
-            error: 'Произошла ошибка при генерации QR кода'
-          })
-        } else {
-          const qr = QR.create({
-            ownerId: req.user.id,
-            qrstring: _qrstring,
-            summ: req.body.summ,
-          }).then(created => {
-            res.send({
-              message: _qrstring
-            })
-          })
-        }
+      const _qrstring = req.user.id.toString('base64')
+      const qr = QR.create({
+        ownerId: req.user.id,
+        qrstring: _qrstring,
+        summ: req.body.summ,
+      }).then(created => {
+        res.send({
+          message: _qrstring
+        })
       })
     } catch (error) {
       res.status(500).send({
@@ -78,6 +66,38 @@ module.exports = {
             message: 'Сканирование прошло успешно'
           })
         }
+      })
+    } catch (error) {
+      res.status(500).send({
+        error: 'Произошла неведомая хуита!'
+      })
+    }
+  },
+  async grArchive (req, res) {
+    try {
+      await QR.findAll({
+        where: {
+          status: 'inactive',
+          scannerId: req.user.id
+        },
+        include: [
+        {
+          model: User,
+          as: 'scanner'
+        },
+        {
+          model: User,
+          as: 'owner'
+        }
+        ]
+      }).then(_qrs => {
+        const qrs = []
+        _qrs.map(qr => {
+          qrs.push(qr.toJSON())
+        })
+        res.send({
+          qrs: qrs
+        })
       })
     } catch (error) {
       res.status(500).send({
