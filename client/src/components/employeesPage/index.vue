@@ -23,7 +23,8 @@
         <td class="text-xs-right">{{ props.item.adress }}</td>
         <td class="text-xs-right">{{ props.item.phone }}</td>
         <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
-        <td class="text-xs-right">
+        <td class="text-xs-right" v-if="$auth.currentUser().type === 'partner'">{{ props.item.balance }}</td>
+        <td class="text-xs-right" v-else>
           <v-btn flat fab dark small color="grey" @click="openAddBalanceModal(props.item.id)">
             {{ props.item.balance }}
           </v-btn>

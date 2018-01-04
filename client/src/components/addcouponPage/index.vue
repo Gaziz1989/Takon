@@ -76,7 +76,6 @@ export default {
       const response = await ServicesService.getServices(this.$auth.currentUser().id)
       this.services = response.data.services
     },
-    mounted () {},
     methods: {
       async createCoupon () {
         try {

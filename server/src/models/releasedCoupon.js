@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.INTEGER,
     amount: DataTypes.INTEGER,
     amountofservices: DataTypes.INTEGER,
+    endDate: DataTypes.INTEGER,
     archived: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

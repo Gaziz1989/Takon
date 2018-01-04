@@ -18,7 +18,7 @@
         <v-flex xs3 v-for="coupon in coupons" :key="coupon.id">
           <v-card color="blue darken-1" class="white--text" hover>
             <v-card-title primary-title>
-              <div>Название: Купон "{{coupon.name}}" на "{{coupon.Service.name}}"</div>
+              <div>Название: "{{coupon.name}}" на "{{coupon.service.name}}"</div>
               <div>Описание: {{coupon.description}}</div>
               <div>Действителен до: {{new Date(coupon.endDate).getFullYear() + '-' + (new Date(coupon.endDate).getMonth() + 1) + '-' + new Date(coupon.endDate).getDate() }}</div>
               <div>Цена: {{coupon.price}}</div>
@@ -50,7 +50,7 @@ export default {
       }
     },
     async beforeMount () {
-      const response = await CouponsService.getCoupons(this.$route.params.id)
+      const response = await CouponsService.getCouponsForSail(this.$route.params.id)
       this.coupons = response.data.coupons
     },
     methods: {

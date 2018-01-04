@@ -7,7 +7,16 @@
       <input-a type="text" :placeholder="user.phone" title="Телефон" v-model="user.phone"/>
       <input-a type="text" :placeholder="user.adress" title="Адрес" v-model="user.adress"/>
       <input-a type="text" :placeholder="user.email" title="Email" v-model="user.email"/>
-      <div class="fullOf">
+      <input-a type="text" :placeholder="''+user.balance" title="Баланс" v-model="user.balance" v-if="$auth.currentUser().type !== 'partner'"/>
+      <div class="halfOf" v-if="$auth.currentUser().type !== 'partner'">
+        <p class="greyFont">Статус</p>
+        <select v-model="user.status">
+          <option value=""></option>
+          <option value="active">Активный</option>
+          <option value="inactive">Не активный</option>
+        </select>
+      </div>
+      <div class="fullOf" v-else>
         <p class="greyFont">Статус</p>
         <select v-model="user.status">
           <option value=""></option>
@@ -41,6 +50,7 @@ export default {
           email: '',
           password: '',
           status: '',
+          balance: '',
           id: ''
         },
         checkPassword: '',

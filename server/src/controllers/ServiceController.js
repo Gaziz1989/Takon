@@ -13,10 +13,11 @@ module.exports = {
         date: new Date().getTime(),
         whoId: req.body.organization_id,
         serviceId: service.id
+      }).then(() => {
+        res.send({
+          service: service.toJSON()
+        })
       })
-      res.send({
-        service: service.toJSON()
-      })      
     } catch (error) {
       res.status(500).send({
         error: error

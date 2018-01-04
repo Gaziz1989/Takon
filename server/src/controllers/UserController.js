@@ -1,4 +1,4 @@
-const { User, Subscribtion } = require('../models')
+const { User, Subscribtion, BalanceHistory } = require('../models')
 const multiparty = require('multiparty')
 const fs = require('fs')
 const nodemailer = require('nodemailer');
@@ -30,7 +30,8 @@ module.exports = {
           adress: _user.adress ? _user.adress : user.adress,
           status: _user.status ? _user.status : user.status,
           password: _password ? _password : user.password,
-          bio: _user.bio ? _user.bio : user.bio
+          bio: _user.bio ? _user.bio : user.bio,
+          balance: _user.balance ? _user.balance : user.balance
         }, {
           where: {
             id: _user.id
@@ -299,19 +300,33 @@ module.exports = {
   },
   async addBalance (req, res) {
     try {
-      await User.findOne({
-        where: {
-          id: req.body.id
-        }
-      }).then(_user => {
-        _user.update({
-          balance: req.body.balance ? _user.balance + Number(req.body.balance) : _user.balance
-        }).then(() => {
-          res.send({
-            message: 'Баланс успешно добавлен!'
+      if (req.user.type === 'partner') {
+        res.send({
+          message: 'Вы не можете пополнить баланс сотрудников'
+        })
+      } else {
+        await User.findOne({
+          where: {
+            id: req.body.id
+          }
+        }).then(_user => {
+          _user.update({
+            balance: req.body.balance ? _user.balance + Number(req.body.balance) : _user.balance
+          }).then(() => {
+            BalanceHistory.create({
+              date: new Date().getTime(),
+              summ: Number(req.body.balance),
+              initSumm: _user.balance - Number(req.body.balance),
+              fromId: req.user.id,
+              toId: req.body.id
+            }).then(_balance => {
+              res.send({
+                message: 'Баланс успешно добавлен!'
+              })
+            })
           })
         })
-      })
+      }
     } catch (error) {
       res.status(500).send({
         error: 'Произошла ошибка при добавлении баланса'

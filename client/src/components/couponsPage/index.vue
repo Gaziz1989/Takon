@@ -26,9 +26,14 @@
         <td class="text-xs-right">{{ new Date(props.item.endDate).getFullYear() +'-'+ (new Date(props.item.endDate).getMonth()+1) +'-'+ new Date(props.item.endDate).getDate() }}</td>
         <td class="text-xs-right">{{ props.item.service.name }}</td>
         <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : props.item.status === 'inactive' ? 'Не активный' : 'Заблокирован' }}</td>
-        <td class="text-xs-right">
+        <td class="text-xs-right" v-if="$auth.currentUser().type === 'partner'">
           <v-btn flat fab dark small color="grey" @click="openEditModal(props.item.id)">
             <v-icon>edit</v-icon>
+          </v-btn>
+        </td>
+        <td class="text-xs-right" v-else>
+          <v-btn flat fab dark small color="grey" @click="openDonutModal(props.item.id)">
+            <v-icon>donut_large</v-icon>
           </v-btn>
         </td>
       </template>
@@ -37,16 +42,19 @@
       </template>
     </v-data-table>
     <coupon-edit/>
+    <donut-coupon/>
   </v-card>
 </template>
 
 <script>
   import CouponsService from '@/services/CouponsService'
   import CouponEdit from '@/components/modals/couponEdit'
+  import DonutCoupon from '@/components/modals/donutCoupon'
 export default {
     name: 'CouponsPage',
     components: {
-      CouponEdit
+      CouponEdit,
+      DonutCoupon
     },
     computed: {},
     data () {
@@ -75,12 +83,15 @@ export default {
       }
     },
     async beforeMount () {
-      const response = await CouponsService.getCoupons(this.$auth.currentUser().id)
+      const response = this.$auth.currentUser().type === 'partner' ? await CouponsService.getCoupons(this.$auth.currentUser().id) : await CouponsService.getReleasedCoupons(this.$auth.currentUser().id)
       this.coupons = response.data.coupons
     },
     methods: {
       openEditModal (_id) {
         this.$modal.show('CouponEdit', {id: _id})
+      },
+      openDonutModal (_id) {
+        this.$modal.show('DonutCoupon', {id: _id})
       }
     }
 }

@@ -1,9 +1,9 @@
 <style src="./style.css" scoped></style>
 <template>
-  <modal name="CouponEdit" width="50%" height="75%" @before-open="beforeOpen">
+  <modal name="CouponEdit" width="50%" height="60%" @before-open="beforeOpen">
     <div class="moduleWraper">
       <h6>Купон: {{ coupon.id }}</h6>
-      <input-a type="text" title="Название" v-model="coupon.name"/>
+      <input-a type="text" title="Название" :placeholder="coupon.name" v-model="coupon.name"/>
       <div class="halfOf">
         <p class="greyFont">Услуга/Товар</p>
         <select v-model="coupon.serviceId">
@@ -11,7 +11,7 @@
           <option :value="service.id" v-for="service in services">{{service.name}}</option>
         </select>
       </div>
-      <input-a type="number" title="Цена" v-model="coupon.price"/>
+      <input-a type="number" title="Цена" :placeholder="coupon.price" v-model="coupon.price"/>
       <div class="halfOf">
         <p class="greyFont">Действителен до</p>
         <input type="text" name="" id="" @click="openDatepicker" v-model="new Date(coupon.endDate).getFullYear() +'-'+ (new Date(coupon.endDate).getMonth()+1) +'-'+ new Date(coupon.endDate).getDate()">
@@ -23,7 +23,7 @@
            v-model="coupon.endDate">
         </date-picker>
       </div>
-      <div class="halfOf">
+      <div class="fullOf">
         <p class="greyFont">Статус</p>
         <select v-model="coupon.status">
           <option value=""></option>
@@ -32,8 +32,6 @@
           <option value="blocked">Заблокирован</option>
         </select>
       </div>
-      <input-a type="number" title="Количество" v-model="coupon.amount"/>
-      <input-a type="number" title="Количество услуг на купоне" v-model="coupon.amountofservices" full/>
       <div class="fullOf">
         <p class="greyFont">Иная информация</p>
         <textarea class="fullOf" placeholder="..." v-model="coupon.description"></textarea>
@@ -71,12 +69,11 @@ export default {
         services: []
       }
     },
-    mounted () {},
-    computed: {},
     methods: {
       async beforeOpen (event) {
         const response = await CouponsService.getCoupon(event.params.id)
         this.coupon = response.data.coupon
+        console.log(this.coupon)
         const response2 = await ServicesService.getServices(this.$auth.currentUser().id)
         this.services = response2.data.services
       },

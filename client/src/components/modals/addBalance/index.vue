@@ -3,7 +3,7 @@
   <modal name="AddBalance" width="40%" height="25%" @before-open="beforeOpen">
     <div class="moduleWraper">
       <h6>Добавление баланса</h6>
-      <input-a type="text" :placeholder="'' + user.balance" title="Баланс" v-model="user.balance" full/>
+      <input-a type="text" placeholder="0" title="Баланс" v-model="user.balance" full/>
       <v-btn @click="addBalance" small flat>Сохранить</v-btn>
     </div>
   </modal>

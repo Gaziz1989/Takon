@@ -30,17 +30,20 @@ module.exports = {
   },
   async qrgenerate (req, res) {
     try {
-      const _qrstring = req.user.id.toString('base64')
-      const qr = QR.create({
+      const randomnumber = await randomNumber(999999, 999999999)
+      const _qrstring =  ((new Date().getTime() + randomnumber) + req.user.id).toString('base64')
+      const qr = await QR.create({
         ownerId: req.user.id,
         qrstring: _qrstring,
         summ: req.body.summ,
       }).then(created => {
+        
         res.send({
           message: _qrstring
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла неведомая хуита!'
       })

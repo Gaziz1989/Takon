@@ -12,7 +12,7 @@ p {
   padding: 15px 0 0 0;
 }
 .meeting > span {
-  margin-left: 20px;
+  margin: 0 15px 0 5px;
   background-color: #65bb6a;
   border-radius: 10%;
   height: 25%;

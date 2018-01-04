@@ -24,5 +24,21 @@ export default {
   archiveCoupon (_id) {
     const formData = `id=${_id}`
     return Api().post('archivecoupon', formData)
+  },
+  getReleasedCoupons (_id) {
+    const formData = `organization_id=${_id}`
+    return Api().post('getrealesedcoupons', formData)
+  },
+  getReleasedCoupon (_id) {
+    const formData = `id=${_id}`
+    return Api().post('getrealesedcoupon', formData)
+  },
+  getCouponsForSail (_id) {
+    const formData = `organization_id=${_id}`
+    return Api().post('getcouponsforsail', formData)
+  },
+  donutCoupon (_credentials, _id, oldCoupon) {
+    const formData = `coupon=${JSON.stringify(_credentials)}&organization_id=${_id}&old_coupon=${oldCoupon}`
+    return Api().post('donutcoupon', formData)
   }
 }
