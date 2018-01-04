@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({
 app.use(cors())
 
 require('./passport')
+require('./cron')
 require('./routes')(app)
 
 sequelize.sync({
