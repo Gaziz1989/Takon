@@ -5,6 +5,19 @@ const nodemailer = require('nodemailer');
 var randomNumber = require("random-number-csprng")
 
 module.exports = {
+  async getBalance (req, res) {
+    try {
+      const user = await User.findById(req.user.id)
+      delete user.password
+      res.send({
+        user: user.toJSON()
+      })
+    } catch (error) {
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
   async getUser (req, res) {
     try {
       await User.findById(JSON.parse(req.body.id)).then(user => {

@@ -16,4 +16,5 @@ module.exports = (app) => {
   app.post('/changeimage', isAuthenticated, UserController.changeImage)
   app.post('/addbalance', isAuthenticated, UserController.addBalance)
   app.post('/sendemail', UserController.sendEmail)
+  app.post('/getbalance', isAuthenticated, UserController.getBalance)
 }

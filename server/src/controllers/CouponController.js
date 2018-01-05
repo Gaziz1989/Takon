@@ -124,6 +124,15 @@ module.exports = {
           balance: _owner.balance - _releasedCoupon.amount * _releasedCoupon.price
         })
       })
+      await User.findOne({
+        where: {
+          id: _releasedCoupon.organizationId
+        }
+      }).then(org => {
+        org.update({
+          balance: org.balance + _releasedCoupon.amount * _releasedCoupon.price
+        })
+      })
       await CouponSellHistory.create({
         amount: _releasedCoupon.amount,
         date: new Date().getTime(),

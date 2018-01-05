@@ -1,5 +1,5 @@
 const randomNumber = require("random-number-csprng")
-const { QR, User } = require('../models')
+const { QR, User, BalanceHistory } = require('../models')
 const options = {
   version: 1,
   errorCorrectionLevel: 'H'
@@ -32,12 +32,21 @@ module.exports = {
     try {
       const randomnumber = await randomNumber(999999, 999999999)
       const _qrstring =  ((new Date().getTime() + randomnumber) + req.user.id).toString('base64')
+      const creator = await User.findOne({
+        where: {
+          id: req.user.id
+        }
+      })
+      if (creator.balance < req.body.summ) {
+        return res.send({
+          message: 'У Вас не достаточно баланса!'
+        })
+      }
       const qr = await QR.create({
         ownerId: req.user.id,
         qrstring: _qrstring,
         summ: req.body.summ,
       }).then(created => {
-        
         res.send({
           message: _qrstring
         })
@@ -51,27 +60,95 @@ module.exports = {
   },
   async qrScan (req, res) {
     try {
-      await QR.findOne({
+      const qrcode = await QR.findOne({
         where: {
           qrstring: req.body.qrstring,
           status: 'active'
         }
-      }).then(qrcode => {
-        if (!qrcode) {
-          res.send({
-            message: 'QR не неайден, попробуйте еще раз'
+      })
+      if (!qrcode) {
+        return res.send({
+          message: 'QR не неайден, попробуйте еще раз'
+        })
+      } else {
+        qrcode.update({
+          scannerId: req.user.id,
+          status: 'inactive'
+        })
+      }
+      await User.findOne({
+        where: {
+          id: req.user.id
+        }
+      }).then(scanner => {
+        if (scanner.type === 'employee') {
+          User.findOne({
+            where: {
+              id: scanner.employerId
+            }
+          }).then(employer => {
+            employer.update({
+              balance: employer.balance + qrcode.summ
+            }).then(() => {
+              User.findOne({
+                where: {
+                  id: qrcode.ownerId
+                }
+              }).then(qrowner => {
+                qrowner.update({
+                  balance: qrowner.balance - qrcode.summ
+                })
+              })
+            })
           })
         } else {
-          qrcode.update({
-            scannerId: req.user.id,
-            status: 'inactive'
+          scanner.update({
+            balance: scanner.balance + qrcode.summ
+          }).then(() => {
+              User.findOne({
+                where: {
+                  id: qrcode.ownerId
+                }
+              }).then(qrowner => {
+                qrowner.update({
+                  balance: qrowner.balance - qrcode.summ
+                })
+              })
+            })
+        }
+      })
+      await User.findOne({
+        where: {
+          id: req.user.id
+        }
+      }).then(_scanner => {
+        if (_scanner.type === 'employee') {
+          User.findOne({
+            where: {
+              id: req.user.id
+            }
+          }).then(org => {
+            BalanceHistory.create({
+              date: new Date().getTime(),
+              summ: qrcode.summ,
+              toId: org.id,
+              fromId: qrcode.ownerId
+            })
           })
-          res.send({
-            message: 'Сканирование прошло успешно'
+        } else {
+          BalanceHistory.create({
+            date: new Date().getTime(),
+            summ: qrcode.summ,
+            toId: _scanner.id,
+            fromId: qrcode.ownerId
           })
         }
       })
+      res.send({
+        message: 'Сканирование прошло успешно'
+      })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла неведомая хуита!'
       })

@@ -81,6 +81,7 @@ export default {
           this.$router.push({
             name: 'ListOfPartnersPage'
           })
+          window.location.reload()
         } catch (error) {
           alert(error.response.data.message)
         }
