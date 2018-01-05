@@ -1,8 +1,14 @@
-const { Coupon, ReleasedCoupon } = require('./models')
+const { Coupon, ReleasedCoupon, QR } = require('./models')
 const cron = require('node-cron');
 
 cron.schedule('0 0 * * *', async () => {
   try {
+    
+    await QR.destroy({
+      where: {
+        status: 'active'
+      }
+    })
 
     await Coupon.findAll({
       where: {

@@ -7,12 +7,12 @@ var randomNumber = require("random-number-csprng")
 module.exports = {
   async getBalanceHistory (req, res) {
     try {
-      const debet = await BalanceHistory.findOne({
+      const debet = await BalanceHistory.findAll({
         where: {
           toId: req.user.id
         }
       })
-      const credit = await BalanceHistory.findOne({
+      const credit = await BalanceHistory.findAll({
         where: {
           fromId: req.user.id
         }
