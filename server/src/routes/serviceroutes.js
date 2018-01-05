@@ -8,4 +8,5 @@ module.exports = (app) => {
   app.post('/editservice', isAuthenticated, ServiceController.editService)
   app.post('/archiveservice', isAuthenticated, ServiceController.archiveService)
   app.post('/getservsforcoupons', isAuthenticated, ServiceController.getServsForCoupons)
+  app.post('/getservsusinghistory', isAuthenticated, ServiceController.getServsUsingHistory)
 }

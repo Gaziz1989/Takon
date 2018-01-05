@@ -1,6 +1,44 @@
-const { Service, User, ServiceCreation } = require('../models')
+const { Service, User, ServiceCreation, ServiceUseHistory } = require('../models')
 
 module.exports = {
+  async getServsUsingHistory (req, res) {
+    try {
+      var _histories = await ServiceUseHistory.findAll({
+        where: {
+          ownerId: req.user.id
+        },
+        include: [
+          {
+            model: User,
+            as: 'owner'
+          },
+          {
+            model: User,
+            as: 'organization'
+          },
+          {
+            model: User,
+            as: 'employee'
+          },
+          {
+            model: Service,
+            as: 'service'
+          },
+        ]
+      })
+      _histories = _histories.map(_history => {
+        return _history.toJSON()
+      })
+      res.send({
+        histories: _histories
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
   async addService (req, res) {
     try {
       var data = JSON.parse(req.body.service)

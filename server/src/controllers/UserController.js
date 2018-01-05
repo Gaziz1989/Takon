@@ -19,7 +19,8 @@ module.exports = {
       })
       console.log(credit)
       res.send({
-        histories: debet
+        debet: debet,
+        credit: credit
       })
     } catch (error) {
       res.status(500).send({
