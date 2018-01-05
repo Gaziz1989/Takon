@@ -20,5 +20,9 @@ export default {
   archiveService (_id) {
     const formData = `id=${_id}`
     return Api().post('archiveservice', formData)
+  },
+  getServsSorSoupons (_id) {
+    const formData = `organization_id=${_id}`
+    return Api().post('getservsforcoupons', formData)
   }
 }

@@ -51,6 +51,34 @@ module.exports = {
       })
     }
   },
+  async getServsForCoupons (req, res) {
+    try {
+      await Service.findAll({
+        where: {
+          archived: false,
+          ownerId: req.body.organization_id,
+          status: 'active'
+        },
+        include: [
+          {
+            model: User,
+            as: 'owner'
+          }
+        ]
+      }).then(services => {
+        const _services = services.map(function(service) {
+          return service.toJSON()
+        })
+        res.send({
+          services: _services
+        })
+      })
+    } catch (error) {
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
   async getService (req, res) {
     try {
       await Service.findById(req.body.id).then(_service => {

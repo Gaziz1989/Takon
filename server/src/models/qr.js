@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 'active'
-    }
+    },
+    description: DataTypes.TEXT
   })
   QR.associate = function (models) {
     models.QR.belongsTo(models.User, { as: 'owner' })

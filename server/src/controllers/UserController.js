@@ -5,6 +5,28 @@ const nodemailer = require('nodemailer');
 var randomNumber = require("random-number-csprng")
 
 module.exports = {
+  async getBalanceHistory (req, res) {
+    try {
+      const debet = await BalanceHistory.findOne({
+        where: {
+          toId: req.user.id
+        }
+      })
+      const credit = await BalanceHistory.findOne({
+        where: {
+          fromId: req.user.id
+        }
+      })
+      console.log(credit)
+      res.send({
+        histories: debet
+      })
+    } catch (error) {
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
   async getBalance (req, res) {
     try {
       const user = await User.findById(req.user.id)

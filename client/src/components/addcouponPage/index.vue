@@ -73,7 +73,7 @@ export default {
       }
     },
     async beforeMount () {
-      const response = await ServicesService.getServices(this.$auth.currentUser().id)
+      const response = await ServicesService.getServsSorSoupons(this.$auth.currentUser().id)
       this.services = response.data.services
     },
     methods: {

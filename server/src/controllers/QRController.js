@@ -1,5 +1,5 @@
 const randomNumber = require("random-number-csprng")
-const { QR, User, BalanceHistory } = require('../models')
+const { QR, User, BalanceHistory, ServiceUseHistory, Service } = require('../models')
 const options = {
   version: 1,
   errorCorrectionLevel: 'H'
@@ -28,7 +28,7 @@ module.exports = {
       })
     }
   },
-  async qrgenerate (req, res) {
+  async qrGenerate (req, res) {
     try {
       const randomnumber = await randomNumber(999999, 999999999)
       const _qrstring =  ((new Date().getTime() + randomnumber) + req.user.id).toString('base64')
@@ -47,6 +47,11 @@ module.exports = {
         qrstring: _qrstring,
         summ: req.body.summ,
       }).then(created => {
+        if (req.body.ids) {
+          created.update({
+            description: req.body.ids.join(',')
+          })
+        }
         res.send({
           message: _qrstring
         })
@@ -144,6 +149,25 @@ module.exports = {
           })
         }
       })
+      if (qrcode.description.length > 0) {
+        qrcode.description.split(',').map(_service => {
+          Service.findOne({
+            where: {
+              id: _service
+            }
+          }).then(service => {
+            ServiceUseHistory.create({
+              date: new Date().getTime(),
+              price: service.price,
+              summ: qrcode.summ,
+              ownerId: qrcode.ownerId,
+              organizationId: service.ownerId,
+              employeeId: qrcode.scannerId,
+              serviceId: service.id
+            })
+          })
+        })
+      }
       res.send({
         message: 'Сканирование прошло успешно'
       })
