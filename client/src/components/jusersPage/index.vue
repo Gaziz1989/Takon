@@ -23,11 +23,11 @@
         <td class="text-xs-right">{{ props.item.phone }}</td>
         <td class="text-xs-right">{{ props.item.adress }}</td>
         <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
-        <td class="text-xs-right">
+<!--         <td class="text-xs-right">
           <v-btn flat fab dark small color="grey" @click="openAddBalanceModal(props.item.id)">
             {{ props.item.balance }}
           </v-btn>
-        </td>
+        </td> -->
         <td class="text-xs-right">
           <v-btn flat fab dark small color="grey" @click="openEditModal(props.item.id)">
             <v-icon>edit</v-icon>
@@ -46,12 +46,11 @@
 <script>
   import UsersService from '@/services/UsersService'
   import UserEdit from '@/components/modals/userEdit'
-  import AddBalance from '@/components/modals/addBalance'
+  // import AddBalance from '@/components/modals/addBalance'
 export default {
     name: 'JUsersPage',
     components: {
-      UserEdit,
-      AddBalance
+      UserEdit
     },
     computed: {},
     data () {
@@ -71,7 +70,7 @@ export default {
           { text: 'Телефон', value: 'phone' },
           { text: 'Адрес', value: 'adress' },
           { text: 'Статус', value: 'status' },
-          { text: 'Баланс', value: 'balance' },
+          // { text: 'Баланс', value: 'balance' },
           { text: 'Действия', value: 'event' }
         ],
         users: []

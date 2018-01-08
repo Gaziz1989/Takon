@@ -23,12 +23,8 @@
         <td class="text-xs-right">{{ props.item.adress }}</td>
         <td class="text-xs-right">{{ props.item.phone }}</td>
         <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
-        <td class="text-xs-right">
-          <v-btn flat fab dark small color="grey" @click="openAddBalanceModal(props.item.id)">
-            {{ props.item.balance }}
-          </v-btn>
-        </td>
-        <td class="text-xs-right">
+<!--         <td class="text-xs-right">{{ props.item.balance }}</td>
+ -->        <td class="text-xs-right">
           <v-btn flat fab dark small color="grey" @click="openEditModal(props.item.id)">
             <v-icon>edit</v-icon>
           </v-btn>
@@ -71,7 +67,7 @@ export default {
           { text: 'Адрес', value: 'adress' },
           { text: 'Телефон', value: 'phone' },
           { text: 'Статус', value: 'status' },
-          { text: 'Баланс', value: 'balance' },
+          // { text: 'Баланс', value: 'balance' },
           { text: 'Действия', value: 'event' }
         ],
         users: []

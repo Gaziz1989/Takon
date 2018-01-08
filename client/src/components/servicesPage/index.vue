@@ -21,8 +21,8 @@
         <td class="text-xs-left">{{ props.item.name }}</td>
         <td class="text-xs-right">{{ props.item.description }}</td>
         <td class="text-xs-right">{{ props.item.price }}</td>
-        <td class="text-xs-right">{{ props.item.amount }}</td>
-        <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
+<!--         <td class="text-xs-right">{{ props.item.amount }}</td>
+ -->        <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
         <td class="text-xs-right">
           <v-btn flat fab dark small color="grey" @click="openEditModal(props.item.id)">
             <v-icon>edit</v-icon>
@@ -61,7 +61,7 @@ export default {
           },
           { text: 'Описание', value: 'description' },
           { text: 'Цена за единицу', value: 'price' },
-          { text: 'Количество', value: 'amount' },
+          // { text: 'Количество', value: 'amount' },
           { text: 'Статус', value: 'status' },
           { text: 'Действия', value: 'event' }
         ],

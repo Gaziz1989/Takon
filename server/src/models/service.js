@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     price: DataTypes.INTEGER,
     unit: DataTypes.INTEGER,
-    amount: DataTypes.INTEGER,
     archived: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

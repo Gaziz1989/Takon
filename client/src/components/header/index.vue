@@ -8,23 +8,17 @@
       <div class="meeting">
         Здравствуйте, <p>{{this.$auth.currentUser().name ? this.$auth.currentUser().name : this.$auth.currentUser().email.split('@')[0]}}</p>
         <span>онлайн</span>
-        Ваш баланс: <p>{{user.balance}}</p>
       </div>
   </v-toolbar>
 </template>
 
 <script>
-import UsersService from '@/services/UsersService'
+// import UsersService from '@/services/UsersService'
 export default {
   data () {
-    return {
-      user: {}
-    }
+    return {}
   },
-  async beforeMount () {
-    const response = await UsersService.getUser(this.$auth.currentUser().id)
-    this.user = response.data.user
-  },
+  async beforeMount () {},
   methods: {
     logout () {
       this.$auth.logout()

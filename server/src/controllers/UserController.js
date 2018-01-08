@@ -1,8 +1,8 @@
 const { User, Subscribtion, BalanceHistory } = require('../models')
 const multiparty = require('multiparty')
 const fs = require('fs')
-const nodemailer = require('nodemailer');
-var randomNumber = require("random-number-csprng")
+const randomNumber = require('random-number-csprng')
+const mailsender = require('../config/mail')
 
 module.exports = {
   async getBalanceHistory (req, res) {
@@ -17,7 +17,6 @@ module.exports = {
           fromId: req.user.id
         }
       })
-      console.log(credit)
       res.send({
         debet: debet,
         credit: credit
@@ -289,38 +288,19 @@ module.exports = {
         }
       }).then(_user => {
         if (_user && _user.email) {
-          const transporter = nodemailer.createTransport({
-              service: 'gmail',
-              auth: {
-                  user: 'gzhaiyk@gmail.com',
-                  pass: 'jgj7079048961'
-              }
-          })
-          const mailOptions = {
-            from: 'Gaziz Zhaiyk <gzhaiyk@gmail.com',
-            to:_user.email,
-            subject: 'Смена пароля Takon',
-            text: 'Ваш новый пароль: "' + password + '"'
-          }
-          transporter.sendMail(mailOptions, (_error, info) => {
-            if (_error) {
-              res.status(400).send({
-                error: _error
+          mailsender(_user.email, 'Смена пароля Такон!', 'Ваш временный пароль: "' + password + '"').then(result => {
+            _user.update({
+              password: password ? password : _user.password,
+            }, {
+              where: {
+                id: _user.id
+              },
+              individualHooks: true
+            }).then(() => {
+              res.send({
+                message: 'Пароль отправлен на указанный email'
               })
-            } else {
-              _user.update({
-                password: password ? password : _user.password,
-              }, {
-                where: {
-                  id: _user.id
-                },
-                individualHooks: true
-              }).then(() => {
-                res.send({
-                  message: 'Пароль отправлен на указанный email'
-                })
-              })
-            }
+            })
           })
         } else {
           res.status(400).send({

@@ -15,7 +15,7 @@
         <ul>
           <li v-if="isUserLoggedIn && isUserAdmin">
             <router-link to="partners">
-              <span><i class="fa fa-user-secret" aria-hidden="true"> Список всех партнеров</i></span>
+              <span><i class="fa fa-user-secret" aria-hidden="true"> Список партнеров</i></span>
             </router-link>
           </li>
           <li v-if="isUserLoggedIn && isUserAdmin">
@@ -44,7 +44,7 @@
         </ul>
       </li>
 
-      <li v-if="isUserLoggedIn && isUserAdmin">
+<!--       <li v-if="isUserLoggedIn && isUserAdmin">
         <router-link to="users">
           <span><i class="fa fa-users" aria-hidden="true"></i></span>
         </router-link>
@@ -55,7 +55,7 @@
             </router-link>
           </li>
         </ul>
-      </li>
+      </li> -->
 
       <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
         <router-link to="employees">
@@ -93,7 +93,7 @@
         </ul>
       </li>
 
-      <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
+<!--       <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
         <router-link to="coupons">
           <span><i class="fa fa-tags" aria-hidden="true"></i></span>
         </router-link>
@@ -120,7 +120,7 @@
             </router-link>
           </li>
         </ul>
-      </li>
+      </li> -->
 
       <li v-if="!isUserLoggedIn">
         <router-link to="register">
