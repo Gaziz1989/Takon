@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Coupon = sequelize.define('Coupon', {
+  const ReleasedService = sequelize.define('ReleasedService', {
     id: {
       allowNull: false,
       primaryKey: true,
@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
     price: DataTypes.INTEGER,
+    unit: DataTypes.INTEGER,
     amount: DataTypes.INTEGER,
-    amountofservices: DataTypes.INTEGER,
     archived: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -19,13 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'inactive'
-    },
-    endDate: DataTypes.INTEGER
+      defaultValue: 'unapproved'
+    }
   })
-  Coupon.associate = function (models) {
-    models.Coupon.belongsTo(models.Service, { as: 'service' })
-    models.Coupon.belongsTo(models.User, { as: 'owner' })
+  ReleasedService.associate = function (models) {
+    models.ReleasedService.belongsTo(models.User, { as: 'owner' })
+    models.ReleasedService.belongsTo(models.Service, { as: 'service' })
   }
-  return Coupon
+  return ReleasedService
 }

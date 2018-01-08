@@ -27,7 +27,7 @@
       </li>
 
       <li v-if="isUserLoggedIn && isUserAdmin">
-        <router-link to="partners">
+        <router-link to="jusers">
           <span><i class="fa fa-id-card" aria-hidden="true"></i></span>
         </router-link>
         <ul>
@@ -44,7 +44,7 @@
         </ul>
       </li>
 
-<!--       <li v-if="isUserLoggedIn && isUserAdmin">
+      <li v-if="isUserLoggedIn && isUserAdmin">
         <router-link to="users">
           <span><i class="fa fa-users" aria-hidden="true"></i></span>
         </router-link>
@@ -55,7 +55,7 @@
             </router-link>
           </li>
         </ul>
-      </li> -->
+      </li>
 
       <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
         <router-link to="employees">
@@ -82,45 +82,34 @@
         <ul>
           <li v-if="isUserLoggedIn && isUserPartner">
             <router-link to="services">
-              <span><i class="fa fa-superpowers" aria-hidden="true"> Список всех услуг</i></span>
+              <span><i class="fa fa-superpowers" aria-hidden="true"> Список всех услуг/товаров</i></span>
             </router-link>
           </li>
           <li v-if="isUserLoggedIn && isUserPartner">
             <router-link to="addservices">
-              <span><i class="fa fa-superpowers" aria-hidden="true"> Добавить услугу</i></span>
+              <span><i class="fa fa-superpowers" aria-hidden="true"> Добавить услугу/товар</i></span>
             </router-link>
           </li>
         </ul>
       </li>
 
-<!--       <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
-        <router-link to="coupons">
+      <li v-if="isUserLoggedIn && isUserJUser">
+        <router-link to="services">
           <span><i class="fa fa-tags" aria-hidden="true"></i></span>
         </router-link>
         <ul>
-          <li v-if="isUserLoggedIn && isUserPartner">
-            <router-link to="coupons">
-              <span><i class="fa fa-tags" aria-hidden="true"> Список всех купонов</i></span>
-            </router-link>
-          </li>
-
-          <li v-if="isUserLoggedIn && isUserPartner">
-            <router-link to="addcoupons">
-              <span><i class="fa fa-tag" aria-hidden="true"> Добавить новый купон</i></span>
-            </router-link>
-          </li>
           <li v-if="isUserLoggedIn && isUserJUser">
-            <router-link to="coupons">
-              <span><i class="fa fa-tag" aria-hidden="true"> Список всех купонов</i></span>
+            <router-link to="services">
+              <span><i class="fa fa-tag" aria-hidden="true"> Список всех услуг/товаров</i></span>
             </router-link>
           </li>
           <li v-if="isUserLoggedIn && isUserJUser">
             <router-link to="partnerslist">
-              <span><i class="fa fa-tag" aria-hidden="true"> Купить купон</i></span>
+              <span><i class="fa fa-tag" aria-hidden="true"> Купить услугу/товар</i></span>
             </router-link>
           </li>
         </ul>
-      </li> -->
+      </li>
 
       <li v-if="!isUserLoggedIn">
         <router-link to="register">

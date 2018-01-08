@@ -7,7 +7,7 @@
   >
     <v-toolbar color="grey lighten-4" flat>
       <v-toolbar-side-icon></v-toolbar-side-icon>
-      <v-toolbar-title class="black--text">Купить купон</v-toolbar-title>
+      <v-toolbar-title class="black--text">Организации</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-container
@@ -21,7 +21,7 @@
               <div class="headline">{{organization.email}}</div>
             </v-card-title>
             <v-card-actions>
-              <v-btn flat dark @click="goToCoupons(organization.id)">Посмотреть доступные купоны</v-btn>
+              <v-btn flat dark @click="goToServices(organization.id)">Посмотреть доступные услуги</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -46,9 +46,9 @@ export default {
       this.organizations = response.data.users
     },
     methods: {
-      goToCoupons (_id) {
+      goToServices (_id) {
         this.$router.push({
-          name: 'ListOfCouponsPage',
+          name: 'ListOfServicesPage',
           params: {
             id: _id
           }

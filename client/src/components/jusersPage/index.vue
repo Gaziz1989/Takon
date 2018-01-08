@@ -39,8 +39,8 @@
       </template>
     </v-data-table>
     <user-edit/>
-    <add-balance/>
-  </v-card>
+<!--     <add-balance/>
+ -->  </v-card>
 </template>
 
 <script>

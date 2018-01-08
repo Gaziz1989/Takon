@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
   ServiceTransactionHistory.associate = function (models) {
     models.ServiceTransactionHistory.belongsTo(models.User, { as: 'from' })
     models.ServiceTransactionHistory.belongsTo(models.User, { as: 'to' })
-    models.ServiceTransactionHistory.belongsTo(models.Coupon, { as: 'coupon' })
   }
   return ServiceTransactionHistory
 }

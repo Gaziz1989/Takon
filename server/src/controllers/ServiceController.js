@@ -1,6 +1,19 @@
-const { Service, User, ServiceCreation, ServiceUseHistory } = require('../models')
+const { Service, User, ServiceCreation, ServiceUseHistory, ReleasedService, Notification } = require('../models')
 
 module.exports = {
+  async addNotification (req, res) {
+    try {
+      const released = await ReleasedService.create(JSON.parse(req.body.released))
+      res.send({
+        message: 'Заявка отправлена!'
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
   async getServsUsingHistory (req, res) {
     try {
       var _histories = await ServiceUseHistory.findAll({
@@ -44,19 +57,21 @@ module.exports = {
       var data = JSON.parse(req.body.service)
       data.ownerId = req.body.organization_id
       const service = await Service.create(data)
-      const creationHistory = await ServiceCreation.create({
-        amount: service.amount,
-        summ: service.price * service.amount,
-        price: service.price,
-        date: new Date().getTime(),
-        whoId: req.body.organization_id,
-        serviceId: service.id
-      }).then(() => {
+      // const creationHistory = await ServiceCreation.create({
+      //   amount: service.amount,
+      //   summ: service.price * service.amount,
+      //   price: service.price,
+      //   date: new Date().getTime(),
+      //   whoId: req.body.organization_id,
+      //   serviceId: service.id
+      // })
+      // .then(() => {
         res.send({
           service: service.toJSON()
         })
-      })
+      // })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: error
       })

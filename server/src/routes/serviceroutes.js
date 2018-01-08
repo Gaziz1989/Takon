@@ -9,4 +9,5 @@ module.exports = (app) => {
   app.post('/archiveservice', isAuthenticated, ServiceController.archiveService)
   app.post('/getservsforcoupons', isAuthenticated, ServiceController.getServsForCoupons)
   app.post('/getservsusinghistory', isAuthenticated, ServiceController.getServsUsingHistory)
+  app.post('/addnotification', isAuthenticated, ServiceController.addNotification)
 }

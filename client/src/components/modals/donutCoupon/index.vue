@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import CouponsService from '@/services/CouponsService'
+  import ServicesService from '@/services/ServicesService'
   import UsersService from '@/services/UsersService'
   import DatePicker from 'vue-md-date-picker'
   import InputA from '@/components/input'

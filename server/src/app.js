@@ -6,6 +6,11 @@ const { sequelize } = require('./models')
 const app = express()
 const config = require('./config/config')
 const path = require('path')
+
+const socket = require('socket.io')
+const io = socket()
+app.io = io
+
 require('events').EventEmitter.prototype._maxListeners = 100
 
 app.use(express.static(path.resolve(__dirname, '../static/')))
@@ -24,8 +29,10 @@ sequelize.sync({
   force: false
 })
   .then(() => {
-    app.listen(config.port, function () {
+    const s = app.listen(config.port, function () {
       console.log('Application worker ' + process.pid + ' started')
     })
+    io.attach(s)
+    const socketEvents = require('./socket')(io)
     console.log(`Server started at port ${config.port}`)
   })

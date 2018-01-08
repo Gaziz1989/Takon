@@ -16,9 +16,15 @@
 // import UsersService from '@/services/UsersService'
 export default {
   data () {
-    return {}
+    return {
+      notifications: []
+    }
   },
-  async beforeMount () {},
+  async beforeMount () {
+    await this.$socket.emit('getnotifications', (_notifications) => {
+      this.notifications = _notifications
+    })
+  },
   methods: {
     logout () {
       this.$auth.logout()
@@ -26,6 +32,12 @@ export default {
         name: 'Hello'
       })
       window.location.reload()
+    }
+  },
+  sockets: {
+    notificationAdded (_notifications) {
+      this.notifications = _notifications
+      console.log(this.notifications)
     }
   }
 }

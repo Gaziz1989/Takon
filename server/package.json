@@ -32,6 +32,7 @@
     "random-number-csprng": "^1.0.2",
     "request": "^2.83.0",
     "sequelize": "^3.31.1",
+    "socket.io": "^2.0.4",
     "sqlite3": "^3.1.8"
   },
   "devDependencies": {

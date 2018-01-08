@@ -6,10 +6,12 @@ import router from './router'
 import Vuetify from 'vuetify'
 import { sync } from 'vuex-router-sync'
 import VModal from 'vue-js-modal'
+import VueSocketio from 'vue-socket.io'
 import 'vuetify/dist/vuetify.min.css'
 import store from '@/store/store'
 import Auth from '@/utils/Auth'
 
+Vue.use(VueSocketio, 'http://127.0.0.1:8081/')
 Vue.config.productionTip = false
 
 Vue.use(Vuetify)

@@ -21,8 +21,13 @@ export default {
     const formData = `id=${_id}`
     return Api().post('archiveservice', formData)
   },
-  getServsSorSoupons (_id) {
+  getServsForCoupons (_id) {
     const formData = `organization_id=${_id}`
     return Api().post('getservsforcoupons', formData)
+  },
+  addNotification (_credentials, _summ) {
+    console.log(_credentials, _summ)
+    const formData = `released=${JSON.stringify(_credentials)}&summ=${_summ}`
+    return Api().post('addnotification', formData)
   }
 }

@@ -7,8 +7,8 @@
       <input-a type="text" title="Название" v-model="service.name" full/>
       <input-a type="text" title="Единица измерения" v-model="service.unit" full/>
       <input-a type="text" title="Цена за единицу" v-model="service.price" full/>
-      <input-a type="text" title="Количество" v-model="service.amount" full/>
-      <div class="fullOf">
+<!--       <input-a type="text" title="Количество" v-model="service.amount" full/>
+ -->      <div class="fullOf">
         <p class="greyFont">Иная информация</p>
         <textarea class="fullOf" placeholder="..." v-model="service.description"></textarea>
       </div>
@@ -39,7 +39,7 @@ export default {
       return {
         service: {
           name: '',
-          amount: '',
+          // amount: '',
           unit: '',
           description: '',
           price: ''
