@@ -227,19 +227,16 @@ module.exports = {
       var data = JSON.parse(req.body.service)
       data.ownerId = req.body.organization_id
       const service = await Service.create(data)
-      // const creationHistory = await ServiceCreation.create({
-      //   amount: service.amount,
-      //   summ: service.price * service.amount,
-      //   price: service.price,
-      //   date: new Date().getTime(),
-      //   whoId: req.body.organization_id,
-      //   serviceId: service.id
-      // })
-      // .then(() => {
-        res.send({
-          service: service.toJSON()
-        })
-      // })
+      console.log(service.toJSON())
+      const creationHistory = await ServiceCreation.create({
+        price: service.price,
+        date: new Date().getTime(),
+        whoId: req.body.organization_id,
+        serviceId: service.id
+      })
+      res.send({
+        service: service.toJSON()
+      })
     } catch (error) {
       console.log(error)
       res.status(500).send({

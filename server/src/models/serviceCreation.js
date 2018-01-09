@@ -6,9 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
-    amount: DataTypes.INTEGER,
-    summ: DataTypes.INTEGER,
-    price: DataTypes.INTEGER,
     date: DataTypes.INTEGER
   })
   ServiceCreation.associate = function (models) {
