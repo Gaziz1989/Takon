@@ -1,11 +1,69 @@
 const { Service, User, ServiceCreation, ServiceUseHistory, ReleasedService, Notification } = require('../models')
 
 module.exports = {
-  async addNotification (req, res) {
+  async getReleased (req, res) {
     try {
-      const released = await ReleasedService.create(JSON.parse(req.body.released))
-      res.send({
-        message: 'Заявка отправлена!'
+      await ReleasedService.findOne({
+        where: {
+          id: req.body.released_id
+        },
+        include: [
+          {
+            model: User,
+            as: 'owner'
+          },
+          {
+            model: Service,
+            as: 'service',
+            include: [
+              {
+                model: User,
+                as: 'owner'
+              }
+            ]
+          }
+        ]
+      }).then(_released => {
+        res.send({
+          released: _released.toJSON()
+        })
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
+  async getNotifications (req, res) {
+    try {
+      await ReleasedService.findAll({
+        where: {
+          status: 'unapproved'
+        },
+        include: [
+          {
+            model: User,
+            as: 'owner'
+          },
+          {
+            model: Service,
+            as: 'service',
+            include: [
+              {
+                model: User,
+                as: 'owner'
+              }
+            ]
+          }
+        ]
+      }).then(services => {
+        services = services.map((service) => {
+          return service.toJSON()
+        })
+        res.send({
+          notifications: services
+        })
       })
     } catch (error) {
       console.log(error)

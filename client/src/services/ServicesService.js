@@ -25,9 +25,11 @@ export default {
     const formData = `organization_id=${_id}`
     return Api().post('getservsforcoupons', formData)
   },
-  addNotification (_credentials, _summ) {
-    console.log(_credentials, _summ)
-    const formData = `released=${JSON.stringify(_credentials)}&summ=${_summ}`
-    return Api().post('addnotification', formData)
+  getNotifications () {
+    return Api().post('getnotifications')
+  },
+  getReleased (_id) {
+    const formData = `released_id=${_id}`
+    return Api().post('getreleased', formData)
   }
 }

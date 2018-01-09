@@ -18,7 +18,7 @@
   </modal>
 </template>
 <script>
-  import ServicesService from '@/services/ServicesService'
+  // import ServicesService from '@/services/ServicesService'
   import DatePicker from 'vue-md-date-picker'
   import InputA from '@/components/input'
 export default {
@@ -68,17 +68,11 @@ export default {
         }
       },
       async addNotification () {
-        try {
-          this.summ = this.released.amount * this.released.price
-          const response = await ServicesService.addNotification(this.released, this.summ)
-          alert(response.data.message)
-          this.$router.push({
-            name: 'ListOfPartnersPage'
-          })
-          window.location.reload()
-        } catch (error) {
-          alert(error.response.data.message)
-        }
+        await this.$socket.emit('addnotifications', (JSON.stringify(this.released)))
+        alert('Заявка подана!')
+        this.$router.push({
+          name: 'ListOfPartnersPage'
+        })
       },
       setError () {
         if (this.service.amount - this.released.amount < 0) {

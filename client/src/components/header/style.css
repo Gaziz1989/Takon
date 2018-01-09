@@ -23,5 +23,18 @@ p {
 }
 .btn {
   margin: 0;
-  padding: 0;
+}
+.notifications {
+  position: relative;
+}
+.fa-envelope {
+  color: #fff;
+  font-size: 2em;
+}
+.unread {
+  color: red;
+  position: absolute;
+  right: 25px;
+  top: 7px;
+  font-size: 1.3em;
 }

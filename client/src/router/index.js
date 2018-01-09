@@ -17,6 +17,7 @@ import AddServicePage from '@/components/addservicePage'
 import ServicesPage from '@/components/servicesPage'
 import ListOfPartnersPage from '@/components/listOfPartnersPage'
 import ListOfServicesPage from '@/components/listOfServicesPage'
+import NotificationsPage from '@/components/notificationsPage'
 import Auth from '../utils/Auth'
 
 Vue.use(Router)
@@ -69,6 +70,11 @@ export default new Router({
       component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? UsersPage : Profile
     },
     {
+      path: '/notifications',
+      name: 'NotificationsPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? NotificationsPage : Profile
+    },
+    {
       path: '/addemployees',
       name: 'AddEmployeePage',
       component: (Auth().isLoggedIn() && Auth().currentUser().type === 'partner') || (Auth().isLoggedIn() && Auth().currentUser().type === 'juser') ? AddEmployeePage : Profile
@@ -88,16 +94,6 @@ export default new Router({
       name: 'AddServicePage',
       component: Auth().isLoggedIn() && Auth().currentUser().type === 'partner' ? AddServicePage : Profile
     },
-    // {
-    //   path: '/addcoupons',
-    //   name: 'AddCouponPage',
-    //   component: Auth().isLoggedIn() && Auth().currentUser().type === 'partner' ? AddCouponPage : Profile
-    // },
-    // {
-    //   path: '/coupons',
-    //   name: 'CouponsPage',
-    //   component: Auth().isLoggedIn() && Auth().currentUser().type === 'partner' ? CouponsPage : Auth().isLoggedIn() && Auth().currentUser().type === 'juser' ? CouponsPage : Profile
-    // },
     {
       path: '/partnerslist',
       name: 'ListOfPartnersPage',

@@ -39,8 +39,7 @@
       </template>
     </v-data-table>
     <user-edit/>
-<!--     <add-balance/>
- -->  </v-card>
+  </v-card>
 </template>
 
 <script>
@@ -83,10 +82,10 @@ export default {
     methods: {
       openEditModal (_id) {
         this.$modal.show('UserEdit', {id: _id})
-      },
-      openAddBalanceModal (_id) {
-        this.$modal.show('AddBalance', {id: _id})
       }
+      // openAddBalanceModal (_id) {
+      //   this.$modal.show('AddBalance', {id: _id})
+      // }
     }
 }
 </script>

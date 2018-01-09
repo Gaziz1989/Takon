@@ -9,11 +9,17 @@
         Здравствуйте, <p>{{this.$auth.currentUser().name ? this.$auth.currentUser().name : this.$auth.currentUser().email.split('@')[0]}}</p>
         <span>онлайн</span>
       </div>
+      <div class="notifications" v-if='$auth.currentUser().type === "admin"'>
+        <v-btn @click="goToNotificationsPage" flat>
+          <i class="fa fa-envelope" aria-hidden="true"></i>        
+          <span class="unread">{{notifications.length}}</span>
+        </v-btn>
+      </div>
   </v-toolbar>
 </template>
 
 <script>
-// import UsersService from '@/services/UsersService'
+import ServicesService from '@/services/ServicesService'
 export default {
   data () {
     return {
@@ -21,23 +27,19 @@ export default {
     }
   },
   async beforeMount () {
-    await this.$socket.emit('getnotifications', (_notifications) => {
-      this.notifications = _notifications
-    })
+    const response = await ServicesService.getNotifications()
+    this.notifications = response.data.notifications
   },
   methods: {
-    logout () {
-      this.$auth.logout()
+    goToNotificationsPage () {
       this.$router.push({
-        name: 'Hello'
+        name: 'NotificationsPage'
       })
-      window.location.reload()
     }
   },
   sockets: {
-    notificationAdded (_notifications) {
-      this.notifications = _notifications
-      console.log(this.notifications)
+    notificationAdded (_notification) {
+      this.notifications.push(_notification)
     }
   }
 }
