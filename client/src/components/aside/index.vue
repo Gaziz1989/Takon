@@ -100,7 +100,7 @@
         <ul>
           <li v-if="isUserLoggedIn && isUserJUser">
             <router-link to="services">
-              <span><i class="fa fa-tag" aria-hidden="true"> Список всех услуг/товаров</i></span>
+              <span><i class="fa fa-tag" aria-hidden="true"> Список всех купленных услуг/товаров</i></span>
             </router-link>
           </li>
           <li v-if="isUserLoggedIn && isUserJUser">

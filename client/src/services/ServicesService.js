@@ -31,5 +31,17 @@ export default {
   getReleased (_id) {
     const formData = `released_id=${_id}`
     return Api().post('getreleased', formData)
+  },
+  approveNotification (_id) {
+    const formData = `released_id=${_id}`
+    return Api().post('approvenotification', formData)
+  },
+  getApproved (_id) {
+    const formData = `organization_id=${_id}`
+    return Api().post('getapproved', formData)
+  },
+  donutService (_credentials, _organization, _oldService) {
+    const formData = `released=${JSON.stringify(_credentials)}&organization_id=${_organization}&old_service=${_oldService}`
+    return Api().post('donutservice', formData)
   }
 }

@@ -21,11 +21,16 @@
         <td class="text-xs-left">{{ props.item.name }}</td>
         <td class="text-xs-right">{{ props.item.description }}</td>
         <td class="text-xs-right">{{ props.item.price }}</td>
-<!--         <td class="text-xs-right">{{ props.item.amount }}</td>
- -->        <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
-        <td class="text-xs-right">
+        <td class="text-xs-right">{{ props.item.amount }}</td>
+        <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
+        <td class="text-xs-right" v-if="$auth.currentUser().type === 'partner'">
           <v-btn flat fab dark small color="grey" @click="openEditModal(props.item.id)">
             <v-icon>edit</v-icon>
+          </v-btn>
+        </td>
+        <td class="text-xs-right" v-else>
+          <v-btn flat fab dark small color="grey" @click="openDonutModal(props.item.id)">
+            <v-icon>pan_tool</v-icon>
           </v-btn>
         </td>
       </template>
@@ -34,16 +39,19 @@
       </template>
     </v-data-table>
     <service-edit/>
+    <donut-service/>
   </v-card>
 </template>
 
 <script>
   import ServicesService from '@/services/ServicesService'
   import ServiceEdit from '@/components/modals/serviceEdit'
+  import DonutService from '@/components/modals/donutService'
 export default {
     name: 'ServicesPage',
     components: {
-      ServiceEdit
+      ServiceEdit,
+      DonutService
     },
     computed: {},
     data () {
@@ -61,7 +69,7 @@ export default {
           },
           { text: 'Описание', value: 'description' },
           { text: 'Цена за единицу', value: 'price' },
-          // { text: 'Количество', value: 'amount' },
+          { text: 'Количество', value: 'amount' },
           { text: 'Статус', value: 'status' },
           { text: 'Действия', value: 'event' }
         ],
@@ -69,12 +77,20 @@ export default {
       }
     },
     async beforeMount () {
-      const response = await ServicesService.getServices(this.$auth.currentUser().id)
-      this.services = response.data.services
+      if (this.$auth.currentUser().type === 'partner') {
+        const response = await ServicesService.getServices(this.$auth.currentUser().id)
+        this.services = response.data.services
+      } else {
+        const response = await ServicesService.getApproved(this.$auth.currentUser().id)
+        this.services = response.data.services
+      }
     },
     methods: {
       openEditModal (_id) {
         this.$modal.show('ServiceEdit', {id: _id})
+      },
+      openDonutModal (_id) {
+        this.$modal.show('DonutService', {id: _id})
       }
     }
 }

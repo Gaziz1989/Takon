@@ -11,4 +11,7 @@ module.exports = (app) => {
   app.post('/getservsusinghistory', isAuthenticated, ServiceController.getServsUsingHistory)
   app.post('/getnotifications', isAuthenticated, ServiceController.getNotifications)
   app.post('/getreleased', isAuthenticated, ServiceController.getReleased)
+  app.post('/approvenotification', isAuthenticated, ServiceController.approveNotification)
+  app.post('/getapproved', isAuthenticated, ServiceController.getApproved)
+  app.post('/donutservice', isAuthenticated, ServiceController.donutService)
 }

@@ -1,6 +1,118 @@
-const { Service, User, ServiceCreation, ServiceUseHistory, ReleasedService, Notification } = require('../models')
+const { Service, User, ReleasedService, ServiceCreation, ServiceUseHistory, ServiceSellHistory, ServiceTransactionHistory } = require('../models')
 
 module.exports = {
+  async donutService (req, res) {
+    try {
+      const old = await ReleasedService.findById(req.body.old_service)
+      if (old.amount === 0) {
+        return res.status(400).send({
+          error: 'Не достаточное количество'
+        })
+      }
+      const donuted = await ReleasedService.create(JSON.parse(req.body.released))
+      await old.update({
+        amount: old.amount - donuted.amount
+      })
+      await old.update({
+        status: old.amount === 0 ? 'inactive' : old.status,
+        archived: old.amount === 0 ? true : old.archived
+      })
+      const history = await ServiceTransactionHistory.create({
+        amount: donuted.amount,
+        summ: donuted.price * donuted.amount,
+        date: new Date().getTime(),
+        price: donuted.price,
+        fromId: req.body.organization_id,
+        instance_serviceId: donuted.serviceId,
+        toId: donuted.ownerId,
+        transfered_serviceId: old.id
+      })
+      res.send({
+        message: 'Услуга успешно передана'
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
+  async getApproved (req, res) {
+    try {
+      await ReleasedService.findAll({
+        where: {
+          ownerId: req.body.organization_id,
+          status: 'active',
+          amount: {
+            $gt: 0
+          }
+        },
+        include: [
+          {
+            model: User,
+            as: 'owner'
+          }
+        ]
+      }).then(_services => {
+        _services = _services.map(_service => {
+          return _service.toJSON()
+        })
+        res.send({
+          services: _services
+        })
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
+  async approveNotification (req, res) {
+    try {
+      const released = await ReleasedService.findOne({
+        where: {
+          id: req.body.released_id
+        },
+        include: [
+          {
+            model: User,
+            as: 'owner'
+          },
+          {
+            model: Service,
+            as: 'service',
+            include: [
+              {
+                model: User,
+                as: 'owner'
+              }
+            ]
+          }
+        ]
+      })
+      released.update({
+        status: 'active'
+      })
+      const sellHistory = await ServiceSellHistory.create({
+        amount: released.amount,
+        date: new Date().getTime(),
+        price: released.price,
+        summ: released.price * released.amount,
+        ownerId: released.ownerId,
+        organizationId: released.service.ownerId,
+        serviceId: released.serviceId
+      })
+      res.send({
+        message: 'Заявка подтверждена успешно!'
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
   async getReleased (req, res) {
     try {
       await ReleasedService.findOne({

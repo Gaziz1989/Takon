@@ -12,13 +12,14 @@ h6 {
   border-bottom: 1px solid beige;
   margin-bottom: 0px;
 }
-select {
-  width: 46%;
-  border: 1px solid beige;
+span {
+  display: inline-block;
+  width: 100%;
 }
 .fullOf{
   text-align: left;
   display: inline-block;
+  position: relative;
   margin: 0;
   padding: 2% 0 0 1.5%;
   width: 100%;
