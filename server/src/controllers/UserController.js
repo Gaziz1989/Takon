@@ -13,6 +13,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: error
       })
@@ -31,7 +32,8 @@ module.exports = {
           status: _user.status ? _user.status : user.status,
           password: _password ? _password : user.password,
           bio: _user.bio ? _user.bio : user.bio,
-          balance: _user.balance ? _user.balance : user.balance
+          balance: _user.balance ? _user.balance : user.balance,
+          employerId: _user.employerId ? _user.employerId : user.employerId
         }, {
           where: {
             id: _user.id
@@ -54,6 +56,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Ошибка произошла при изменении профиля пользователя'
       })
@@ -65,7 +68,13 @@ module.exports = {
         where: {
           archived: false,
           type: JSON.parse(req.body.type)
-        }
+        },
+        include: [
+          {
+            model: User,
+            as: 'employer'
+          }
+        ]
       }).then(users => {
         const _users = []
         users.map(function(user){
@@ -76,6 +85,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Error ocured when trying to read users in DB'
       })
@@ -93,6 +103,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Ошибка произошла при попытке архивации пользователя в БД'
       })
@@ -105,6 +116,7 @@ module.exports = {
         user: user.toJSON()
       })
     } catch (error) {
+      console.log(error)
       if (error.errors[0].message === 'email must be unique') {
         res.status(500).send({
           error: 'Такой email уже используется'
@@ -129,6 +141,7 @@ module.exports = {
         user: user.toJSON()
       })
     } catch (error) {
+      console.log(error)
       if (error.errors[0].message === 'email must be unique') {
         res.status(500).send({
           error: 'Такой email уже используется'
@@ -160,6 +173,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла ошибка при считывании сотрудников из БД'
       })
@@ -193,6 +207,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла ошибка при считывании сотрудников из БД'
       })
@@ -239,6 +254,7 @@ module.exports = {
         }
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла ошибка при записи в БД'
       })
@@ -274,6 +290,7 @@ module.exports = {
         }
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла ошибка при записи в БД'
       })
@@ -309,6 +326,7 @@ module.exports = {
         })
       }
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла ошибка при добавлении баланса'
       })

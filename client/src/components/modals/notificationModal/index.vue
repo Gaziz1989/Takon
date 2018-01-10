@@ -85,7 +85,7 @@ export default {
     methods: {
       async beforeOpen (event) {
         try {
-          const response = await ServicesService.getReleased(event.params.id)
+          const response = await ServicesService.getNotification(event.params.id)
           this.notification = response.data.released
         } catch (error) {
           this.error = error.response.data.error
@@ -95,7 +95,7 @@ export default {
         try {
           const answer = confirm('Нажмите OK для продолжения или Cancel для выхода.')
           if (answer) {
-            const response = await ServicesService.approveNotification(this.notification.id)
+            const response = await ServicesService.approveNotification(this.notification)
             alert(response.data.message)
             window.location.reload()
           } else {

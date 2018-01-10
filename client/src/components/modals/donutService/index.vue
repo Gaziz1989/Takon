@@ -2,7 +2,7 @@
 <template>
   <modal name="DonutService" width="50%" height="80%" @before-open="beforeOpen">
     <div class="moduleWraper">
-      <h6>Купон: {{ service.id }}</h6>
+      <h6>Сервис: {{ service.id }}</h6>
       <div class='error' v-html="error"/>
       <div class="fullOf">
         <p class="greyFont">Название</p>

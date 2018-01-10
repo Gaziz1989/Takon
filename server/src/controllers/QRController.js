@@ -23,6 +23,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла неведомая хуита!'
       })
@@ -88,7 +89,12 @@ module.exports = {
       })
       await ServiceUseHistory.create({
         date: new Date().getTime(),
-        
+        price: takon.price,
+        amount: takon.amount,
+        ownerId: takon.ownerId,
+        scanerId: req.user.id,
+        serviceId: takon.serviceId,
+        takonId: takon.id
       })
       res.send({
         message: 'Сканирование прошло успешно'
@@ -127,6 +133,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла неведомая хуита!'
       })

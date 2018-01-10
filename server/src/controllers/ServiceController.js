@@ -1,4 +1,4 @@
-const { Service, User, ReleasedService, ServiceCreation, ServiceUseHistory, ServiceSellHistory, ServiceTransactionHistory } = require('../models')
+const { Notification, Service, User, ReleasedService, ServiceCreation, ServiceUseHistory, ServiceSellHistory, ServiceTransactionHistory } = require('../models')
 
 module.exports = {
   async getTakons (req, res) {
@@ -41,20 +41,29 @@ module.exports = {
   },
   async donutService (req, res) {
     try {
+      const data = JSON.parse(req.body.released)
       const old = await ReleasedService.findById(req.body.old_service)
       if (old.amount === 0) {
         return res.status(400).send({
           error: 'Не достаточное количество'
         })
       }
-      const donuted = await ReleasedService.create(JSON.parse(req.body.released))
       await old.update({
-        amount: old.amount - donuted.amount
+        amount: Number(old.amount) - Number(data.amount)
       })
-      await old.update({
-        status: old.amount === 0 ? 'inactive' : old.status,
-        archived: old.amount === 0 ? true : old.archived
+      let donuted = await ReleasedService.findOne({
+        where: {
+          ownerId: data.ownerId,
+          serviceId: data.serviceId
+        }
       })
+      if (donuted) {
+        await donuted.update({
+          amount: donuted.amount + Number(data.amount)
+        })
+      } else {
+        donuted = await ReleasedService.create(data)
+      }
       const history = await ServiceTransactionHistory.create({
         amount: donuted.amount,
         summ: donuted.price * donuted.amount,
@@ -108,9 +117,11 @@ module.exports = {
   },
   async approveNotification (req, res) {
     try {
+      const data = await JSON.parse(req.body.notification)
+      data.status = 'active'
       const released = await ReleasedService.findOne({
         where: {
-          id: req.body.released_id
+          serviceId: data.serviceId
         },
         include: [
           {
@@ -129,20 +140,101 @@ module.exports = {
           }
         ]
       })
-      released.update({
-        status: 'active'
+      if (released) {
+        await released.update({
+          amount: released.amount + data.amount
+        })
+        const sellHistory = await ServiceSellHistory.create({
+          amount: released.amount,
+          date: new Date().getTime(),
+          price: released.price,
+          summ: released.price * released.amount,
+          ownerId: released.ownerId,
+          organizationId: released.service.ownerId,
+          serviceId: released.serviceId
+        })
+        await Notification.findOne({
+          where: {
+            id: data.id
+          }
+        }).then(note => {
+          note.update({
+            archived: true,
+            status:'inactive'
+          })
+        })
+        res.send({
+          message: 'Заявка подтверждена успешно!'
+        })
+      } else {
+        const _released = await ReleasedService.create(data)
+        const released = await ReleasedService.findOne({
+          where: {
+            id: _released.id
+          },
+          include: [
+            {
+              model: Service,
+              as: 'service'
+            }
+          ]
+        })
+        const sellHistory = await ServiceSellHistory.create({
+          amount: released.amount,
+          date: new Date().getTime(),
+          price: released.price,
+          summ: released.price * released.amount,
+          ownerId: released.ownerId,
+          organizationId: released.service.ownerId,
+          serviceId: released.serviceId
+        })
+        await Notification.findOne({
+          where: {
+            id: data.id
+          }
+        }).then(note => {
+          note.update({
+            archived: true,
+            status:'inactive'
+          })
+        })
+        res.send({
+          message: 'Заявка подтверждена успешно!'
+        })
+      }
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
       })
-      const sellHistory = await ServiceSellHistory.create({
-        amount: released.amount,
-        date: new Date().getTime(),
-        price: released.price,
-        summ: released.price * released.amount,
-        ownerId: released.ownerId,
-        organizationId: released.service.ownerId,
-        serviceId: released.serviceId
-      })
-      res.send({
-        message: 'Заявка подтверждена успешно!'
+    }
+  },
+  async getNotification (req, res) {
+    try {
+      await Notification.findOne({
+        where: {
+          id: req.body.notification_id
+        },
+        include: [
+          {
+            model: User,
+            as: 'owner'
+          },
+          {
+            model: Service,
+            as: 'service',
+            include: [
+              {
+                model: User,
+                as: 'owner'
+              }
+            ]
+          }
+        ]
+      }).then(_released => {
+        res.send({
+          released: _released.toJSON()
+        })
       })
     } catch (error) {
       console.log(error)
@@ -187,7 +279,7 @@ module.exports = {
   },
   async getNotifications (req, res) {
     try {
-      await ReleasedService.findAll({
+      await Notification.findAll({
         where: {
           status: 'unapproved'
         },
@@ -207,12 +299,12 @@ module.exports = {
             ]
           }
         ]
-      }).then(services => {
-        services = services.map((service) => {
-          return service.toJSON()
+      }).then(notifications => {
+        notifications = notifications.map((notification) => {
+          return notification.toJSON()
         })
         res.send({
-          notifications: services
+          notifications: notifications
         })
       })
     } catch (error) {
@@ -304,6 +396,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: error
       })
@@ -332,6 +425,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: error
       })
@@ -345,6 +439,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: error
       })
@@ -360,6 +455,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: error
       })
@@ -377,6 +473,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: error
       })

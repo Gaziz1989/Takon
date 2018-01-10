@@ -20,6 +20,7 @@ module.exports = {
         user: user.toJSON()
       })
     } catch (error) {
+      console.log(error)
       res.status(400).send({
         error: 'Этот е-мэйл уже используется'
       })
@@ -52,6 +53,7 @@ module.exports = {
         token: jwtSignUser(user.toJSON())
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла какая то ошибка'
       })
@@ -210,6 +212,7 @@ module.exports = {
         }
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла какая то неведомая хуита'
       })
@@ -241,6 +244,7 @@ module.exports = {
         token: jwtSignUser(user.toJSON())
       })      
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла какая то ошибка'
       })

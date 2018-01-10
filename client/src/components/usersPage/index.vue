@@ -22,11 +22,7 @@
         <td class="text-xs-right">{{ props.item.email }}</td>
         <td class="text-xs-right">{{ props.item.phone }}</td>
         <td class="text-xs-right">{{ props.item.adress }}</td>
-<!--         <td class="text-xs-right">
-          <v-btn flat fab dark small color="grey" @click="openAddBalanceModal(props.item.id)">
-            {{ props.item.balance }}
-          </v-btn>
-        </td> -->
+        <td class="text-xs-right">{{ props.item.employer ? props.item.employer.name : '/-/-/-/-/-/' }}</td>
         <td class="text-xs-right">
           <v-btn flat fab dark small color="grey" @click="openEditModal(props.item.id)">
             <v-icon>edit</v-icon>
@@ -69,7 +65,7 @@ export default {
           { text: 'Email', value: 'email' },
           { text: 'Телефон', value: 'phone' },
           { text: 'Адрес', value: 'adress' },
-          // { text: 'Баланс', value: 'balance' },
+          { text: 'Организация', value: 'employerId' },
           { text: 'Действия', value: 'event' }
         ],
         users: []
@@ -82,9 +78,6 @@ export default {
     methods: {
       openEditModal (_id) {
         this.$modal.show('UserEdit', {id: _id})
-      },
-      openAddBalanceModal (_id) {
-        this.$modal.show('AddBalance', {id: _id})
       }
     }
 }

@@ -7,7 +7,6 @@
       <input-a type="text" :placeholder="user.phone" title="Телефон" v-model="user.phone"/>
       <input-a type="text" :placeholder="user.adress" title="Адрес" v-model="user.adress"/>
       <input-a type="text" :placeholder="user.email" title="Email" v-model="user.email"/>
-      <input-a type="text" :placeholder="''+user.balance" title="Баланс" v-model="user.balance" v-if="$auth.currentUser().type !== 'partner'"/>
       <div class="halfOf" v-if="$auth.currentUser().type !== 'partner'">
         <p class="greyFont">Статус</p>
         <select v-model="user.status">
@@ -22,6 +21,13 @@
           <option value=""></option>
           <option value="active">Активный</option>
           <option value="inactive">Не активный</option>
+        </select>
+      </div>
+      <div class="halfOf" v-if="$auth.currentUser().type == 'admin'">
+        <p class="greyFont">Юр.пользователь</p>
+        <select v-model="user.employerId">
+          <option value=""></option>
+          <option v-for="juser in jusers" :value="juser.id">{{juser.name ? juser.name : juser.email}}</option>
         </select>
       </div>
       <div class='error' v-if="checkPass">Пароли не совпадают</div>
@@ -51,8 +57,10 @@ export default {
           password: '',
           status: '',
           balance: '',
+          employerId: '',
           id: ''
         },
+        jusers: [],
         checkPassword: '',
         checkPassword2: ''
       }
@@ -71,6 +79,8 @@ export default {
       async beforeOpen (event) {
         const response = await UsersService.getUser(event.params.id)
         this.user = response.data.user
+        const response1 = await UsersService.getUsers('juser')
+        this.jusers = response1.data.users
       },
       async editUser () {
         try {

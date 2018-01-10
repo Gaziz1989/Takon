@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const ReleasedService = sequelize.define('ReleasedService', {
+  const Notification = sequelize.define('Notification', {
     id: {
       allowNull: false,
       primaryKey: true,
@@ -19,12 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'active'
+      defaultValue: 'unapproved'
     }
   })
-  ReleasedService.associate = function (models) {
-    models.ReleasedService.belongsTo(models.User, { as: 'owner' })
-    models.ReleasedService.belongsTo(models.Service, { as: 'service' })
+  Notification.associate = function (models) {
+    models.Notification.belongsTo(models.User, { as: 'owner' })
+    models.Notification.belongsTo(models.Service, { as: 'service' })
   }
-  return ReleasedService
+  return Notification
 }

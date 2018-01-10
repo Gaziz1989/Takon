@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const morgan = require('morgan')
+// const morgan = require('morgan')
 const { sequelize } = require('./models')
 const app = express()
 const config = require('./config/config')
@@ -15,7 +15,7 @@ require('events').EventEmitter.prototype._maxListeners = 100
 
 app.use(express.static(path.resolve(__dirname, '../static/')))
 
-app.use(morgan('dev'))
+// app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({
   extended: true
 }))

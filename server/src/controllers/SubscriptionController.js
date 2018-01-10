@@ -12,6 +12,7 @@ module.exports = {
         message: 'Вы успешно подписаны'
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'Произошла ошибка'
       })
@@ -39,6 +40,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: error
       })
@@ -56,6 +58,7 @@ module.exports = {
         })
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: error
       })

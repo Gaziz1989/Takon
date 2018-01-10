@@ -32,8 +32,12 @@ export default {
     const formData = `released_id=${_id}`
     return Api().post('getreleased', formData)
   },
-  approveNotification (_id) {
-    const formData = `released_id=${_id}`
+  getNotification (_id) {
+    const formData = `notification_id=${_id}`
+    return Api().post('getnotification', formData)
+  },
+  approveNotification (_notification) {
+    const formData = `notification=${JSON.stringify(_notification)}`
     return Api().post('approvenotification', formData)
   },
   getApproved (_id) {
