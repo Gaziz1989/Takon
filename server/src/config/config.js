@@ -2,7 +2,8 @@ const path = require('path')
 module.exports = {
   development: {
     dialect: 'sqlite',
-    storage: path.resolve(__dirname, '../../takon.sqlite')
+    storage: path.resolve(__dirname, '../../takon.sqlite'),
+    logging: false
   },
   test: {
     dialect: 'sqlite',
@@ -10,7 +11,8 @@ module.exports = {
   },
   production: {
     dialect: 'sqlite',
-    storage: path.resolve(__dirname, '../../takon.sqlite')
+    storage: path.resolve(__dirname, '../../takon.sqlite'),
+    logging: false
   },
   port: process.env.PORT || 8081,
   authentication: {

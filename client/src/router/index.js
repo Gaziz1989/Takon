@@ -18,6 +18,7 @@ import ServicesPage from '@/components/servicesPage'
 import ListOfPartnersPage from '@/components/listOfPartnersPage'
 import ListOfServicesPage from '@/components/listOfServicesPage'
 import NotificationsPage from '@/components/notificationsPage'
+import TablesPage from '@/components/tablesPage'
 import Auth from '../utils/Auth'
 
 Vue.use(Router)
@@ -103,6 +104,11 @@ export default new Router({
       path: '/serviceslist',
       name: 'ListOfServicesPage',
       component: Auth().isLoggedIn() && Auth().currentUser().type === 'juser' ? ListOfServicesPage : Profile
+    },
+    {
+      path: '/tablespage',
+      name: 'TablesPage',
+      component: Auth().isLoggedIn() ? TablesPage : Main
     },
     {
       path: '/register',

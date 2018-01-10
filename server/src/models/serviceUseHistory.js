@@ -6,16 +6,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
-    when: DataTypes.INTEGER,
     date: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
-    summ: DataTypes.INTEGER
+    amount: DataTypes.INTEGER
   })
   ServiceUseHistory.associate = function (models) {
     models.ServiceUseHistory.belongsTo(models.User, { as: 'owner' })
     models.ServiceUseHistory.belongsTo(models.User, { as: 'organization' })
-    models.ServiceUseHistory.belongsTo(models.User, { as: 'employee' })
+    models.ServiceUseHistory.belongsTo(models.User, { as: 'scaner' })
     models.ServiceUseHistory.belongsTo(models.Service, { as: 'service' })
+    models.ServiceUseHistory.belongsTo(models.ReleasedService, { as: 'takon' })
   }
   return ServiceUseHistory
 }

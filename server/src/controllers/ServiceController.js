@@ -1,6 +1,44 @@
 const { Service, User, ReleasedService, ServiceCreation, ServiceUseHistory, ServiceSellHistory, ServiceTransactionHistory } = require('../models')
 
 module.exports = {
+  async getTakons (req, res) {
+    try {
+      await ReleasedService.findAll({
+        where: {
+          serviceId: req.body.service_id,
+          ownerId: req.user.id
+        },
+        include: [
+          {
+            model: Service,
+            as: 'service',
+            include: [
+              {
+                model: User,
+                as: 'owner'
+              }
+            ]
+          },
+          {
+            model: User,
+            as: 'owner'
+          }
+        ]
+      }).then(_takons => {
+        _takons = _takons.map(takon => {
+          return takon.toJSON()
+        })
+        res.send({
+          takons: _takons
+        })
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
   async donutService (req, res) {
     try {
       const old = await ReleasedService.findById(req.body.old_service)

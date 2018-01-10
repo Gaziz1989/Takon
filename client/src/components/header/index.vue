@@ -9,11 +9,9 @@
         Здравствуйте, <p>{{this.$auth.currentUser().name ? this.$auth.currentUser().name : this.$auth.currentUser().email.split('@')[0]}}</p>
         <span>онлайн</span>
       </div>
-      <div class="notifications" v-if='$auth.currentUser().type === "admin"'>
-        <v-btn @click="goToNotificationsPage" flat>
-          <i class="fa fa-envelope" aria-hidden="true"></i>        
-          <span class="unread">{{notifications.length}}</span>
-        </v-btn>
+      <div class="notifications" v-if='$auth.currentUser().type === "admin"' @click="goToNotificationsPage">
+        <i class="fa fa-envelope" aria-hidden="true"></i>        
+        <span class="unread">{{notifications.length}}</span>
       </div>
   </v-toolbar>
 </template>

@@ -5,41 +5,6 @@ const randomNumber = require('random-number-csprng')
 const mailsender = require('../config/mail')
 
 module.exports = {
-  async getBalanceHistory (req, res) {
-    try {
-      const debet = await BalanceHistory.findAll({
-        where: {
-          toId: req.user.id
-        }
-      })
-      const credit = await BalanceHistory.findAll({
-        where: {
-          fromId: req.user.id
-        }
-      })
-      res.send({
-        debet: debet,
-        credit: credit
-      })
-    } catch (error) {
-      res.status(500).send({
-        error: error
-      })
-    }
-  },
-  async getBalance (req, res) {
-    try {
-      const user = await User.findById(req.user.id)
-      delete user.password
-      res.send({
-        user: user.toJSON()
-      })
-    } catch (error) {
-      res.status(500).send({
-        error: error
-      })
-    }
-  },
   async getUser (req, res) {
     try {
       await User.findById(JSON.parse(req.body.id)).then(user => {

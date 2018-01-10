@@ -1,5 +1,5 @@
 const randomNumber = require("random-number-csprng")
-const { QR, User, BalanceHistory, ServiceUseHistory, Service } = require('../models')
+const { QR, User, BalanceHistory, ServiceUseHistory, Service, ReleasedService } = require('../models')
 const options = {
   version: 1,
   errorCorrectionLevel: 'H'
@@ -32,26 +32,22 @@ module.exports = {
     try {
       const randomnumber = await randomNumber(999999, 999999999)
       const _qrstring =  ((new Date().getTime() + randomnumber) + req.user.id).toString('base64')
-      const creator = await User.findOne({
+      const takon = await ReleasedService.findOne({
         where: {
-          id: req.user.id
+          id: req.body.takon_id
         }
       })
-      if (creator.balance < req.body.summ) {
-        return res.send({
-          message: 'У Вас не достаточно баланса!'
+      if (takon.amount < req.body.amount) {
+        return res.status(400).send({
+          error: 'Вы превысили доступное количество'
         })
       }
       const qr = await QR.create({
         ownerId: req.user.id,
         qrstring: _qrstring,
-        summ: req.body.summ,
+        amount: req.body.amount,
+        takonId: takon.id
       }).then(created => {
-        if (req.body.ids) {
-          created.update({
-            description: req.body.ids.join(',')
-          })
-        }
         res.send({
           message: _qrstring
         })
@@ -72,102 +68,28 @@ module.exports = {
         }
       })
       if (!qrcode) {
-        return res.send({
-          message: 'QR не неайден, попробуйте еще раз'
+        return res.status(400).send({
+          error: 'QR не неайден, попробуйте еще раз'
         })
       } else {
-        qrcode.update({
+        await qrcode.update({
           scannerId: req.user.id,
+          scandate: new Date().getTime(),
           status: 'inactive'
         })
       }
-      await User.findOne({
+      const takon = await ReleasedService.findOne({
         where: {
-          id: req.user.id
-        }
-      }).then(scanner => {
-        if (scanner.type === 'employee') {
-          User.findOne({
-            where: {
-              id: scanner.employerId
-            }
-          }).then(employer => {
-            employer.update({
-              balance: employer.balance + qrcode.summ
-            }).then(() => {
-              User.findOne({
-                where: {
-                  id: qrcode.ownerId
-                }
-              }).then(qrowner => {
-                qrowner.update({
-                  balance: qrowner.balance - qrcode.summ
-                })
-              })
-            })
-          })
-        } else {
-          scanner.update({
-            balance: scanner.balance + qrcode.summ
-          }).then(() => {
-              User.findOne({
-                where: {
-                  id: qrcode.ownerId
-                }
-              }).then(qrowner => {
-                qrowner.update({
-                  balance: qrowner.balance - qrcode.summ
-                })
-              })
-            })
+          id: qrcode.takonId
         }
       })
-      await User.findOne({
-        where: {
-          id: req.user.id
-        }
-      }).then(_scanner => {
-        if (_scanner.type === 'employee') {
-          User.findOne({
-            where: {
-              id: req.user.id
-            }
-          }).then(org => {
-            BalanceHistory.create({
-              date: new Date().getTime(),
-              summ: qrcode.summ,
-              toId: org.id,
-              fromId: qrcode.ownerId
-            })
-          })
-        } else {
-          BalanceHistory.create({
-            date: new Date().getTime(),
-            summ: qrcode.summ,
-            toId: _scanner.id,
-            fromId: qrcode.ownerId
-          })
-        }
+      await takon.update({
+        amount: takon.amount - qrcode.amount
       })
-      if (qrcode.description.length > 0) {
-        qrcode.description.split(',').map(_service => {
-          Service.findOne({
-            where: {
-              id: _service
-            }
-          }).then(service => {
-            ServiceUseHistory.create({
-              date: new Date().getTime(),
-              price: service.price,
-              summ: qrcode.summ,
-              ownerId: qrcode.ownerId,
-              organizationId: service.ownerId,
-              employeeId: qrcode.scannerId,
-              serviceId: service.id
-            })
-          })
-        })
-      }
+      await ServiceUseHistory.create({
+        date: new Date().getTime(),
+        
+      })
       res.send({
         message: 'Сканирование прошло успешно'
       })

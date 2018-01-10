@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNull: false
     },
-    summ: DataTypes.INTEGER,
+    amount: DataTypes.INTEGER,
+    scandate: DataTypes.INTEGER,
     archived: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -21,12 +22,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 'active'
-    },
-    description: DataTypes.TEXT
+    }
   })
   QR.associate = function (models) {
     models.QR.belongsTo(models.User, { as: 'owner' })
-    models.QR.belongsTo(models.User, { as: 'scanner' })
+    models.QR.belongsTo(models.User, { as: 'scanner' }),
+    models.QR.belongsTo(models.ReleasedService, { as: 'takon' })
   }
   return QR
 }

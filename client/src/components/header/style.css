@@ -26,6 +26,12 @@ p {
 }
 .notifications {
   position: relative;
+  padding: 5px;
+  cursor: pointer;
+}
+.notifications:hover {
+  background: #02157f;
+  border-radius: 5px;
 }
 .fa-envelope {
   color: #fff;
@@ -34,7 +40,7 @@ p {
 .unread {
   color: red;
   position: absolute;
-  right: 25px;
-  top: 7px;
+  right: 0px;
+  top: 18px;
   font-size: 1.3em;
 }
