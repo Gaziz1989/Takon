@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   })
   QR.associate = function (models) {
     models.QR.belongsTo(models.User, { as: 'owner' })
-    models.QR.belongsTo(models.User, { as: 'scanner' }),
+    models.QR.belongsTo(models.User, { as: 'scanner' })
     models.QR.belongsTo(models.ReleasedService, { as: 'takon' })
   }
   return QR

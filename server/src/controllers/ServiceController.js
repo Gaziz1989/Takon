@@ -70,9 +70,9 @@ module.exports = {
         date: new Date().getTime(),
         price: donuted.price,
         fromId: req.body.organization_id,
-        instance_serviceId: donuted.serviceId,
         toId: donuted.ownerId,
-        transfered_serviceId: old.id
+        instanceServiceId: donuted.serviceId,
+        transferedServiceId: old.id
       })
       res.send({
         message: 'Услуга успешно передана'
@@ -357,7 +357,6 @@ module.exports = {
       var data = JSON.parse(req.body.service)
       data.ownerId = req.body.organization_id
       const service = await Service.create(data)
-      console.log(service.toJSON())
       const creationHistory = await ServiceCreation.create({
         price: service.price,
         date: new Date().getTime(),

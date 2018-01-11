@@ -13,29 +13,20 @@
     </v-card-title>
     <v-data-table
         v-bind:headers="headers"
-        v-bind:items="users"
+        v-bind:items="services"
         v-bind:search="search"
       >
       <template slot="items" slot-scope="props">
-        <td class="text-xs-right">{{ props.item.email }}</td>
-        <td class="text-xs-right">{{ props.item.adress }}</td>
-        <td class="text-xs-right">{{ props.item.phone }}</td>
-        <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
-        <td class="text-xs-right">
-          <v-btn flat fab dark small color="grey" @click="openEditModal(props.item.id)">
-            <v-icon>edit</v-icon>
-          </v-btn>
-        </td>
+        <td class="text-xs-right"></td>
       </template>
       <template slot="pageText" slot-scope="{ pageStart, pageStop }">
         От {{ pageStart }} к {{ pageStop }}
       </template>
     </v-data-table>
-    <user-edit/>
-    <add-balance/>
   </v-card>
 </template>
 <script>
+  import HistoriesService from '@/services/HistoriesService'
   export default {
     name: 'TablesPage',
     components: {
@@ -54,8 +45,12 @@
           { text: 'Статус', value: 'status' },
           { text: 'Действия', value: 'event' }
         ],
-        users: []
+        services: []
       }
+    },
+    async beforeMount () {
+      const response = await HistoriesService.getDataForAdmin(this.headers)
+      console.log(response.data.message)
     },
     methods: {
 

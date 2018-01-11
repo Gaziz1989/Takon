@@ -136,6 +136,9 @@ module.exports = {
     try {
       var data = JSON.parse(req.body.user)
       data.employerId = req.body.organization_id
+      const _phone = data.phone.split('')
+      _phone[0] = 7
+      data.phone = _phone.join('')
       const user = await User.create(data)
       res.send({
         user: user.toJSON()

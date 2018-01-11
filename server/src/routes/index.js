@@ -4,4 +4,5 @@ module.exports = (app) => {
   require('./serviceroutes')(app)
   require('./qrroutes')(app)
   require('./subscriptionroutes')(app)
+  require('./historyroutes')(app)
 }
