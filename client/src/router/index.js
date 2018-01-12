@@ -19,6 +19,7 @@ import ListOfPartnersPage from '@/components/listOfPartnersPage'
 import ListOfServicesPage from '@/components/listOfServicesPage'
 import NotificationsPage from '@/components/notificationsPage'
 import TablesPage from '@/components/tablesPage'
+import ServiceHistoryPage from '@/components/serviceHistoryPage'
 import Auth from '../utils/Auth'
 
 Vue.use(Router)
@@ -74,6 +75,11 @@ export default new Router({
       path: '/notifications',
       name: 'NotificationsPage',
       component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? NotificationsPage : Profile
+    },
+    {
+      path: '/servicehistory',
+      name: 'ServiceHistoryPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? ServiceHistoryPage : Profile
     },
     {
       path: '/addemployees',

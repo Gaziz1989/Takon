@@ -1,6 +1,33 @@
 const { Notification, Service, User, ReleasedService, ServiceCreation, ServiceUseHistory, ServiceSellHistory, ServiceTransactionHistory } = require('../models')
 
 module.exports = {
+  async getAdminServices (req, res) {
+    try {
+      await Service.findAll({
+        where: {
+          status: 'active'
+        },
+        include: [
+          {
+            model: User,
+            as: 'owner'
+          }
+        ]
+      }).then(_services => {
+        _services = _services.map(_service => {
+          return _service.toJSON()
+        })
+        res.send({
+          services: _services
+        })
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
   async getTakons (req, res) {
     try {
       await ReleasedService.findAll({
@@ -65,10 +92,10 @@ module.exports = {
         donuted = await ReleasedService.create(data)
       }
       const history = await ServiceTransactionHistory.create({
-        amount: donuted.amount,
-        summ: donuted.price * donuted.amount,
+        amount: Number(donuted.amount),
+        summ: Number(donuted.price) * Number(donuted.amount),
         date: new Date().getTime(),
-        price: donuted.price,
+        price: Number(donuted.price),
         fromId: req.body.organization_id,
         toId: donuted.ownerId,
         instanceServiceId: donuted.serviceId,
@@ -142,13 +169,14 @@ module.exports = {
       })
       if (released) {
         await released.update({
-          amount: released.amount + data.amount
+          amount: Number(released.amount) + Number(data.amount)
         })
+        console.log(released)
         const sellHistory = await ServiceSellHistory.create({
-          amount: released.amount,
+          amount: Number(released.amount),
           date: new Date().getTime(),
-          price: released.price,
-          summ: released.price * released.amount,
+          price: Number(released.price),
+          summ: Number(released.price) * Number(released.amount),
           ownerId: released.ownerId,
           organizationId: released.service.ownerId,
           serviceId: released.serviceId
@@ -180,10 +208,10 @@ module.exports = {
           ]
         })
         const sellHistory = await ServiceSellHistory.create({
-          amount: released.amount,
+          amount: Number(released.amount),
           date: new Date().getTime(),
-          price: released.price,
-          summ: released.price * released.amount,
+          price: Number(released.price),
+          summ: Number(released.price) * Number(released.amount),
           ownerId: released.ownerId,
           organizationId: released.service.ownerId,
           serviceId: released.serviceId

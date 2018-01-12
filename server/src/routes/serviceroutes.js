@@ -16,4 +16,5 @@ module.exports = (app) => {
   app.post('/getapproved', isAuthenticated, ServiceController.getApproved)
   app.post('/donutservice', isAuthenticated, ServiceController.donutService)
   app.post('/gettakons', isAuthenticated, ServiceController.getTakons)
+  app.post('/getadminservices', isAuthenticated, ServiceController.getAdminServices)
 }

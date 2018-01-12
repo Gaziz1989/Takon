@@ -1,5 +1,5 @@
 const randomNumber = require("random-number-csprng")
-const { QR, User, BalanceHistory, ServiceUseHistory, ServiceTransactionHistory, Service, ReleasedService } = require('../models')
+const { QR, User, ServiceUseHistory, ServiceTransactionHistory, Service, ReleasedService } = require('../models')
 
 module.exports = {
   async qrScanForPresenting (req, res) {
@@ -113,8 +113,8 @@ module.exports = {
         receiverTakon = await ReleasedService.create({
           name: takon.name,
           description: takon.description,
-          price: takon.price,
-          unit: takon.unit,
+          price: Number(takon.price),
+          unit: Number(takon.unit),
           amount: 0,
           ownerId: scanner.id,
           serviceId: takon.serviceId
@@ -234,8 +234,8 @@ module.exports = {
         receiverTakon = await ReleasedService.create({
           name: takon.name,
           description: takon.description,
-          price: takon.price,
-          unit: takon.unit,
+          price: Number(takon.price),
+          unit: Number(takon.unit),
           amount: 0,
           ownerId: receiver.id,
           serviceId: takon.serviceId,
@@ -389,8 +389,8 @@ module.exports = {
       })
       await ServiceUseHistory.create({
         date: new Date().getTime(),
-        price: takon.price,
-        amount: takon.amount,
+        price: Number(takon.price),
+        amount: Number(qrcode.amount),
         ownerId: takon.ownerId,
         scanerId: req.user.id,
         serviceId: takon.serviceId,

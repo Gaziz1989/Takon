@@ -1,6 +1,9 @@
 import Api from '@/services/Api'
 
 export default {
+  getAdminServices () {
+    return Api().post('getadminservices')
+  },
   addService (_credentials, _id) {
     const formData = `service=${JSON.stringify(_credentials)}&organization_id=${_id}`
     return Api().post('addservice', formData)
