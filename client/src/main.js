@@ -11,7 +11,7 @@ import 'vuetify/dist/vuetify.min.css'
 import store from '@/store/store'
 import Auth from '@/utils/Auth'
 
-Vue.use(VueSocketio, 'http://195.93.152.79:8081/')
+Vue.use(VueSocketio, 'http://127.0.0.1:8081/')
 Vue.config.productionTip = false
 
 Vue.use(Vuetify)

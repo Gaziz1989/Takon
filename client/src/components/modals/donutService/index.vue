@@ -20,7 +20,7 @@
         <p class="greyFont">Сотрудник</p>
         <select v-model="donut.ownerId">
           <option value=""></option>
-          <option :value="employee.id" v-for="employee in employees">{{employee.name}}</option>
+          <option :value="employee.id" v-for="employee in employees">{{employee.name ? employee.name : employee.email ? employee.email : employee.phone}}</option>
         </select>
       </div>
       <input-a type="number" title="Количество к передаче" placeholder="0" v-model="donut.amount" full/>

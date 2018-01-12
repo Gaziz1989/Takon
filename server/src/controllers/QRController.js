@@ -117,7 +117,7 @@ module.exports = {
           unit: takon.unit,
           amount: 0,
           ownerId: scanner.id,
-          serviceId: takon.serviceId,
+          serviceId: takon.serviceId
         })
       }
       await receiverTakon.update({
@@ -126,14 +126,15 @@ module.exports = {
       await takon.update({
         amount: Number(takon.amount) - Number(qrcode.amount)
       })
-      await ServiceUseHistory.create({
+      await ServiceTransactionHistory.create({
+        amount: Number(qrcode.amount),
+        summ: Number(qrcode.amount) * Number(takon.price),
         date: new Date().getTime(),
         price: takon.price,
-        amount: takon.amount,
-        ownerId: takon.ownerId,
-        scanerId: req.user.id,
-        serviceId: takon.serviceId,
-        takonId: takon.id
+        fromId: qrcode.ownerId,
+        toId: qrcode.scannerId,
+        instanceServiceId: takon.serviceId,
+        transferedServiceId: qrcode.takonId
       })
       res.send({
         message: 'Сканирование прошло успешно'
@@ -437,7 +438,7 @@ module.exports = {
           })
         })
       } else {
-        await QR.findAll({
+        var _qrs = await QR.findAll({
           where: {
             status: 'inactive',
             ownerId: req.user.id
@@ -456,13 +457,45 @@ module.exports = {
             as: 'takon'
           }
           ]
-        }).then(_qrs => {
-          _qrs = _qrs.map(qr => {
-            return qr.toJSON()
-          })
-          res.send({
-            qrs: _qrs
-          })
+        })
+        _qrs = _qrs.map(qr => {
+          return qr.toJSON()
+        })
+        var _phonetransactions = await ServiceTransactionHistory.findAll({
+          where: {
+            fromId: req.user.id
+          },
+          include: [
+            {
+              model: User,
+              as: 'from'
+            },
+            {
+              model: User,
+              as: 'to'
+            },
+            {
+              model: Service,
+              as: 'instance_service',
+              include: [
+                {
+                  model: User,
+                  as: 'owner'
+                }
+              ]
+            },
+            {
+              model: ReleasedService,
+              as: 'transfered_service'
+            }
+          ]
+        })
+        _phonetransactions = _phonetransactions.map(phonetransaction => {
+          return phonetransaction.toJSON()
+        })
+        res.send({
+          qrs: _qrs,
+          phonetransactions: _phonetransactions
         })
       }
     } catch (error) {
