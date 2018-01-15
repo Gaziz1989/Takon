@@ -3,4 +3,5 @@ const isAuthenticated = require('../policies/isAuthenticated')
 
 module.exports = (app) => {
   app.post('/getdataforadmin', isAuthenticated, HistoryController.getDataForAdmin)
+  app.post('/getdataforjuser', isAuthenticated, HistoryController.getDataForJUser)
 }

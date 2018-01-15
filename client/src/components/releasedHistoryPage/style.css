@@ -1,0 +1,13 @@
+span {
+  margin-left: 15px;
+  display: block;
+}
+
+.basicinfo {
+  margin: 100px 0;
+  text-align: left;
+}
+
+.card {
+  margin-top: 50px;
+}

@@ -16,7 +16,7 @@
     >
       <v-layout row wrap>
         <v-flex xs3 v-for="notification in notifications" :key="notification.id" hover>
-          <v-card color="green darken-3" class="white--text" hover>
+          <v-card color="green darken-3" class="white--text" hover v-if="notification.serviceId">
             <v-card-title primary-title>
               <div class="headline">Организация: {{notification.owner.name ? notification.owner.name : notification.owner.email}}</div>
             </v-card-title>
@@ -29,6 +29,29 @@
             </div>
             <v-card-actions>
               <v-btn flat dark @click="openNotificationModal(notification.id)">Подробнее</v-btn>
+            </v-card-actions>
+          </v-card>
+          <v-card color="red darken-3" class="white--text" hover v-else>
+            <v-card-title primary-title>
+              <div class="headline">Организация: {{notification.owner.name ? notification.owner.name : notification.owner.email}}</div>
+            </v-card-title>
+            <div>
+              <span>
+                Заявка на создание услуги {{notification.name}}
+              </span>
+              <span>
+                Планируемая цена услуги {{notification.price}}
+              </span>
+              <span>
+                Описание услуги: <br/>{{notification.description}}
+              </span>
+            </div>
+            <div>
+              Создана: {{new Date(notification.createdAt).getFullYear() + '-' + new Date(notification.createdAt).getMonth() +1 + '-' + new Date(notification.createdAt).getDate()}}
+            </div>
+            <v-card-actions>
+              <v-btn flat dark @click="aproveCreation(notification.id)">Подтвердить</v-btn>
+              <v-btn flat dark @click="canselCreation(notification.id)">Отменить</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -58,6 +81,24 @@ export default {
     methods: {
       openNotificationModal (_id) {
         this.$modal.show('NotificationModal', {id: _id})
+      },
+      async aproveCreation (_id) {
+        try {
+          const response = await ServicesService.aproveCreation(_id)
+          alert(response.data.message)
+          window.location.reload()
+        } catch (error) {
+          alert(error.response.data.error)
+        }
+      },
+      async canselCreation (_id) {
+        try {
+          const response = await ServicesService.canselCreation(_id)
+          alert(response.data.message)
+          window.location.reload()
+        } catch (error) {
+          alert(error.response.data.error)
+        }
       }
     },
     sockets: {

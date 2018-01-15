@@ -1,6 +1,110 @@
 const { Service, User, ReleasedService, ServiceCreation, ServiceUseHistory, ServiceSellHistory, ServiceTransactionHistory } = require('../models')
 
 module.exports = {
+  async getDataForJUser (req, res) {
+    try {
+      const _takon = await ReleasedService.findOne({
+        where: {
+          id: req.body.id
+        },
+        include: [
+          {
+            model: User,
+            as: 'owner'
+          },
+          {
+            model: Service,
+            as: 'service'
+          }
+        ]
+      })
+      const _selling = await ServiceSellHistory.findOne({
+        where: {
+          serviceId: _takon.serviceId,
+          ownerId: req.user.id
+        }
+      })
+
+      var _transactions = await ServiceTransactionHistory.findAll({
+        where: {
+          fromId: req.user.id,
+          transferedServiceId: _takon.id
+        },
+        include: [
+          {
+            model: User,
+            as: 'from'
+          },
+          {
+            model: User,
+            as: 'to'
+          },
+          {
+            model: ReleasedService,
+            as: 'transfered_service'
+          }
+        ]
+      })
+      _transactions = await _transactions.map(item => {
+        return item.toJSON()
+      })
+
+      var _jusersEmpls = await User.findAll({
+        where: {
+          employerId: req.user.id
+        }
+      })
+      _jusersEmpls = await _jusersEmpls.map((item, index) => {
+        return item.toJSON().id
+      })
+
+      var _history = await ServiceUseHistory.findAll({
+        where: {
+          serviceId: _takon.serviceId
+        },
+        include: [
+          {
+            model: User,
+            as: 'scaner',
+            include: [
+              {
+                model: User,
+                as: 'employer'
+              }
+            ]
+          },
+          {
+            model: User,
+            as: 'owner'
+          }
+        ]
+      })
+      _history = await _history.map(_his => {
+        return _his.toJSON()
+      })
+      var _usings = []
+      await _history.filter((_his, index) => {
+        _jusersEmpls.map(item => {
+          if (_his.ownerId === item) {
+            _usings.push(_his)
+          }
+        })
+      })
+
+      res.send({
+        takon: _takon.toJSON(),
+        selling: _selling.toJSON(),
+        transactions: _transactions,
+        employees: _jusersEmpls,
+        usings: _usings
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: 'Произошла неведомая хуита!'
+      })
+    }
+  },
   async getDataForAdmin (req, res) {
     try {
       var _takons = await ReleasedService.findAll({

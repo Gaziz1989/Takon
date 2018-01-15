@@ -1,6 +1,17 @@
 import Api from '@/services/Api'
 
 export default {
+  getOwnReleased () {
+    return Api().post('getownreleased')
+  },
+  canselCreation (_id) {
+    const formData = `id=${_id}`
+    return Api().post('canselcreation', formData)
+  },
+  aproveCreation (_id) {
+    const formData = `id=${_id}`
+    return Api().post('aprovecreation', formData)
+  },
   getAdminServices () {
     return Api().post('getadminservices')
   },

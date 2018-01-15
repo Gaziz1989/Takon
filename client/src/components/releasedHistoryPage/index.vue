@@ -3,44 +3,14 @@
   <div>
     <div class="basicinfo">
       <span><strong>Название:</strong> {{service.name}}</span>
-      <span><strong>id:</strong> {{service.id}}</span>
-      <span><strong>Дата создания:</strong> {{new Date(creation.date).getDate() + '/' + new Date(creation.date).getMonth() + 1 + '/' + new Date(creation.date).getFullYear()}}</span>
-      <span><strong>Количество проданных:</strong> {{selled}}</span>
-      <span><strong>Сумма продаж:</strong> {{selledSumm}}</span>
-      <span><strong>Количество использованных:</strong> {{usedAmount}}</span>
-      <span><strong>Использовано на сумму:</strong> {{usedSumm}}</span>
+      <span><strong>id:</strong> {{service.id ? service.id : this.$route.params.id}}</span>
+      <span><strong>Дата покупки:</strong> {{new Date(buying.date).getDate() + '/' + new Date(buying.date).getMonth() + 1 + '/' + new Date(buying.date).getFullYear()}}</span>
+      <span><strong>Количество купленных:</strong> {{buying.amount}}</span>
+      <span><strong>Цена за единицу:</strong> {{buying.price}}</span>
+      <span><strong>Сумма покупки:</strong> {{buying.price * buying.amount}}</span>
+      <span><strong>Количество переданных:</strong> {{transferedAmount}}</span>
+      <span><strong>Сумма переданных:</strong> {{transferedSumm}}</span>
     </div>
-    <v-card>
-      <v-card-title>
-        История продаж
-        <v-spacer></v-spacer>
-        <v-text-field
-          append-icon="search"
-          label="Поиск"
-          single-line
-          hide-details
-          v-model="search"
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-          v-bind:headers="headers"
-          v-bind:items="sellings"
-          v-bind:search="search"
-        >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{ props.item.organization.name ? props.item.organization.name : props.item.organization.email }}</td>
-          <td class="text-xs-right">{{ props.item.owner.name ? props.item.owner.name : props.item.owner.email}}</td>
-          <td class="text-xs-right">{{ new Date(props.item.date).getDate() + '-' + new Date(props.item.date).getMonth() + 1 + '-' + new Date(props.item.date).getFullYear() }}</td>
-          <td class="text-xs-right">{{ props.item.amount }}</td>
-          <td class="text-xs-right">{{ props.item.price }}</td>
-          <td class="text-xs-right">{{ props.item.summ }}</td>
-        </template>
-        <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-          От {{ pageStart }} к {{ pageStop }}
-        </template>
-      </v-data-table>
-    </v-card>
-
     <v-card>
       <v-card-title>
         История транзакций
@@ -108,33 +78,17 @@
 <script>
   import HistoriesService from '@/services/HistoriesService'
   export default {
-    name: 'ServiceHistoryPage',
+    name: 'TablesPage',
     components: {},
     data () {
       return {
         max25chars: (v) => v.length <= 25 || 'Input too long!',
-        tmp: '',
-        search: '',
-        pagination: {},
         tmp1: '',
         search1: '',
         pagination1: {},
         tmp2: '',
         search2: '',
         pagination2: {},
-        headers: [
-          {
-            text: 'Продавец',
-            align: 'left',
-            sortable: false,
-            value: 'seller'
-          },
-          { text: 'Покупатель', value: 'buyer' },
-          { text: 'Дата', value: 'date' },
-          { text: 'Количество', value: 'amount' },
-          { text: 'Цена за единицу', value: 'price' },
-          { text: 'Сумма', value: 'summ' }
-        ],
         headers1: [
           {
             text: 'Передал ',
@@ -163,56 +117,47 @@
           { text: 'Сумма', value: 'summ' }
         ],
         service: {},
-        creation: {},
-        takons: [],
-        usings: [],
-        sellings: [],
-        transactions: []
+        buying: {},
+        transactions: [],
+        usings: []
+      }
+    },
+    async beforeMount () {
+      try {
+        const response = await HistoriesService.getJUserServices(this.$route.params.id)
+        this.service = response.data.takon
+        this.buying = response.data.selling
+        this.transactions = response.data.transactions
+        this.usings = response.data.usings
+      } catch (error) {
+        alert('Произошла ошибка')
       }
     },
     computed: {
-      selled () {
-        var _selled = 0
-        this.sellings.forEach(sells => {
-          _selled = Number(_selled) + Number(sells.amount)
-        })
-        return _selled
-      },
-      selledSumm () {
-        var summ = 0
-        this.sellings.forEach(sells => {
-          summ = Number(summ) + Number(sells.amount) * Number(sells.price)
-        })
-        return summ
-      },
-      usedAmount () {
+      transferedAmount () {
         var amount = 0
-        this.usings.forEach(used => {
+        this.transactions.forEach(used => {
           amount = Number(amount) + Number(used.amount)
         })
         return amount
       },
-      usedSumm () {
+      transferedSumm () {
         var summ = 0
-        this.usings.forEach(used => {
+        this.transactions.forEach(used => {
           summ = Number(summ) + Number(used.amount) * Number(used.price)
         })
         return summ
       }
     },
-    async beforeMount () {
-      try {
-        const response = await HistoriesService.getAdminServices(this.$route.params.id)
-        this.service = response.data.service
-        this.creation = response.data.creation
-        this.takons = response.data.takons
-        this.usings = response.data.usings
-        this.sellings = response.data.sellings
-        this.transactions = response.data.transactions
-      } catch (error) {
-        alert('Произошла ошибка')
+    methods: {
+      async goToService (_id) {
+        this.$router.push({
+          name: 'ServiceHistoryPage',
+          params: {
+            id: _id
+          }
+        })
       }
-    },
-    methods: {}
+    }
   }
 </script>

@@ -20,6 +20,7 @@ import ListOfServicesPage from '@/components/listOfServicesPage'
 import NotificationsPage from '@/components/notificationsPage'
 import TablesPage from '@/components/tablesPage'
 import ServiceHistoryPage from '@/components/serviceHistoryPage'
+import ReleasedHistoryPage from '@/components/releasedHistoryPage'
 import Auth from '../utils/Auth'
 
 Vue.use(Router)
@@ -79,7 +80,7 @@ export default new Router({
     {
       path: '/servicehistory',
       name: 'ServiceHistoryPage',
-      component: Auth().isLoggedIn() && Auth().currentUser().type === 'admin' ? ServiceHistoryPage : Profile
+      component: Auth().isLoggedIn() ? ServiceHistoryPage : Profile
     },
     {
       path: '/addemployees',
@@ -110,6 +111,11 @@ export default new Router({
       path: '/serviceslist',
       name: 'ListOfServicesPage',
       component: Auth().isLoggedIn() && Auth().currentUser().type === 'juser' ? ListOfServicesPage : Profile
+    },
+    {
+      path: '/releasedhistory',
+      name: 'ReleasedHistoryPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'juser' ? ReleasedHistoryPage : Profile
     },
     {
       path: '/tablespage',

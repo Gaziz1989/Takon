@@ -13,6 +13,30 @@
       ></v-text-field>
     </v-card-title>
     <v-data-table
+        v-if="this.$auth.currentUser().type === 'juser'"
+        v-bind:headers="headers"
+        v-bind:items="services"
+        v-bind:search="search"
+      >
+      <template slot="items" slot-scope="props">
+        <td class="text-xs-left">{{props.item.name}}</td>
+        <td class="text-xs-right">{{props.item.service.owner.name ? props.item.service.owner.name : props.item.service.owner.email}}</td>
+        <td class="text-xs-right">{{ props.item.description }}</td>
+        <td class="text-xs-right">{{ props.item.price }}</td>
+        <td class="text-xs-right">/-/-/-/-/-/-/-/</td>
+        <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
+        <td class="text-xs-right">
+          <v-btn flat fab dark small color="grey" @click="goToService(props.item.id)">
+            <v-icon>open_in_new</v-icon>
+          </v-btn>
+        </td>
+      </template>
+      <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+        От {{ pageStart }} к {{ pageStop }}
+      </template>
+    </v-data-table>
+    <v-data-table
+        v-else
         v-bind:headers="headers"
         v-bind:items="services"
         v-bind:search="search"
@@ -65,17 +89,30 @@
       }
     },
     async beforeMount () {
-      const response = await ServicesService.getAdminServices()
-      this.services = response.data.services
+      try {
+        const response = this.$auth.currentUser().type === 'admin' ? await ServicesService.getAdminServices() : this.$auth.currentUser().type === 'partner' ? await ServicesService.getServices(this.$auth.currentUser().id) : await ServicesService.getOwnReleased()
+        this.services = response.data.services
+      } catch (error) {
+        alert(error.data.response.error)
+      }
     },
     methods: {
       goToService (_id) {
-        this.$router.push({
-          name: 'ServiceHistoryPage',
-          params: {
-            id: _id
-          }
-        })
+        if (this.$auth.currentUser().type === 'juser') {
+          this.$router.push({
+            name: 'ReleasedHistoryPage',
+            params: {
+              id: _id
+            }
+          })
+        } else {
+          this.$router.push({
+            name: 'ServiceHistoryPage',
+            params: {
+              id: _id
+            }
+          })
+        }
       }
     }
   }

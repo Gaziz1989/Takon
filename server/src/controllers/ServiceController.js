@@ -1,6 +1,91 @@
 const { Notification, Service, User, ReleasedService, ServiceCreation, ServiceUseHistory, ServiceSellHistory, ServiceTransactionHistory } = require('../models')
 
 module.exports = {
+  async getOwnReleased (req, res) {
+    try {
+      await ReleasedService.findAll({
+        where: {
+          ownerId: req.user.id
+        },
+        include: [
+          {
+            model: Service,
+            as: 'service',
+            include: [
+              {
+                model: User,
+                as: 'owner'
+              }
+            ]
+          }
+        ]
+      }).then(_released => {
+        _released = _released.map(item => {
+          return item.toJSON()
+        })
+        res.send({
+          services: _released
+        })
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    } 
+  },
+  async canselCreation (req, res) {
+    try {
+      const canseled = await Notification.destroy({
+        where: {
+          id: req.body.id
+        }
+      })
+      res.send({
+        message: 'Заявка отменена!'
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }  
+  },
+  async aproveCreation (req, res) {
+    try {
+      const approved = await Notification.findOne({
+        where: {
+          id: req.body.id
+        }
+      })
+      const service = await Service.create({
+        name: approved.name,
+        description: approved.description,
+        price: approved.price,
+        unit: approved.unit,
+        status: 'inactive',
+        ownerId: approved.ownerId
+      })
+      await approved.update({
+        archived: true,
+        status:'inactive'
+      })
+      const creationHistory = await ServiceCreation.create({
+        price: service.price,
+        date: new Date().getTime(),
+        whoId: service.ownerId,
+        serviceId: service.id
+      })
+      res.send({
+        message: 'Создание услуги подтверждено!'
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
   async getAdminServices (req, res) {
     try {
       await Service.findAll({
@@ -148,6 +233,7 @@ module.exports = {
       data.status = 'active'
       const released = await ReleasedService.findOne({
         where: {
+          ownerId: data.ownerId,
           serviceId: data.serviceId
         },
         include: [
@@ -171,7 +257,6 @@ module.exports = {
         await released.update({
           amount: Number(released.amount) + Number(data.amount)
         })
-        console.log(released)
         const sellHistory = await ServiceSellHistory.create({
           amount: Number(released.amount),
           date: new Date().getTime(),
@@ -384,15 +469,9 @@ module.exports = {
     try {
       var data = JSON.parse(req.body.service)
       data.ownerId = req.body.organization_id
-      const service = await Service.create(data)
-      const creationHistory = await ServiceCreation.create({
-        price: service.price,
-        date: new Date().getTime(),
-        whoId: req.body.organization_id,
-        serviceId: service.id
-      })
+      const notification = await Notification.create(data)
       res.send({
-        service: service.toJSON()
+        message: 'Заявка успешно подана!'
       })
     } catch (error) {
       console.log(error)

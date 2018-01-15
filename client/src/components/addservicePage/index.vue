@@ -7,8 +7,7 @@
       <input-a type="text" title="Название" v-model="service.name" full/>
       <input-a type="text" title="Единица измерения" v-model="service.unit" full/>
       <input-a type="text" title="Цена за единицу" v-model="service.price" full/>
-<!--       <input-a type="text" title="Количество" v-model="service.amount" full/>
- -->      <div class="fullOf">
+      <div class="fullOf">
         <p class="greyFont">Иная информация</p>
         <textarea class="fullOf" placeholder="..." v-model="service.description"></textarea>
       </div>
@@ -39,7 +38,6 @@ export default {
       return {
         service: {
           name: '',
-          // amount: '',
           unit: '',
           description: '',
           price: ''
@@ -53,7 +51,7 @@ export default {
       async createService () {
         try {
           const response = await ServicesService.addService(this.service, this.$auth.currentUser().id)
-          alert('Услуга/товар ' + response.data.service.name + ' был добавлен!')
+          alert(response.data.message)
           this.$router.go(-1)
         } catch (error) {
           this.error = error.response.data.error

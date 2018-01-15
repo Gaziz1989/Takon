@@ -57,12 +57,6 @@
         </ul>
       </li>
 
-      <li v-if="isUserLoggedIn && isUserAdmin">
-        <router-link to="tablespage">
-          <span><i class="fa fa-table" aria-hidden="true"></i></span>
-        </router-link>
-      </li>
-
       <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
         <router-link to="employees">
           <span><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
@@ -117,6 +111,12 @@
         </ul>
       </li>
 
+      <li v-if="isUserLoggedIn && isUserAdmin || isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
+        <router-link to="tablespage">
+          <span><i class="fa fa-table" aria-hidden="true"></i></span>
+        </router-link>
+      </li>
+      
       <li v-if="!isUserLoggedIn">
         <router-link to="register">
           <span><i class="fa fa-user-plus" aria-hidden="true"></i></span>

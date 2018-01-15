@@ -101,7 +101,6 @@ export default {
       async saveImage () {
         try {
           const response = await UsersService.changeimage(this.file)
-          // console.log(response.data.user.image)
           this.user.image = response.data.user.image
           this.filename = ''
         } catch (error) {

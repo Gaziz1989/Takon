@@ -300,7 +300,7 @@ module.exports = {
           id: req.body.takon_id
         }
       })
-      if (takon.amount < req.body.amount) {
+      if (Number(takon.amount) < Number(req.body.amount)) {
         return res.status(400).send({
           error: 'Вы превысили доступное количество'
         })
@@ -308,7 +308,7 @@ module.exports = {
       const qr = await QR.create({
         ownerId: req.user.id,
         qrstring: _qrstring,
-        amount: req.body.amount,
+        amount: Number(req.body.amount),
         takonId: takon.id
       }).then(created => {
         res.send({
