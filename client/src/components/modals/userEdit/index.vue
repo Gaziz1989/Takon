@@ -101,11 +101,12 @@ export default {
       async archiveUser () {
         try {
           const response = await UsersService.archiveUser(this.user.id)
-          alert('Пользователь ' + response.data.user.name + ' успешно удален!')
+          console.log(response)
+          alert(response.data.message)
           this.$modal.hide('UserEdit')
           window.location.reload()
         } catch (error) {
-          alert(error.response.data.error)
+          alert(error.response)
           this.$modal.hide('UserEdit')
         }
       },

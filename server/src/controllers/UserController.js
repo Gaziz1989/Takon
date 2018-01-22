@@ -97,11 +97,12 @@ module.exports = {
         where: {
           id: req.body.id
         }
-      }).then(user => {
+      }).then(destroyed => {
         res.send({
           message: 'Пользователь удален!'
         })
       })
+
     } catch (error) {
       console.log(error)
       res.status(500).send({
