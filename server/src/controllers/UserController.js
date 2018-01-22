@@ -93,13 +93,13 @@ module.exports = {
   },
   async archiveUser (req, res) {
     try {
-      await User.findById(req.body.id).then(_user => {
-        _user.archived = true
-        _user.status = 'inactive'
-        _user.save().then(() => {
-          res.send({
-            user: _user.toJSON()
-          })
+      await User.destroy({
+        where: {
+          id: req.body.id
+        }
+      }).then(user => {
+        res.send({
+          message: 'Пользователь удален!'
         })
       })
     } catch (error) {

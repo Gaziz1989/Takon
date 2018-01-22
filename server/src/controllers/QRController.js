@@ -38,6 +38,7 @@ module.exports = {
           }
         ]
       })
+      console.log(req.body)
       const scanner = await User.findOne({
         where: {
           id: req.user.id
@@ -84,7 +85,7 @@ module.exports = {
         ]
       })
       if (takon.amount < qrcode.amount) {
-        res.status(400).send({
+        return res.status(400).send({
           error: 'Не достаточное количество таконов'
         })
       }
