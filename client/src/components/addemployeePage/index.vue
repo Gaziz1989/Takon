@@ -7,10 +7,10 @@
       <input-a type="text" title="Логин" v-model="user.name" full/>
       <input-a type="text" title="Email" v-model="user.email" full/>
       <div class='error' v-if="checkPass">Пароли не совпадают</div>
-      <input-a type="password" title="Пароль" v-model="user.password" full/>
-      <input-a type="password" title="Подтверждение пароля" v-model="checkPassword" full/>
+      <input-a v-if="$auth.currentUser().type !== 'juser'" type="password" title="Пароль" v-model="user.password" full/>
+      <input-a v-if="$auth.currentUser().type !== 'juser'" type="password" title="Подтверждение пароля" v-model="checkPassword" full/>
       <input-a type="text" title="Телефон" v-model="user.phone" full/>
-      <input-a type="text" title="Адрес" v-model="user.adress" full/>
+      <input-a v-if="$auth.currentUser().type !== 'juser'" type="text" title="Адрес" v-model="user.adress" full/>
       <v-btn @click="createPartner" small flat :disabled="disabled">Сохранить</v-btn>
   </panel>
 </template>
@@ -34,10 +34,18 @@ export default {
         }
       },
       disabled () {
-        if (this.user.name.length > 0 && this.user.phone.length > 0 && this.user.adress.length > 0 && this.user.email.length > 0 && this.user.password.length > 0) {
-          return false
+        if (this.$auth.currentUser().type === 'partner') {
+          if (this.user.name.length > 0 && this.user.phone.length > 0 && this.user.adress.length > 0 && this.user.email.length > 0 && this.user.password.length > 0) {
+            return false
+          } else {
+            return true
+          }
         } else {
-          return true
+          if (this.user.name.length > 0 && this.user.phone.length > 0) {
+            return false
+          } else {
+            return true
+          }
         }
       }
     },
@@ -49,9 +57,9 @@ export default {
           type: 'employee',
           adress: '',
           email: '',
-          password: ''
+          password: this.$auth.currentUser().type === 'juser' ? '123456789' : ''
         },
-        checkPassword: '',
+        checkPassword: this.$auth.currentUser().type === 'juser' ? '123456789' : '',
         error: ''
       }
     },

@@ -58,6 +58,72 @@ module.exports = {
         return item.toJSON().id
       })
 
+      var _employeeTransactions = await ServiceTransactionHistory.findAll({
+        where: {
+          instanceServiceId: _takon.serviceId,
+        },
+        include: [
+          {
+            model: User,
+            as: 'from'
+          },
+          {
+            model: User,
+            as: 'to'
+          },
+          {
+            model: Service,
+            as: 'instance_service',
+            include: [
+              {
+                model: User,
+                as: 'owner'
+              }
+            ]
+          },
+          {
+            model: ReleasedService,
+            as: 'transfered_service'
+          }
+        ]
+      })
+      _employeeTransactions = await _employeeTransactions.map((item, index) => {
+        return item.toJSON()
+      })
+
+      var _emplTransfers = []
+      await _employeeTransactions.filter((_transaction, index) => {
+        _jusersEmpls.map(item => {
+          if (_transaction.fromId === item) {
+            _emplTransfers.push(_transaction)
+          }
+        })
+      })
+
+      var _emplTakons = await ReleasedService.findAll({
+        where: {
+          serviceId: _takon.serviceId 
+        },
+        include: [
+          {
+            model: User,
+            as: 'owner'
+          }
+        ]
+      })
+      _emplTakons = await _emplTakons.map((item, index) => {
+        return item.toJSON()
+      })
+
+      var _takons = []
+      await _emplTakons.filter((takon, index) => {
+        _jusersEmpls.map(item => {
+          if (takon.ownerId === item) {
+            _takons.push(takon)
+          }
+        })
+      })
+
       var _history = await ServiceUseHistory.findAll({
         where: {
           serviceId: _takon.serviceId
@@ -96,7 +162,9 @@ module.exports = {
         selling: _selling.toJSON(),
         transactions: _transactions,
         employees: _jusersEmpls,
-        usings: _usings
+        emplTransfers: _emplTransfers,
+        usings: _usings,
+        takons: _takons
       })
     } catch (error) {
       console.log(error)

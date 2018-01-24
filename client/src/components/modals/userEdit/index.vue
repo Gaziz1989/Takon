@@ -5,7 +5,7 @@
       <h6>Профиль: {{ user.name }}</h6>
       <input-a type="text" :placeholder="user.name" title="Имя" v-model="user.name"/>
       <input-a type="text" :placeholder="user.phone" title="Телефон" v-model="user.phone"/>
-      <input-a type="text" :placeholder="user.adress" title="Адрес" v-model="user.adress"/>
+      <input-a type="text" v-if="$auth.currentUser().type !== 'juser'" :placeholder="user.adress" title="Адрес" v-model="user.adress"/>
       <input-a type="text" :placeholder="user.email" title="Email" v-model="user.email"/>
       <div class="halfOf" v-if="$auth.currentUser().type !== 'partner'">
         <p class="greyFont">Статус</p>
@@ -31,8 +31,8 @@
         </select>
       </div>
       <div class='error' v-if="checkPass">Пароли не совпадают</div>
-      <input-a type="password" placeholder="Пароль" title="Пароль" v-model="checkPassword"/>
-      <input-a type="password" placeholder="Пароль" title="Подтвердите пароль" v-model="checkPassword2"/>
+      <input-a type="password" v-if="$auth.currentUser().type !== 'juser'" placeholder="Пароль" title="Пароль" v-model="checkPassword"/>
+      <input-a type="password" v-if="$auth.currentUser().type !== 'juser'" placeholder="Пароль" title="Подтвердите пароль" v-model="checkPassword2"/>
       <v-btn @click="editUser" small flat>Сохранить</v-btn>
       <v-btn @click="archiveUser" small flat>Удалить</v-btn>
     </div>
@@ -101,7 +101,6 @@ export default {
       async archiveUser () {
         try {
           const response = await UsersService.archiveUser(this.user.id)
-          console.log(response)
           alert(response.data.message)
           this.$modal.hide('UserEdit')
           window.location.reload()

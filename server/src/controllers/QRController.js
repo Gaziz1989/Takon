@@ -427,13 +427,26 @@ module.exports = {
           },
           {
             model: ReleasedService,
-            as: 'takon'
+            as: 'takon',
+            include: [
+              {
+                model: Service,
+                as: 'service',
+                include: [
+                  {
+                    model: User,
+                    as: 'owner'
+                  }
+                ]
+              }
+            ]
           }
           ]
         }).then(_qrs => {
           _qrs = _qrs.map(qr => {
             return qr.toJSON()
           })
+          console.log(_qrs)
           res.send({
             qrs: _qrs
           })
@@ -455,7 +468,19 @@ module.exports = {
           },
           {
             model: ReleasedService,
-            as: 'takon'
+            as: 'takon',
+            include: [
+              {
+                model: Service,
+                as: 'service',
+                include: [
+                  {
+                    model: User,
+                    as: 'owner'
+                  }
+                ]
+              }
+            ]
           }
           ]
         })

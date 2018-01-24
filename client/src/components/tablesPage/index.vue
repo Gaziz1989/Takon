@@ -23,7 +23,7 @@
         <td class="text-xs-right">{{props.item.service.owner.name ? props.item.service.owner.name : props.item.service.owner.email}}</td>
         <td class="text-xs-right">{{ props.item.description }}</td>
         <td class="text-xs-right">{{ props.item.price }}</td>
-        <td class="text-xs-right">/-/-/-/-/-/-/-/</td>
+        <td class="text-xs-right">{{ props.item.amount }}</td>
         <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
         <td class="text-xs-right">
           <v-btn flat fab dark small color="grey" @click="goToService(props.item.id)">
@@ -35,6 +35,7 @@
         От {{ pageStart }} к {{ pageStop }}
       </template>
     </v-data-table>
+
     <v-data-table
         v-else
         v-bind:headers="headers"
@@ -46,7 +47,7 @@
         <td class="text-xs-right">{{ props.item.owner.name ? props.item.owner.name : props.item.owner.email}}</td>
         <td class="text-xs-right">{{ props.item.description }}</td>
         <td class="text-xs-right">{{ props.item.price }}</td>
-        <td class="text-xs-right">{{ $auth.currentUser().type === 'juser' ? props.item.amount : '/-/-/-/-/-/-/-/'}}</td>
+        <td class="text-xs-right">{{ '/-/-/-/-/-/-/-/' }}</td>
         <td class="text-xs-right">{{ props.item.status === 'active' ? 'Активный' : 'Не активный' }}</td>
         <td class="text-xs-right">
           <v-btn flat fab dark small color="grey" @click="goToService(props.item.id)">

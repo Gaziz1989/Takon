@@ -10,7 +10,39 @@
       <span><strong>Сумма покупки:</strong> {{buying.price * buying.amount}}</span>
       <span><strong>Количество переданных:</strong> {{transferedAmount}}</span>
       <span><strong>Сумма переданных:</strong> {{transferedSumm}}</span>
+      <span><strong>Итого у Вас осталось:</strong> {{service.amount}}</span>
     </div>
+    <v-card>
+      <v-card-title>
+        Таконы сотрудников
+        <v-spacer></v-spacer>
+        <v-text-field
+          append-icon="search4"
+          label="Поиск"
+          single-line
+          hide-details
+          v-model="search4"
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+          v-bind:headers="headers4"
+          v-bind:items="takons"
+          v-bind:search="search4"
+        >
+        <template slot="items" slot-scope="props">
+          <td class="text-xs-left">{{props.item.owner.name}}</td>
+          <td class="text-xs-right">{{props.item.name}}</td>
+          <td class="text-xs-right">{{props.item.description}}</td>
+          <td class="text-xs-right">{{props.item.price}}</td>
+          <td class="text-xs-right">{{props.item.amount}}</td>
+          <td class="text-xs-right">{{props.item.amount * props.item.price}}</td>
+        </template>
+        <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+          От {{ pageStart }} к {{ pageStop }}
+        </template>
+      </v-data-table>
+    </v-card>
+
     <v-card>
       <v-card-title>
         История транзакций
@@ -27,6 +59,37 @@
           v-bind:headers="headers1"
           v-bind:items="transactions"
           v-bind:search="search1"
+        >
+        <template slot="items" slot-scope="props">
+          <td class="text-xs-left">{{ props.item.from.name ? props.item.from.name : props.item.from.email }}</td>
+          <td class="text-xs-right">{{ props.item.to.name ? props.item.to.name : props.item.to.email}}</td>
+          <td class="text-xs-right">{{ new Date(props.item.date).getDate() + '-' + new Date(props.item.date).getMonth() + 1 + '-' + new Date(props.item.date).getFullYear() }}</td>
+          <td class="text-xs-right">{{ props.item.amount }}</td>
+          <td class="text-xs-right">{{ props.item.price }}</td>
+          <td class="text-xs-right">{{ props.item.summ }}</td>
+        </template>
+        <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+          От {{ pageStart }} к {{ pageStop }}
+        </template>
+      </v-data-table>
+    </v-card>
+
+    <v-card>
+      <v-card-title>
+        История транзакций сотрудников
+        <v-spacer></v-spacer>
+        <v-text-field
+          append-icon="search"
+          label="Поиск"
+          single-line
+          hide-details
+          v-model="search3"
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+          v-bind:headers="headers3"
+          v-bind:items="emplTransfers"
+          v-bind:search="search3"
         >
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">{{ props.item.from.name ? props.item.from.name : props.item.from.email }}</td>
@@ -89,6 +152,12 @@
         tmp2: '',
         search2: '',
         pagination2: {},
+        tmp3: '',
+        search3: '',
+        pagination3: {},
+        tmp4: '',
+        search4: '',
+        pagination4: {},
         headers1: [
           {
             text: 'Передал ',
@@ -116,10 +185,38 @@
           { text: 'Цена за единицу', value: 'price' },
           { text: 'Сумма', value: 'summ' }
         ],
+        headers3: [
+          {
+            text: 'Передал ',
+            align: 'left',
+            sortable: false,
+            value: 'from'
+          },
+          { text: 'Принял', value: 'to' },
+          { text: 'Дата', value: 'date' },
+          { text: 'Количество', value: 'amount' },
+          { text: 'Цена за единицу', value: 'price' },
+          { text: 'Сумма', value: 'summ' }
+        ],
+        headers4: [
+          {
+            text: 'Имя сотрудника',
+            align: 'left',
+            sortable: false,
+            value: 'name'
+          },
+          { text: 'Название', value: 'naming' },
+          { text: 'Описание', value: 'description' },
+          { text: 'Цена за единицу', value: 'price' },
+          { text: 'Количество оставшихся', value: 'amount' },
+          { text: 'Сумма оставшихся', value: 'summ' }
+        ],
         service: {},
         buying: {},
         transactions: [],
-        usings: []
+        usings: [],
+        emplTransfers: [],
+        takons: []
       }
     },
     async beforeMount () {
@@ -129,6 +226,8 @@
         this.buying = response.data.selling
         this.transactions = response.data.transactions
         this.usings = response.data.usings
+        this.emplTransfers = response.data.emplTransfers
+        this.takons = response.data.takons
       } catch (error) {
         alert('Произошла ошибка')
       }

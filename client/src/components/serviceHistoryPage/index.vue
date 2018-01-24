@@ -43,37 +43,6 @@
 
     <v-card>
       <v-card-title>
-        История транзакций
-        <v-spacer></v-spacer>
-        <v-text-field
-          append-icon="search"
-          label="Поиск"
-          single-line
-          hide-details
-          v-model="search1"
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-          v-bind:headers="headers1"
-          v-bind:items="transactions"
-          v-bind:search="search1"
-        >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{ props.item.from.name ? props.item.from.name : props.item.from.email }}</td>
-          <td class="text-xs-right">{{ props.item.to.name ? props.item.to.name : props.item.to.email}}</td>
-          <td class="text-xs-right">{{ new Date(props.item.date).getDate() + '-' + new Date(props.item.date).getMonth() + 1 + '-' + new Date(props.item.date).getFullYear() }}</td>
-          <td class="text-xs-right">{{ props.item.amount }}</td>
-          <td class="text-xs-right">{{ props.item.price }}</td>
-          <td class="text-xs-right">{{ props.item.summ }}</td>
-        </template>
-        <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-          От {{ pageStart }} к {{ pageStop }}
-        </template>
-      </v-data-table>
-    </v-card>
-
-    <v-card>
-      <v-card-title>
         История использований
         <v-spacer></v-spacer>
         <v-text-field
@@ -166,8 +135,7 @@
         creation: {},
         takons: [],
         usings: [],
-        sellings: [],
-        transactions: []
+        sellings: []
       }
     },
     computed: {
@@ -208,7 +176,6 @@
         this.takons = response.data.takons
         this.usings = response.data.usings
         this.sellings = response.data.sellings
-        this.transactions = response.data.transactions
       } catch (error) {
         alert('Произошла ошибка')
       }
