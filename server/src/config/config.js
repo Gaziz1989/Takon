@@ -3,6 +3,7 @@ module.exports = {
   development: {
     dialect: 'sqlite',
     storage: path.resolve(__dirname, '../../takon.sqlite'),
+    charset: 'utf8',
     logging: false
   },
   test: {
@@ -12,6 +13,7 @@ module.exports = {
   production: {
     dialect: 'sqlite',
     storage: path.resolve(__dirname, '../../takon.sqlite'),
+    charset: 'utf8',
     logging: false
   },
   port: process.env.PORT || 8081,
