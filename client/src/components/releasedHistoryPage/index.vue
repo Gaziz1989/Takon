@@ -31,7 +31,7 @@
         >
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">{{props.item.owner.name}}</td>
-          <td class="text-xs-right">{{props.item.name}}</td>
+          <td class="text-xs-right">{{props.item.name ? props.item.name : props.item.phone}}</td>
           <td class="text-xs-right">{{props.item.description}}</td>
           <td class="text-xs-right">{{props.item.price}}</td>
           <td class="text-xs-right">{{props.item.amount}}</td>
@@ -61,8 +61,8 @@
           v-bind:search="search1"
         >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{ props.item.from.name ? props.item.from.name : props.item.from.email }}</td>
-          <td class="text-xs-right">{{ props.item.to.name ? props.item.to.name : props.item.to.email}}</td>
+          <td class="text-xs-left">{{ props.item.from.name ? props.item.from.name : props.item.from.phone }}</td>
+          <td class="text-xs-right">{{ props.item.to.name ? props.item.to.name : props.item.to.phone}}</td>
           <td class="text-xs-right">{{ new Date(props.item.date).getDate() + '-' + new Date(props.item.date).getMonth() + 1 + '-' + new Date(props.item.date).getFullYear() }}</td>
           <td class="text-xs-right">{{ props.item.amount }}</td>
           <td class="text-xs-right">{{ props.item.price }}</td>
@@ -92,8 +92,8 @@
           v-bind:search="search3"
         >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{ props.item.from.name ? props.item.from.name : props.item.from.email }}</td>
-          <td class="text-xs-right">{{ props.item.to.name ? props.item.to.name : props.item.to.email}}</td>
+          <td class="text-xs-left">{{ props.item.from.name ? props.item.from.name : props.item.from.phone }}</td>
+          <td class="text-xs-right">{{ props.item.to.name ? props.item.to.name : props.item.to.phone}}</td>
           <td class="text-xs-right">{{ new Date(props.item.date).getDate() + '-' + new Date(props.item.date).getMonth() + 1 + '-' + new Date(props.item.date).getFullYear() }}</td>
           <td class="text-xs-right">{{ props.item.amount }}</td>
           <td class="text-xs-right">{{ props.item.price }}</td>
@@ -123,9 +123,9 @@
           v-bind:search="search2"
         >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{ props.item.owner.name ? props.item.owner.name : props.item.owner.email }}</td>
-          <td class="text-xs-right">{{ props.item.scaner.name ? props.item.scaner.name : props.item.scaner.email}}</td>
-          <td class="text-xs-right">{{ props.item.scaner.employer.name ? props.item.scaner.employer.name : props.item.scaner.employer.email}}</td>
+          <td class="text-xs-left">{{ props.item.owner.name ? props.item.owner.name : props.item.owner.phone }}</td>
+          <td class="text-xs-right">{{ props.item.scaner.name ? props.item.scaner.name : props.item.scaner.phone}}</td>
+          <td class="text-xs-right">{{ props.item.scaner.employer.name ? props.item.scaner.employer.phone : props.item.scaner.employer.phone}}</td>
           <td class="text-xs-right">{{ new Date(props.item.date).getDate() + '-' + new Date(props.item.date).getMonth() + 1 + '-' + new Date(props.item.date).getFullYear() }}</td>
           <td class="text-xs-right">{{ props.item.amount }}</td>
           <td class="text-xs-right">{{ props.item.price }}</td>
