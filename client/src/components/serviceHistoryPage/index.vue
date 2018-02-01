@@ -28,8 +28,8 @@
           v-bind:search="search"
         >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{ props.item.organization.name ? props.item.organization.name : props.item.organization.email }}</td>
-          <td class="text-xs-right">{{ props.item.owner.name ? props.item.owner.name : props.item.owner.email}}</td>
+          <td class="text-xs-left">{{ props.item.organization.name ? props.item.organization.name : props.item.organization.phone }}</td>
+          <td class="text-xs-right">{{ props.item.owner.name ? props.item.owner.name : props.item.owner.phone}}</td>
           <td class="text-xs-right">{{ new Date(props.item.date).getDate() + '-' + new Date(props.item.date).getMonth() + 1 + '-' + new Date(props.item.date).getFullYear() }}</td>
           <td class="text-xs-right">{{ props.item.amount }}</td>
           <td class="text-xs-right">{{ props.item.price }}</td>
@@ -59,9 +59,9 @@
           v-bind:search="search2"
         >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{ props.item.owner.name ? props.item.owner.name : props.item.owner.email }}</td>
-          <td class="text-xs-right">{{ props.item.scaner.name ? props.item.scaner.name : props.item.scaner.email}}</td>
-          <td class="text-xs-right">{{ props.item.scaner.employer.name ? props.item.scaner.employer.name : props.item.scaner.employer.email}}</td>
+          <td class="text-xs-left">{{ props.item.owner.name ? props.item.owner.name : props.item.owner.phone }}</td>
+          <td class="text-xs-right">{{ props.item.scaner.name ? props.item.scaner.name : props.item.scaner.phone}}</td>
+          <td class="text-xs-right">{{ props.item.scaner.employer.name ? props.item.scaner.employer.name : props.item.scaner.employer.phone}}</td>
           <td class="text-xs-right">{{ new Date(props.item.date).getDate() + '-' + new Date(props.item.date).getMonth() + 1 + '-' + new Date(props.item.date).getFullYear() }}</td>
           <td class="text-xs-right">{{ props.item.amount }}</td>
           <td class="text-xs-right">{{ props.item.price }}</td>

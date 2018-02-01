@@ -116,12 +116,6 @@
           <span><i class="fa fa-table" aria-hidden="true"></i></span>
         </router-link>
       </li>
-      
-      <li v-if="!isUserLoggedIn">
-        <router-link to="register">
-          <span><i class="fa fa-user-plus" aria-hidden="true"></i></span>
-        </router-link>
-      </li>
 
       <li v-if="!isUserLoggedIn">
         <router-link to="login">

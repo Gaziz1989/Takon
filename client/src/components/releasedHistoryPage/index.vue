@@ -30,12 +30,17 @@
           v-bind:search="search4"
         >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{props.item.owner.name}}</td>
-          <td class="text-xs-right">{{props.item.name ? props.item.name : props.item.phone}}</td>
+          <td class="text-xs-left">{{props.item.owner.name ? props.item.owner.name : props.item.owner.phone}}</td>
+          <td class="text-xs-right">{{props.item.name}}</td>
           <td class="text-xs-right">{{props.item.description}}</td>
           <td class="text-xs-right">{{props.item.price}}</td>
           <td class="text-xs-right">{{props.item.amount}}</td>
           <td class="text-xs-right">{{props.item.amount * props.item.price}}</td>
+          <td class="text-xs-right">
+            <v-btn flat fab dark small color="grey" @click="removeTakon(props.item)">
+              <v-icon>remove</v-icon>
+            </v-btn>
+          </td>
         </template>
         <template slot="pageText" slot-scope="{ pageStart, pageStop }">
           От {{ pageStart }} к {{ pageStop }}
@@ -140,6 +145,7 @@
 </template>
 <script>
   import HistoriesService from '@/services/HistoriesService'
+  import ServicesService from '@/services/ServicesService'
   export default {
     name: 'TablesPage',
     components: {},
@@ -209,7 +215,8 @@
           { text: 'Описание', value: 'description' },
           { text: 'Цена за единицу', value: 'price' },
           { text: 'Количество оставшихся', value: 'amount' },
-          { text: 'Сумма оставшихся', value: 'summ' }
+          { text: 'Сумма оставшихся', value: 'summ' },
+          { text: 'Уменьшить', value: 'action' }
         ],
         service: {},
         buying: {},
@@ -249,13 +256,21 @@
       }
     },
     methods: {
-      async goToService (_id) {
-        this.$router.push({
-          name: 'ServiceHistoryPage',
-          params: {
-            id: _id
+      async removeTakon (item) {
+        try {
+          var takons = prompt('Сколько хотите отнять?', '')
+          if (Number.isNaN(Number(takons.trim())) || Number(takons.trim()) <= 0) {
+            return alert('Введите правильное количество')
           }
-        })
+          if (Number(takons) > Number(item.amount)) {
+            return alert('Вы превысили количество таконов сотрудника')
+          }
+          const response = await ServicesService.minusTakons(item.id, takons, this.service.id)
+          alert(response.data.message)
+          this.$router.go(-1)
+        } catch (error) {
+          alert('Произошла ошибка')
+        }
       }
     }
   }

@@ -1,0 +1,15 @@
+span {
+  margin-left: 15px;
+  display: block;
+}
+input {
+	border: 1px solid #c3c3c3;
+}
+.basicinfo {
+  margin: 100px 0;
+  text-align: left;
+}
+
+.card {
+  margin-top: 50px;
+}

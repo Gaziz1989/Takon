@@ -4,7 +4,7 @@
       <h6>Добавление нового партнера</h6>
       <p>Добавьте нового партнера заполнив следующие поля.</p>
       <div class='error' v-html="error"/>
-      <input-a type="text" title="Логин" v-model="user.name" full/>
+      <input-a type="text" title="ФИО" v-model="user.name" full/>
       <input-a type="text" title="Email" v-model="user.email" full/>
       <div class='error' v-if="checkPass">Пароли не совпадают</div>
       <input-a type="password" title="Пароль" v-model="user.password" full/>

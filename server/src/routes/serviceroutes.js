@@ -13,6 +13,7 @@ module.exports = (app) => {
   app.post('/getreleased', isAuthenticated, ServiceController.getReleased)
   app.post('/getnotification', isAuthenticated, ServiceController.getNotification)
   app.post('/approvenotification', isAuthenticated, ServiceController.approveNotification)
+  app.post('/cancelnotification', isAuthenticated, ServiceController.cancelNotification)
   app.post('/getapproved', isAuthenticated, ServiceController.getApproved)
   app.post('/donutservice', isAuthenticated, ServiceController.donutService)
   app.post('/gettakons', isAuthenticated, ServiceController.getTakons)
@@ -20,4 +21,6 @@ module.exports = (app) => {
   app.post('/aprovecreation', isAuthenticated, ServiceController.aproveCreation)
   app.post('/canselcreation', isAuthenticated, ServiceController.canselCreation)
   app.post('/getownreleased', isAuthenticated, ServiceController.getOwnReleased)
+  app.post('/minustakons', isAuthenticated, ServiceController.minusTakons)
+  app.post('/transfertakonstomany', isAuthenticated, ServiceController.transferTakons)
 }

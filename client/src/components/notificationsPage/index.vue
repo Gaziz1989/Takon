@@ -7,7 +7,7 @@
   >
     <v-toolbar color="grey lighten-4" flat>
       <v-toolbar-side-icon></v-toolbar-side-icon>
-      <v-toolbar-title class="black--text">Организации</v-toolbar-title>
+      <v-toolbar-title class="black--text">Заявки</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-container

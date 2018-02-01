@@ -29,7 +29,7 @@
           </v-btn>
         </td>
         <td class="text-xs-right" v-else>
-          <v-btn flat fab dark small color="grey" @click="openDonutModal(props.item.id)">
+          <v-btn flat fab dark small color="grey" @click="goToDonutPage(props.item.id)">
             <v-icon>pan_tool</v-icon>
           </v-btn>
         </td>
@@ -89,8 +89,13 @@ export default {
       openEditModal (_id) {
         this.$modal.show('ServiceEdit', {id: _id})
       },
-      openDonutModal (_id) {
-        this.$modal.show('DonutService', {id: _id})
+      goToDonutPage (_id) {
+        this.$router.push({
+          name: 'TakonDonutPage',
+          params: {
+            id: _id
+          }
+        })
       }
     }
 }

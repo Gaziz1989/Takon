@@ -44,6 +44,7 @@
         </span>
       </div>
       <v-btn @click="approveNotification" small flat>Подтвердить</v-btn>
+      <v-btn @click="cancelNotification" small flat>Отменить</v-btn>
     </div>
   </modal>
 </template>
@@ -96,6 +97,20 @@ export default {
           const answer = confirm('Нажмите OK для продолжения или Cancel для выхода.')
           if (answer) {
             const response = await ServicesService.approveNotification(this.notification)
+            alert(response.data.message)
+            window.location.reload()
+          } else {
+            this.$modal.hide('NotificationModal')
+          }
+        } catch (error) {
+          alert(error.response.data.error)
+        }
+      },
+      async cancelNotification () {
+        try {
+          const answer = confirm('Нажмите OK для продолжения или Cancel для выхода.')
+          if (answer) {
+            const response = await ServicesService.cancelNotification(this.notification.id)
             alert(response.data.message)
             window.location.reload()
           } else {

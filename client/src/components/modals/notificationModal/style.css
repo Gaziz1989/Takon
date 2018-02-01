@@ -16,6 +16,9 @@ span {
   display: inline-block;
   width: 100%;
 }
+input {
+  border: 1px solid #c3c3c3;
+}
 .fullOf{
   text-align: left;
   display: inline-block;

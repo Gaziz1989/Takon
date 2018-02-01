@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import Register from '@/components/Register'
 import Login from '@/components/Login'
 import Main from '@/components/Main'
 import Profile from '@/components/profilePage'
@@ -21,6 +20,7 @@ import NotificationsPage from '@/components/notificationsPage'
 import TablesPage from '@/components/tablesPage'
 import ServiceHistoryPage from '@/components/serviceHistoryPage'
 import ReleasedHistoryPage from '@/components/releasedHistoryPage'
+import TakonDonutPage from '@/components/takonDonutPage'
 import Auth from '../utils/Auth'
 
 Vue.use(Router)
@@ -118,14 +118,14 @@ export default new Router({
       component: Auth().isLoggedIn() && Auth().currentUser().type === 'juser' ? ReleasedHistoryPage : Profile
     },
     {
+      path: '/takondonutpage',
+      name: 'TakonDonutPage',
+      component: Auth().isLoggedIn() && Auth().currentUser().type === 'juser' ? TakonDonutPage : Profile
+    },
+    {
       path: '/tablespage',
       name: 'TablesPage',
       component: Auth().isLoggedIn() ? TablesPage : Main
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register
     },
     {
       path: '/login',

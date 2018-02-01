@@ -1,6 +1,102 @@
 const { Notification, Service, User, ReleasedService, ServiceCreation, ServiceUseHistory, ServiceSellHistory, ServiceTransactionHistory } = require('../models')
 
 module.exports = {
+  async transferTakons (req, res) {
+    try {
+      const takons = JSON.parse(req.body.takons)
+      const released_id = req.body.released_id
+      const released = await ReleasedService.findOne({
+        where: {
+          id: released_id
+        }
+      })
+
+      var total = 0
+      await takons.map(takon => {
+        total = total + Number(takon.amount)
+      })
+
+      if (Number(total) > Number(released.amount)) {
+        return res.status(400).send({
+          error: 'Вы превысили количество'
+        })
+      }
+
+      await takons.map(async takon => {
+        let emplTakon = await ReleasedService.findOne({
+          where: {
+            ownerId: takon.id
+          }
+        })
+        if (emplTakon) {
+          await emplTakon.update({
+            amount: Number(emplTakon.amount) + Number(takon.amount)
+          })
+        } else {
+          emplTakon = await ReleasedService.create({
+            name: released.name,
+            description: released.description,
+            price: released.price,
+            unit: released.unit,
+            amount: Number(takon.amount),
+            ownerId: takon.id,
+            serviceId: released.serviceId
+          })
+        }
+        const history = await ServiceTransactionHistory.create({
+          amount: Number(takon.amount),
+          summ: Number(released.price) * Number(takon.amount),
+          date: new Date().getTime(),
+          price: Number(released.price),
+          fromId: req.user.id,
+          toId: takon.id,
+          instanceServiceId: released.serviceId,
+          transferedServiceId: released.id
+        })
+      })
+
+      await released.update({
+        amount: Number(released.amount) - Number(total)
+      })
+
+      await res.send({
+        message: 'Успешно передано!'
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
+  async minusTakons (req, res) {
+    try {
+      const released = await ReleasedService.findOne({
+        where: {
+          id: req.body.id
+        }
+      })
+      const orgTakon = await ReleasedService.findOne({
+        where: {
+          id: req.body.org_takon_id
+        }
+      })
+      await released.update({
+        amount: Number(released.amount) - Number(req.body.amount)
+      })
+      await orgTakon.update({
+        amount: Number(orgTakon.amount) + Number(req.body.amount)
+      })
+      await res.send({
+        message: 'Изменение сохранено!'
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
   async getOwnReleased (req, res) {
     try {
       await ReleasedService.findAll({
@@ -315,6 +411,23 @@ module.exports = {
           message: 'Заявка подтверждена успешно!'
         })
       }
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        error: error
+      })
+    }
+  },
+  async cancelNotification (req, res) {
+    try {
+      const canseled = await Notification.destroy({
+        where: {
+          id: req.body.id
+        }
+      })
+      res.send({
+        message: 'Заявка отменена!'
+      })
     } catch (error) {
       console.log(error)
       res.status(500).send({

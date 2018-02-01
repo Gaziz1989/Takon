@@ -1,6 +1,14 @@
 import Api from '@/services/Api'
 
 export default {
+  transferTakon (_takons, _releasedId) {
+    const formData = `released_id=${_releasedId}&takons=${JSON.stringify(_takons)}`
+    return Api().post('transfertakonstomany', formData)
+  },
+  minusTakons (_id, _takons, orgTakonId) {
+    const formData = `id=${_id}&amount=${_takons}&org_takon_id=${orgTakonId}`
+    return Api().post('minustakons', formData)
+  },
   getOwnReleased () {
     return Api().post('getownreleased')
   },
@@ -53,6 +61,10 @@ export default {
   approveNotification (_notification) {
     const formData = `notification=${JSON.stringify(_notification)}`
     return Api().post('approvenotification', formData)
+  },
+  cancelNotification (_id) {
+    const formData = `id=${_id}`
+    return Api().post('cancelnotification', formData)
   },
   getApproved (_id) {
     const formData = `organization_id=${_id}`

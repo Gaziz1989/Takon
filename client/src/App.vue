@@ -55,7 +55,7 @@ a {
 .container {
   margin-left: 5%!important;
 }
- .fa {
+.fa {
   font-size: 1.5em;
   color: grey;
 }

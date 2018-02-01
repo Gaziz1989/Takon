@@ -18,7 +18,9 @@
         <v-flex xs3 v-for="organization in organizations" :key="organization.id">
           <v-card color="green darken-3" class="white--text" hover>
             <v-card-title primary-title>
-              <div class="headline">{{organization.email}}</div>
+              <div class="headline">
+                {{organization.name}}
+              </div>
             </v-card-title>
             <v-card-actions>
               <v-btn flat dark @click="goToServices(organization.id)">Посмотреть доступные услуги</v-btn>
