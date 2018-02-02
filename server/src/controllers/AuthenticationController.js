@@ -90,12 +90,12 @@ module.exports = {
                 if (body.data.balance > 50) {
                   await request({
                     method: 'GET',
-                    uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + password,
+                    uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=Ваш код подтверждения Takon' + password,
                     json: true
                   }, function (_error2, response2, body2) {
                     if (_error2) {
                       res.status(400).send({
-                        error: 'Произошла какая то неведомая хуита'
+                        error: 'Произошла ошибка'
                       })
                     } else {
                       res.send({
@@ -105,7 +105,7 @@ module.exports = {
                   })
                 } else if (body.data.balance <= 5) {
                   res.status(400).send({
-                    error: 'Произошла какая то неведомая хуита. Пожалуйста свяжитесь с администратором!'
+                    error: 'Произошла ошибка. Пожалуйста свяжитесь с администратором!'
                   })
                 } else {
                   request({
@@ -115,17 +115,17 @@ module.exports = {
                   }, async function (_error2, response2, body2) {
                     if (_error2) {
                       res.status(400).send({
-                        error: 'Произошла какая то неведомая хуита'
+                        error: 'Произошла ошибка'
                       })
                     } else {
                       await request({
                         method: 'GET',
-                        uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + password,
+                        uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=Ваш код подтверждения Takon' + password,
                         json: true
                       }, function (_error3, response3, body3) {
                         if (_error3) {
                           res.status(400).send({
-                            error: 'Произошла какая то неведомая хуита'
+                            error: 'Произошла ошибка'
                           })
                         } else {
                           res.send({
@@ -155,12 +155,12 @@ module.exports = {
                   if (body.data.balance > 50) {
                     await request({
                       method: 'GET',
-                      uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + password,
+                      uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=Ваш код подтверждения Takon' + password,
                       json: true
                     }, function (_error2, response2, body2) {
                       if (_error2) {
                         res.status(400).send({
-                          error: 'Произошла какая то неведомая хуита'
+                          error: 'Произошла ошибка'
                         })
                       } else {
                         res.send({
@@ -170,7 +170,7 @@ module.exports = {
                     })
                   } else if (body.data.balance <= 5) {
                     res.status(400).send({
-                      error: 'Произошла какая то неведомая хуита. Пожалуйста свяжитесь с администратором!'
+                      error: 'Произошла ошибка. Пожалуйста свяжитесь с администратором!'
                     })
                   } else {
                     request({
@@ -180,7 +180,7 @@ module.exports = {
                     }, async function (_error2, response2, body2) {
                       if (_error2) {
                         res.status(400).send({
-                          error: 'Произошла какая то неведомая хуита'
+                          error: 'Произошла ошибка'
                         })
                       } else {
                         await request({
@@ -190,7 +190,7 @@ module.exports = {
                         }, function (_error2, response2, body2) {
                           if (_error2) {
                             res.status(400).send({
-                              error: 'Произошла какая то неведомая хуита'
+                              error: 'Произошла ошибка'
                             })
                           } else {
                             res.send({
@@ -214,7 +214,7 @@ module.exports = {
     } catch (error) {
       console.log(error)
       res.status(500).send({
-        error: 'Произошла какая то неведомая хуита'
+        error: 'Произошла ошибка'
       })
     }
   },
