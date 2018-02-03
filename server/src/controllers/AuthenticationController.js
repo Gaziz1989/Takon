@@ -62,6 +62,7 @@ module.exports = {
   async mregister (req, res) {
     try {
       const password = await randomNumber(1000, 10000)
+      console.log(password)
       const _phone = req.body.phone.split('')
       _phone[0] = 7
       const user = {
@@ -185,7 +186,7 @@ module.exports = {
                       } else {
                         await request({
                           method: 'GET',
-                          uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + password,
+                          uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=Ваш код подтверждения Takon' + password,
                           json: true
                         }, function (_error2, response2, body2) {
                           if (_error2) {
