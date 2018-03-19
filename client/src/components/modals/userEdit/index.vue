@@ -23,13 +23,6 @@
           <option value="inactive">Не активный</option>
         </select>
       </div>
-      <div class="halfOf" v-if="$auth.currentUser().type == 'admin'">
-        <p class="greyFont">Юр.пользователь</p>
-        <select v-model="user.employerId">
-          <option value=""></option>
-          <option v-for="juser in jusers" :value="juser.id">{{juser.name ? juser.name : juser.email}}</option>
-        </select>
-      </div>
       <div class='error' v-if="checkPass">Пароли не совпадают</div>
       <input-a type="password" v-if="$auth.currentUser().type !== 'juser'" placeholder="Пароль" title="Пароль" v-model="checkPassword"/>
       <input-a type="password" v-if="$auth.currentUser().type !== 'juser'" placeholder="Пароль" title="Подтвердите пароль" v-model="checkPassword2"/>
@@ -60,7 +53,6 @@ export default {
           employerId: '',
           id: ''
         },
-        jusers: [],
         checkPassword: '',
         checkPassword2: ''
       }
@@ -79,8 +71,6 @@ export default {
       async beforeOpen (event) {
         const response = await UsersService.getUser(event.params.id)
         this.user = response.data.user
-        const response1 = await UsersService.getUsers('juser')
-        this.jusers = response1.data.users
       },
       async editUser () {
         try {

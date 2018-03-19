@@ -12,7 +12,7 @@
     </div>
     <v-card>
       <v-card-title>
-        Сотрудники
+        Пользователи
         <v-spacer></v-spacer>
         <v-btn flat fab dark small color="grey" :disabled="disabled" @click="transferTakon()">
           <v-icon>edit</v-icon>
@@ -91,7 +91,7 @@ export default {
   async beforeMount () {
     try {
       const response = await ServicesService.getReleased(this.$route.params.id)
-      const response1 = await UsersService.getEmployees(this.$auth.currentUser().id)
+      const response1 = await UsersService.getUsers('user')
       this.released = response.data.released
       this.users = response1.data.users
     } catch (error) {

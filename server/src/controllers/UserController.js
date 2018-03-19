@@ -32,8 +32,7 @@ module.exports = {
           status: _user.status ? _user.status : user.status,
           password: _password ? _password : user.password,
           bio: _user.bio ? _user.bio : user.bio,
-          balance: _user.balance ? _user.balance : user.balance,
-          employerId: _user.employerId ? _user.employerId : user.employerId
+          balance: _user.balance ? _user.balance : user.balance
         }, {
           where: {
             id: _user.id
@@ -64,6 +63,7 @@ module.exports = {
   },
   async getUsers (req, res) {
     try {
+      console.log(req.body.type)
       await User.findAll({
         where: {
           archived: false,

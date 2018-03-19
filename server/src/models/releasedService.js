@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
   ReleasedService.associate = function (models) {
     models.ReleasedService.belongsTo(models.User, { as: 'owner' })
     models.ReleasedService.belongsTo(models.Service, { as: 'service' })
+    models.ReleasedService.belongsTo(models.User, { as: 'juser' })
   }
   return ReleasedService
 }

@@ -5,7 +5,6 @@
       <p>Добавьте товар/услугу заполнив следующие поля.</p>
       <div class='error' v-html="error"/>
       <input-a type="text" title="Название" v-model="service.name" full/>
-      <input-a type="text" title="Единица измерения" v-model="service.unit" full/>
       <input-a type="text" title="Цена за единицу" v-model="service.price" full/>
       <div class="fullOf">
         <p class="greyFont">Иная информация</p>
@@ -38,7 +37,7 @@ export default {
       return {
         service: {
           name: '',
-          unit: '',
+          unit: '1',
           description: '',
           price: ''
         },

@@ -62,7 +62,8 @@ module.exports = {
   async mregister (req, res) {
     try {
       const password = await randomNumber(1000, 10000)
-      console.log(password)
+      // console.log(password)
+      // console.log(req.body.phone)
       const _phone = req.body.phone.split('')
       _phone[0] = 7
       const user = {
@@ -91,7 +92,7 @@ module.exports = {
                 if (body.data.balance > 50) {
                   await request({
                     method: 'GET',
-                    uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=Ваш код подтверждения Takon' + password,
+                    uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + encodeURI('Код подтверждения Takon: ' + password),
                     json: true
                   }, function (_error2, response2, body2) {
                     if (_error2) {
@@ -121,7 +122,7 @@ module.exports = {
                     } else {
                       await request({
                         method: 'GET',
-                        uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=Ваш код подтверждения Takon' + password,
+                        uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + encodeURI('Код подтверждения Takon: ' + password),
                         json: true
                       }, function (_error3, response3, body3) {
                         if (_error3) {
@@ -156,7 +157,7 @@ module.exports = {
                   if (body.data.balance > 50) {
                     await request({
                       method: 'GET',
-                      uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=Ваш код подтверждения Takon' + password,
+                      uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + encodeURI('Код подтверждения Takon: ' + password),
                       json: true
                     }, function (_error2, response2, body2) {
                       if (_error2) {
@@ -186,7 +187,7 @@ module.exports = {
                       } else {
                         await request({
                           method: 'GET',
-                          uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=Ваш код подтверждения Takon' + password,
+                          uri: path + 'Message/SendSMSMessage/?apiKey=' + appKey + '&recipient=' + user.phone + '&text=' + encodeURI('Код подтверждения Takon: ' + password),
                           json: true
                         }, function (_error2, response2, body2) {
                           if (_error2) {

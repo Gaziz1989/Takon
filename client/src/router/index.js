@@ -85,12 +85,12 @@ export default new Router({
     {
       path: '/addemployees',
       name: 'AddEmployeePage',
-      component: (Auth().isLoggedIn() && Auth().currentUser().type === 'partner') || (Auth().isLoggedIn() && Auth().currentUser().type === 'juser') ? AddEmployeePage : Profile
+      component: (Auth().isLoggedIn() && Auth().currentUser().type === 'partner') ? AddEmployeePage : Profile
     },
     {
       path: '/employees',
       name: 'EmployeesPage',
-      component: (Auth().isLoggedIn() && Auth().currentUser().type === 'partner') || (Auth().isLoggedIn() && Auth().currentUser().type === 'juser') ? EmployeesPage : Profile
+      component: (Auth().isLoggedIn() && Auth().currentUser().type === 'partner') ? EmployeesPage : Profile
     },
     {
       path: '/services',

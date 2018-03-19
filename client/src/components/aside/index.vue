@@ -57,17 +57,17 @@
         </ul>
       </li>
 
-      <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
+      <li v-if="isUserLoggedIn && isUserPartner">
         <router-link to="employees">
           <span><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
         </router-link>
         <ul>
-          <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
+          <li v-if="isUserLoggedIn && isUserPartner">
             <router-link to="employees">
               <span><i class="fa fa-user-circle-o" aria-hidden="true"> Список всех сотрудников</i></span>
             </router-link>
           </li>
-          <li v-if="isUserLoggedIn && isUserPartner || isUserLoggedIn && isUserJUser">
+          <li v-if="isUserLoggedIn && isUserPartner">
             <router-link to="addemployees">
               <span><i class="fa fa-user-circle-o" aria-hidden="true"> Добавить нового сотрудника</i></span>
             </router-link>

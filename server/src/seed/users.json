@@ -27,8 +27,22 @@
     "email": "pipu@pipu.ru",
     "password": "1234",
     "type": "user",
-    "phone": "77079048961",
-    "name": "pipu"
+    "name": "pipu",
+    "phone": "77074236611"
+  },
+  {
+    "email": "isma@isma.ru",
+    "password": "1234",
+    "type": "user",
+    "name": "isma",
+    "phone": "77773999909"
+  },
+  {
+    "email": "sisu@sisu.ru",
+    "password": "1234",
+    "type": "user",
+    "name": "sisu",
+    "phone": "77775552211"
   },
   {
     "email": "jiju@jiju.ru",

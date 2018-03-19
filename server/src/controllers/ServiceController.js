@@ -3,6 +3,8 @@ const { Notification, Service, User, ReleasedService, ServiceCreation, ServiceUs
 module.exports = {
   async transferTakons (req, res) {
     try {
+      console.log(req.user.id)
+      const juserId = req.user.id
       const takons = JSON.parse(req.body.takons)
       const released_id = req.body.released_id
       const released = await ReleasedService.findOne({
@@ -25,14 +27,18 @@ module.exports = {
       await takons.map(async takon => {
         let emplTakon = await ReleasedService.findOne({
           where: {
-            ownerId: takon.id
+            ownerId: takon.id,
+            serviceId: released.id,
+            juserId: juserId
           }
         })
         if (emplTakon) {
+          console.log('3333333333333333333333333333333')
           await emplTakon.update({
             amount: Number(emplTakon.amount) + Number(takon.amount)
           })
         } else {
+          console.log('3838383838383838')
           emplTakon = await ReleasedService.create({
             name: released.name,
             description: released.description,
@@ -40,7 +46,8 @@ module.exports = {
             unit: released.unit,
             amount: Number(takon.amount),
             ownerId: takon.id,
-            serviceId: released.serviceId
+            serviceId: released.serviceId,
+            juserId: juserId
           })
         }
         const history = await ServiceTransactionHistory.create({
@@ -327,6 +334,7 @@ module.exports = {
     try {
       const data = await JSON.parse(req.body.notification)
       data.status = 'active'
+      console.log(data, '+++++++++++++++++++++++')
       const released = await ReleasedService.findOne({
         where: {
           ownerId: data.ownerId,

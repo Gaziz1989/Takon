@@ -12,41 +12,6 @@
       <span><strong>Сумма переданных:</strong> {{transferedSumm}}</span>
       <span><strong>Итого у Вас осталось:</strong> {{service.amount}}</span>
     </div>
-    <v-card>
-      <v-card-title>
-        Таконы сотрудников
-        <v-spacer></v-spacer>
-        <v-text-field
-          append-icon="search4"
-          label="Поиск"
-          single-line
-          hide-details
-          v-model="search4"
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-          v-bind:headers="headers4"
-          v-bind:items="takons"
-          v-bind:search="search4"
-        >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{props.item.owner.name ? props.item.owner.name : props.item.owner.phone}}</td>
-          <td class="text-xs-right">{{props.item.name}}</td>
-          <td class="text-xs-right">{{props.item.description}}</td>
-          <td class="text-xs-right">{{props.item.price}}</td>
-          <td class="text-xs-right">{{props.item.amount}}</td>
-          <td class="text-xs-right">{{props.item.amount * props.item.price}}</td>
-          <td class="text-xs-right">
-            <v-btn flat fab dark small color="grey" @click="removeTakon(props.item)">
-              <v-icon>remove</v-icon>
-            </v-btn>
-          </td>
-        </template>
-        <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-          От {{ pageStart }} к {{ pageStop }}
-        </template>
-      </v-data-table>
-    </v-card>
 
     <v-card>
       <v-card-title>
@@ -64,37 +29,6 @@
           v-bind:headers="headers1"
           v-bind:items="transactions"
           v-bind:search="search1"
-        >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{ props.item.from.name ? props.item.from.name : props.item.from.phone }}</td>
-          <td class="text-xs-right">{{ props.item.to.name ? props.item.to.name : props.item.to.phone}}</td>
-          <td class="text-xs-right">{{ new Date(props.item.date).getDate() + '-' + new Date(props.item.date).getMonth() + 1 + '-' + new Date(props.item.date).getFullYear() }}</td>
-          <td class="text-xs-right">{{ props.item.amount }}</td>
-          <td class="text-xs-right">{{ props.item.price }}</td>
-          <td class="text-xs-right">{{ props.item.summ }}</td>
-        </template>
-        <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-          От {{ pageStart }} к {{ pageStop }}
-        </template>
-      </v-data-table>
-    </v-card>
-
-    <v-card>
-      <v-card-title>
-        История транзакций сотрудников
-        <v-spacer></v-spacer>
-        <v-text-field
-          append-icon="search"
-          label="Поиск"
-          single-line
-          hide-details
-          v-model="search3"
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-          v-bind:headers="headers3"
-          v-bind:items="emplTransfers"
-          v-bind:search="search3"
         >
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">{{ props.item.from.name ? props.item.from.name : props.item.from.phone }}</td>
@@ -204,26 +138,10 @@
           { text: 'Цена за единицу', value: 'price' },
           { text: 'Сумма', value: 'summ' }
         ],
-        headers4: [
-          {
-            text: 'Имя сотрудника',
-            align: 'left',
-            sortable: false,
-            value: 'name'
-          },
-          { text: 'Название', value: 'naming' },
-          { text: 'Описание', value: 'description' },
-          { text: 'Цена за единицу', value: 'price' },
-          { text: 'Количество оставшихся', value: 'amount' },
-          { text: 'Сумма оставшихся', value: 'summ' },
-          { text: 'Уменьшить', value: 'action' }
-        ],
         service: {},
         buying: {},
         transactions: [],
-        usings: [],
-        emplTransfers: [],
-        takons: []
+        usings: []
       }
     },
     async beforeMount () {
@@ -233,8 +151,6 @@
         this.buying = response.data.selling
         this.transactions = response.data.transactions
         this.usings = response.data.usings
-        this.emplTransfers = response.data.emplTransfers
-        this.takons = response.data.takons
       } catch (error) {
         alert('Произошла ошибка')
       }

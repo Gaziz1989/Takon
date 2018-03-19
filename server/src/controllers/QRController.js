@@ -38,7 +38,6 @@ module.exports = {
           }
         ]
       })
-      console.log(req.body)
       const scanner = await User.findOne({
         where: {
           id: req.user.id
@@ -55,12 +54,12 @@ module.exports = {
           error: 'QR не неайден, попробуйте еще раз'
         })
       } else {
-        if (qrcode.owner.employerId !== scanner.employerId) {
-          const orgName = qrcode.takon.service.owner.name ? qrcode.takon.service.owner.name : qrcode.takon.service.owner.email
-          return res.status(400).send({
-            error: 'Вы можете передавать таконы только внутри компании ' + orgName
-          })
-        }
+        // if (qrcode.owner.employerId !== scanner.employerId) {
+        //   const orgName = qrcode.takon.service.owner.name ? qrcode.takon.service.owner.name : qrcode.takon.service.owner.email
+        //   return res.status(400).send({
+        //     error: 'Вы можете передавать таконы только внутри компании ' + orgName
+        //   })
+        // }
         await qrcode.update({
           scannerId: req.user.id,
           scandate: new Date().getTime(),
@@ -81,6 +80,10 @@ module.exports = {
                 as: 'owner'
               }
             ]
+          },
+          {
+            model: User,
+            as: 'juser'
           }
         ]
       })
@@ -91,7 +94,9 @@ module.exports = {
       }
       let receiverTakon = await ReleasedService.findOne({
         where: {
-          ownerId: scanner.id
+          ownerId: scanner.id,
+          serviceId: takon.serviceId,
+          juserId: takon.juserId
         },
         include: [
           {
@@ -107,6 +112,10 @@ module.exports = {
                 as: 'owner'
               }
             ]
+          },
+          {
+            model: User,
+            as: 'juser'
           }
         ]
       })
@@ -115,10 +124,11 @@ module.exports = {
           name: takon.name,
           description: takon.description,
           price: Number(takon.price),
-          unit: Number(takon.unit),
+          unit: takon.unit,
           amount: 0,
           ownerId: scanner.id,
-          serviceId: takon.serviceId
+          serviceId: takon.serviceId,
+          juserId: takon.juserId
         })
       }
       await receiverTakon.update({
@@ -135,7 +145,8 @@ module.exports = {
         fromId: qrcode.ownerId,
         toId: qrcode.scannerId,
         instanceServiceId: takon.serviceId,
-        transferedServiceId: qrcode.takonId
+        transferedServiceId: qrcode.takonId,
+        juserId: takon.juserId
       })
       res.send({
         message: 'Сканирование прошло успешно'
@@ -175,13 +186,7 @@ module.exports = {
       const receiver = await User.findOne({
         where: {
           phone: _phone.join('')
-        },
-        include: [
-          {
-            model: User,
-            as: 'employer'
-          }
-        ]
+        }
       })
       if (!receiver) {
         res.status(400).send({
@@ -191,20 +196,14 @@ module.exports = {
       const sender = await User.findOne({
         where: {
           id: req.user.id
-        },
-        include: [
-          {
-            model: User,
-            as: 'employer'
-          }
-        ]
+        }
       })
-      if (receiver.employerId !== sender.employerId) {
-        const orgName = sender.employer.name ? sender.employer.name : sender.employer.email
-        res.status(400).send({
-          error: 'Вы можете передавать таконы только внутри компании ' + orgName
-        })
-      }
+      // if (receiver.employerId !== sender.employerId) {
+      //   const orgName = sender.employer.name ? sender.employer.name : sender.employer.email
+      //   res.status(400).send({
+      //     error: 'Вы можете передавать таконы только внутри компании ' + orgName
+      //   })
+      // }
       if (takon.amount < req.body.amount) {
         return res.status(400).send({
           error: 'Не достаточное количество таконов'
@@ -212,7 +211,9 @@ module.exports = {
       }
       let receiverTakon = await ReleasedService.findOne({
         where: {
-          ownerId: receiver.id
+          ownerId: receiver.id,
+          serviceId: takon.serviceId,
+          juserId: takon.juserId
         },
         include: [
           {
@@ -236,10 +237,11 @@ module.exports = {
           name: takon.name,
           description: takon.description,
           price: Number(takon.price),
-          unit: Number(takon.unit),
+          unit: takon.unit,
           amount: 0,
           ownerId: receiver.id,
           serviceId: takon.serviceId,
+          juserId: takon.juserId
         })
       }
       await receiverTakon.update({
@@ -256,7 +258,8 @@ module.exports = {
         fromId: sender.id,
         toId: receiver.id,
         instanceServiceId: takon.serviceId,
-        transferedServiceId: takon.id
+        transferedServiceId: takon.id,
+        juserId: takon.juserId
       })
       res.send({
         message: 'Услуга успешно передана'
@@ -395,7 +398,8 @@ module.exports = {
         ownerId: takon.ownerId,
         scanerId: req.user.id,
         serviceId: takon.serviceId,
-        takonId: takon.id
+        takonId: takon.id,
+        juserId: takon.juserId
       })
       res.send({
         message: 'Сканирование прошло успешно',
